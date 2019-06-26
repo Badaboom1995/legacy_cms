@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
 export default class Select extends React.Component {
   state = {
-    value: "Выбрать",
+    value: 'Выбрать',
     listOpened: false,
-    listHovered: false
+    listHovered: false,
   };
   onChange = e => {
     this.props.onChange(e.target.innerHTML);
     e.persist();
     this.setState(() => ({
       value: e.target.innerHTML,
-      listOpened: false
+      listOpened: false,
     }));
   };
   listHovered = () => {
@@ -25,7 +25,7 @@ export default class Select extends React.Component {
   };
   hideList = () => {
     this.setState(() => ({
-      listOpened: this.state.listHovered ? true : false
+      listOpened: this.state.listHovered ? true : false,
     }));
   };
   showList = () => {
@@ -41,13 +41,11 @@ export default class Select extends React.Component {
     }
   };
   render() {
-    let enabled = this.state.listOpened && "select__list--enabled";
+    let enabled = this.state.listOpened && 'select__list--enabled';
     const modificators = this.props.modificators;
     return (
       <div className={`select ${modificators}`} onBlur={this.hideList}>
-        {this.props.label && (
-          <label className="label">{this.props.label}</label>
-        )}
+        {this.props.label && <label className="label">{this.props.label}</label>}
         <div className="select__controls">
           <button onClick={this.toggleList} className="button button--select">
             {this.setDefaultValue()}
@@ -58,11 +56,7 @@ export default class Select extends React.Component {
             className={`select__list ${enabled}`}
           >
             {this.props.options.map((option, index) => (
-              <div
-                key={index}
-                onClick={this.onChange}
-                className="select__list-item"
-              >
+              <div key={index} onClick={this.onChange} className="select__list-item">
                 {option}
               </div>
             ))}

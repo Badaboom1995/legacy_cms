@@ -1,13 +1,10 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
 class Button extends React.Component {
   render() {
     return (
-      <button
-        onClick={this.props.onClick}
-        className={`button ${this.props.className}`}
-      >
+      <button onClick={this.props.onClick} className={`button ${this.props.className}`}>
         {this.props.value}
       </button>
     );
@@ -15,7 +12,7 @@ class Button extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  general: state.general
+  general: state.general,
 });
 
 export default connect(mapStateToProps)(Button);

@@ -1,0 +1,33 @@
+@mixin placeholder_color($color) {
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: $color;
+      }
+    &::-moz-placeholder { /* Firefox 19+ */
+        color: $color;
+    }
+    &:-ms-input-placeholder { /* IE 10+ */
+        color: $color;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+        color: $color;
+    }
+}
+@mixin placeholder_opacity($opacity) {
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        opacity: $opacity;
+        transition: 0.3s opacity ease;
+    }
+    &::-moz-placeholder { /* Firefox 19+ */
+        opacity: $opacity;
+        transition: 0.3s opacity ease;
+    }
+    &:-ms-input-placeholder { /* IE 10+ */
+        opacity: $opacity;
+        transition: 0.3s opacity ease;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+        opacity: $opacity;
+        transition: 0.3s opacity ease;
+    }
+
+}

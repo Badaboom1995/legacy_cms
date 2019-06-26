@@ -1,19 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
 class Answers extends React.Component {
   state = {
-    rightAnswers: []
+    rightAnswers: [],
   };
   chooseAnswer = e => {
     e.persist();
     if (this.props.multipleChoise) {
       this.setState(state => ({
-        rightAnswers: [...state.rightAnswers, parseInt(e.target.dataset.key)]
+        rightAnswers: [...state.rightAnswers, parseInt(e.target.dataset.key)],
       }));
     } else {
       this.setState(state => ({
-        rightAnswers: [parseInt(e.target.dataset.key)]
+        rightAnswers: [parseInt(e.target.dataset.key)],
       }));
     }
   };
@@ -27,9 +27,8 @@ class Answers extends React.Component {
               {this.props.general.answers.map((answer, index) => {
                 return (
                   <li
-                    className={`answer ${this.state.rightAnswers.indexOf(
-                      index
-                    ) > -1 && "answer--true"}`}
+                    className={`answer ${this.state.rightAnswers.indexOf(index) > -1 &&
+                      'answer--true'}`}
                     key={index}
                     data-key={index}
                     onClick={this.chooseAnswer}
@@ -47,7 +46,7 @@ class Answers extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  general: state.general
+  general: state.general,
 });
 
 export default connect(mapStateToProps)(Answers);

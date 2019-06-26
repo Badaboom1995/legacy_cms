@@ -1,11 +1,11 @@
-import React from "react";
-import { connect } from "react-redux";
-import TextInput from "./TextInput";
-import Select from "./Select";
+import React from 'react';
+import { connect } from 'react-redux';
+import TextInput from './TextInput';
+import Select from './Select';
 
 class TextInputWithDefaults extends React.Component {
   state = {
-    value: ""
+    value: '',
   };
   onInputChange = value => {
     this.setState(() => ({ value }));
@@ -41,7 +41,7 @@ class TextInputWithDefaults extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  general: state.general
+  general: state.general,
 });
 
 export default connect(mapStateToProps)(TextInputWithDefaults);

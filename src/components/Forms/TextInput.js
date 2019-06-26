@@ -1,9 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
 class TextInput extends React.Component {
   state = {
-    value: ""
+    value: '',
   };
   onInputChange = () => {
     this.props.onChange(this.text.value, this.props.name);
@@ -15,7 +15,7 @@ class TextInput extends React.Component {
     return (
       <div
         className={`text-input ${this.props.fullWidth &&
-          "text-input--full-width"} ${wrapperExtraClasses}`}
+          'text-input--full-width'} ${wrapperExtraClasses}`}
       >
         {this.props.label && (
           <label className="text-input__label" htmlFor={this.props.name}>
@@ -37,7 +37,7 @@ class TextInput extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  general: state.general
+  general: state.general,
 });
 
 export default connect(mapStateToProps)(TextInput);
