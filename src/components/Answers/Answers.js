@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './style.css';
+import Answer from '../Answer/Answer';
+import './answers.css';
 
 class Answers extends React.Component {
   state = {
@@ -11,13 +12,22 @@ class Answers extends React.Component {
     e.persist();
     if (this.props.multipleChoise) {
       this.setState(state => ({
-        rightAnswers: [...state.rightAnswers, parseInt(e.target.dataset.key)],
+        rightAnswers: [...state.rightAnswers, e.target.innerHTML],
       }));
     } else {
       this.setState(state => ({
-        rightAnswers: [parseInt(e.target.dataset.key)],
+        rightAnswers: [e.target.innerHTML],
       }));
     }
+    console.log(e.target.innerHTML);
+  };
+
+  unchooseAnswer = e => {
+    const rightAnswers = this.state.rightAnswers.filter(answer => {
+      return answer != e.target.innerHTML;
+    });
+    console.log(rightAnswers, e.target.ineerHTML);
+    this.setState(() => ({ rightAnswers }));
   };
 
   render() {
@@ -26,18 +36,16 @@ class Answers extends React.Component {
         {this.props.general.answers.length > 0 && (
           <div className="answers">
             <h2 className="answers__title">Ответы</h2>
-            <ul>
+            <ul className="answers__list">
               {this.props.general.answers.map((answer, index) => {
                 return (
-                  <li
-                    className={`answer ${this.state.rightAnswers.indexOf(index) > -1 &&
-                      'answer--true'}`}
+                  <Answer
+                    rightAnswers={this.state.rightAnswers}
                     key={index}
-                    data-key={index}
-                    onClick={this.chooseAnswer}
-                  >
-                    {answer}
-                  </li>
+                    chooseAnswer={this.chooseAnswer}
+                    unchooseAnswer={this.unchooseAnswer}
+                    answer={answer}
+                  ></Answer>
                 );
               })}
             </ul>

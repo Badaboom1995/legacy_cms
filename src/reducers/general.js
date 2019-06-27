@@ -1,5 +1,5 @@
 const generalReducerDefaultState = {
-  answers: [1],
+  answers: [],
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -8,6 +8,13 @@ export default (state = generalReducerDefaultState, action) => {
       return {
         ...state,
         answers: [...state.answers, action.answer],
+      };
+    case 'REMOVE_ANSWER':
+      return {
+        ...state,
+        answers: state.answers.filter(item => {
+          return item != action.answer;
+        }),
       };
 
     default:

@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TextInput from '../Forms/TextInput';
-import Select from '../Forms/Select';
-import Answers from '../Answers';
-import AddAnswer from '../AddAnswer';
-import './index.css';
+import TextInput from '../../components/Forms/TextInput';
+import Select from '../../components/Forms/Select';
+import Answers from '../../components/Answers/Answers';
+import AddAnswer from '../../components/AddAnswer/AddAnswer';
+import './content.css';
 
 class Home extends React.Component {
   state = {
