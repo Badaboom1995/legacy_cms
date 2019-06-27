@@ -1,0 +1,16 @@
+.answer--true {
+  color: green;
+  font-weight: bold;
+}
+.answer--false {
+  cursor: pointer;
+}
+
+.answers {
+  margin-bottom: 15px;
+}
+.answers__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: normal;
+}

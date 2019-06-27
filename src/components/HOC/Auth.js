@@ -6,6 +6,7 @@ const Auth = props => WrappedComponent => {
     state = {
       isAuth: false,
     };
+
     componentDidMount() {
       const req = new request();
       if (req.getChecks()) {
@@ -14,8 +15,9 @@ const Auth = props => WrappedComponent => {
         }));
       }
     }
+
     render() {
-      return this.state.isAuth ? <WrappedComponent></WrappedComponent> : <div>Loading...</div>;
+      return this.state.isAuth ? <WrappedComponent /> : <div>Loading...</div>;
     }
   };
 };

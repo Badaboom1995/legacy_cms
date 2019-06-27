@@ -2,14 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextInput from '../Forms/TextInput';
 import { addAnswer } from '../../actions/general';
+import './add-answer.css';
 
 class AddAnswer extends React.Component {
   onChange = value => {
     this.setState(() => ({ answer: value }));
   };
+
   addAnswer = () => {
     this.props.dispatch(addAnswer(this.state.answer));
   };
+
   render() {
     return (
       <div className="add-answer">

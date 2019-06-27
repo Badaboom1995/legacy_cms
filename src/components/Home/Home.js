@@ -4,7 +4,7 @@ import TextInput from '../Forms/TextInput';
 import Select from '../Forms/Select';
 import Answers from '../Answers';
 import AddAnswer from '../AddAnswer';
-import './index.scss';
+import './index.css';
 
 class Home extends React.Component {
   state = {
@@ -19,31 +19,33 @@ class Home extends React.Component {
       },
       {
         name: 'Выбор множества ответа',
-        component: <Answers multipleChoise={true} />,
+        component: <Answers multipleChoise />,
       },
       {
         name: 'Перетаскивание',
-        component: <Answers multipleChoise={true} />,
+        component: <Answers multipleChoise />,
       },
       {
         name: 'Графики',
-        component: <Answers multipleChoise={true} />,
+        component: <Answers multipleChoise />,
       },
     ],
     answerToAdd: '',
     answers: [],
-    rightAnswer: '',
-    name: '',
     kind: '',
   };
+
   getOptions = () => {
-    return this.state.mechanicOptions.map(item => item.name);
+    const { mechanicOptions } = this.state;
+    return mechanicOptions.map(item => item.name);
   };
+
   getActiveMechanic = () => {
+    const { mechanicOptions, kind } = this.state;
     return (
       <React.Fragment>
         <AddAnswer />
-        {this.state.mechanicOptions.filter(item => item.name === this.state.kind)[0].component}
+        {mechanicOptions.filter(item => item.name === kind)[0].component}
       </React.Fragment>
     );
   };
@@ -57,12 +59,15 @@ class Home extends React.Component {
         console.log(JSON.stringify(myJson));
       });
   };
+
   onChange = (value, name) => {
     this.setState(() => ({ [name]: value }));
   };
+
   onTypeChange = value => {
     this.setState(() => ({ kind: value }));
   };
+
   addAnswer = () => {
     this.setState(state => ({
       answers: [...state.answers, state.answerToAdd],
@@ -70,6 +75,7 @@ class Home extends React.Component {
   };
 
   render() {
+    const { kind } = this.state;
     return (
       <div className="content">
         <p className="content__title">Конструктор заданий</p>
@@ -81,8 +87,8 @@ class Home extends React.Component {
         />
         <TextInput name="text" onChange={this.onChange} label="Текст задания" />
         <Select options={this.getOptions()} onChange={this.onTypeChange} label="Механика" />
-        {this.state.kind && this.getActiveMechanic()}
-        <button className="button button--primary" onClick={this.onSubmit}>
+        {kind && this.getActiveMechanic()}
+        <button type="button" className="button button--primary" onClick={this.onSubmit}>
           Создать задание
         </button>
       </div>
@@ -90,6 +96,4 @@ class Home extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
-
-export default connect(mapStateToProps)(Home);
+export default connect()(Home);

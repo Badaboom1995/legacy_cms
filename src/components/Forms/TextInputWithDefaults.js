@@ -7,12 +7,15 @@ class TextInputWithDefaults extends React.Component {
   state = {
     value: '',
   };
+
   onInputChange = value => {
     this.setState(() => ({ value }));
   };
+
   onSelectChange = value => {
     this.setState(() => ({ value }));
   };
+
   render() {
     return (
       <div className="input-with-defaults">
@@ -21,7 +24,7 @@ class TextInputWithDefaults extends React.Component {
         </label>
         <div className="input-with-defaults__controls">
           <TextInput
-            fullWidth={true}
+            fullWidth
             name={this.props.name}
             value={this.state.value}
             modificators="text-input__field--defaults"

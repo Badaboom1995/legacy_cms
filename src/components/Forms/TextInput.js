@@ -5,30 +5,30 @@ class TextInput extends React.Component {
   state = {
     value: '',
   };
+
   onInputChange = () => {
-    this.props.onChange(this.text.value, this.props.name);
+    const { onChange, name } = this.props;
+    onChange(this.text.value, name);
     this.setState(() => ({ value: this.text.value }));
   };
+
   render() {
-    const modificators = this.props.modificators;
-    const wrapperExtraClasses = this.props.className;
+    const { modificators, className, fullWidth, name, label, placeholder, value } = this.props;
+    const wrapperExtraClasses = className;
     return (
-      <div
-        className={`text-input ${this.props.fullWidth &&
-          'text-input--full-width'} ${wrapperExtraClasses}`}
-      >
-        {this.props.label && (
-          <label className="text-input__label" htmlFor={this.props.name}>
-            {this.props.label}
+      <div className={`text-input ${fullWidth && 'text-input--full-width'} ${wrapperExtraClasses}`}>
+        {label && (
+          <label className="text-input__label" htmlFor={name}>
+            {label}
           </label>
         )}
         <input
           className={`text-input__field ${modificators}`}
           type="text"
-          placeholder={this.props.placeholder}
+          placeholder={placeholder}
           onChange={this.onInputChange}
-          name={this.props.name}
-          value={this.props.value ? this.props.value : this.state.value}
+          name={name}
+          value={value || this.state.value}
           ref={text => (this.text = text)}
         />
       </div>

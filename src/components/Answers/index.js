@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import './style.css';
 
 class Answers extends React.Component {
   state = {
     rightAnswers: [],
   };
+
   chooseAnswer = e => {
     e.persist();
     if (this.props.multipleChoise) {
@@ -17,6 +19,7 @@ class Answers extends React.Component {
       }));
     }
   };
+
   render() {
     return (
       <React.Fragment>
