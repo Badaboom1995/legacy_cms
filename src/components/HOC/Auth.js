@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import request from '../../services/request';
+import request from 'services/request';
 
 const Auth = props => WrappedComponent => {
   return class AuthHOC extends Component {

@@ -1,4 +1,5 @@
 import React from 'react';
+import './select.scss';
 
 export default class Select extends React.Component {
   state = {
@@ -41,16 +42,16 @@ export default class Select extends React.Component {
   setDefaultValue = () => {
     if (this.state.value) {
       return this.state.value;
-    } if (this.props.value) {
+    }
+    if (this.props.value) {
       return this.props.value;
-    } 
-      return this.props.options[0];
-    
+    }
+    return this.props.options[0];
   };
 
   render() {
     const enabled = this.state.listOpened && 'select__list--enabled';
-    const {modificators} = this.props;
+    const { modificators } = this.props;
     return (
       <div className={`select ${modificators}`} onBlur={this.hideList}>
         {this.props.label && <label className="label">{this.props.label}</label>}

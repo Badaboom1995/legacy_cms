@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './answer.css';
-import { removeAnswer } from '../../actions/general';
+import './answer.scss';
+import { removeAnswer } from 'actions/general';
 
 class Answer extends React.Component {
   chooseAnswer = e => {

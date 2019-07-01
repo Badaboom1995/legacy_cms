@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TextInput from '../../components/Forms/TextInput';
-import Select from '../../components/Forms/Select';
-import Answers from '../../components/Answers/Answers';
-import AddAnswer from '../../components/AddAnswer/AddAnswer';
-import './content.css';
+import TextInput from 'components/TextInput/TextInput';
+import Select from 'components/Select/Select';
+import Answers from 'components/Answers/Answers';
+import SelectButtons from 'components/SelectButtons/SelectButtons';
+import AddAnswer from 'components/AddAnswer/AddAnswer';
+import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
+import './content.scss';
 
 class Home extends React.Component {
   state = {
@@ -23,13 +25,15 @@ class Home extends React.Component {
       },
       {
         name: 'Перетаскивание',
-        component: <Answers multipleChoise />,
+        component: <DragAndDrop />,
       },
       {
         name: 'Графики',
         component: <Answers multipleChoise />,
       },
     ],
+    types: ['Уравнение', 'Пример', 'Задача'],
+    difficulty: ['Просто', 'Средне', 'Сложно'],
     answerToAdd: '',
     answers: [],
     kind: '',
@@ -75,7 +79,8 @@ class Home extends React.Component {
   };
 
   render() {
-    const { kind } = this.state;
+    const { kind, types, difficulty } = this.state;
+    const mechanicInterface = kind && this.getActiveMechanic();
     return (
       <div className="content">
         <p className="content__title">Конструктор заданий</p>
@@ -87,7 +92,9 @@ class Home extends React.Component {
         />
         <TextInput name="text" onChange={this.onChange} label="Текст задания" />
         <Select options={this.getOptions()} onChange={this.onTypeChange} label="Механика" />
-        {kind && this.getActiveMechanic()}
+        {mechanicInterface}
+        <Select options={types} onChange={this.onChange} label="Тип задания" />
+        <Select options={difficulty} onChange={this.onChange} label="Сложность" />
         <button type="button" className="button button--primary" onClick={this.onSubmit}>
           Создать задание
         </button>

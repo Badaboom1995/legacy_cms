@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import './text-input.scss';
 
 class TextInput extends React.Component {
   state = {

@@ -8,6 +8,7 @@ var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 var getClientEnvironment = require('./env');
 var paths = require('./paths');
+var DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -75,7 +76,6 @@ module.exports = {
     extensions: ['.js', '.json', '.jsx', ''],
     alias: {
       // Support React Native Web
-      // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
     },
   },
@@ -112,6 +112,8 @@ module.exports = {
           /\.css$/,
           /\.json$/,
           /\.svg$/,
+          /\.sass$/,
+          /\.scss$/,
         ],
         loader: 'url',
         query: {
@@ -154,6 +156,11 @@ module.exports = {
         query: {
           name: 'static/media/[name].[hash:8].[ext]',
         },
+      },
+      {
+        test: /\.scss$/,
+        include: paths.appSrc,
+        loaders: ['style', 'css', 'sass'],
       },
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "url" loader exclusion list.

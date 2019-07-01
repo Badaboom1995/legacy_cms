@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Request from '../helpers/request';
+import Request from 'helpers/request';
 
 const Auth = () => WrappedComponent => {
   return class AuthHOC extends Component {

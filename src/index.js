@@ -3,10 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
-import './styles/base.css';
-import './styles/button.css';
-import './styles/select.css';
-import './styles/text-input.css';
+import './styles/styles.scss';
 
 const store = configureStore();
 store.subscribe(() => {
