@@ -72,12 +72,6 @@ class Home extends React.Component {
     this.setState(() => ({ kind: value }));
   };
 
-  addAnswer = () => {
-    this.setState(state => ({
-      answers: [...state.answers, state.answerToAdd],
-    }));
-  };
-
   render() {
     const { kind, types, difficulty } = this.state;
     const mechanicInterface = kind && this.getActiveMechanic();
@@ -92,6 +86,10 @@ class Home extends React.Component {
         />
         <TextInput name="text" onChange={this.onChange} label="Текст задания" />
         <Select options={this.getOptions()} onChange={this.onTypeChange} label="Механика" />
+        <React.Fragment>
+          <AddAnswer />
+          <DragAndDrop></DragAndDrop>
+        </React.Fragment>
         {mechanicInterface}
         <Select options={types} onChange={this.onChange} label="Тип задания" />
         <Select options={difficulty} onChange={this.onChange} label="Сложность" />

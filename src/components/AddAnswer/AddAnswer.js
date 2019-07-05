@@ -16,7 +16,6 @@ class AddAnswer extends React.Component {
     if (!this.props.general.answers.includes(this.state.answer)) {
       this.props.dispatch(addAnswer(this.state.answer));
     }
-    console.log(this.state);
   };
 
   render() {

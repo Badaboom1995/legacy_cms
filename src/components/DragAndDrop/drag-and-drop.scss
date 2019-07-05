@@ -1,0 +1,25 @@
+.drag-column {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background-color: #ccc;
+  margin-bottom: 15px;
+  &__list {
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    padding: 8px;
+    &--in-drag {
+      background-color: #999;
+    }
+  }
+  &__item {
+    padding: 8px;
+    background-color: #4f4f4f;
+    margin-bottom: 5px;
+    transition: 0.3s background-color ease;
+    &--in-drag {
+      background-color: #61e786;
+    }
+  }
+}
