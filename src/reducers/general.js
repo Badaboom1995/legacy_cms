@@ -1,12 +1,7 @@
+import uuid from 'uuid';
+
 const generalReducerDefaultState = {
-  answers: ['qwe', 'asd', 'zxc'],
-  columns: [
-    {
-      id: 'column-1',
-      title: 'To-do',
-      answerIds: [],
-    },
-  ],
+  answers: [],
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -28,14 +23,17 @@ export default (state = generalReducerDefaultState, action) => {
           return item != action.answer;
         }),
       };
-    case 'REMOVE_COLUMN':
+    case 'CHANGE_ANSWER_INDEX':
       return {
         ...state,
-        answers: state.columns.filter(item => {
-          return item.id != action.column.id;
+        columns: state.columns.map(item => {
+          if (item.id === action.column.id) {
+            return action.column;
+          }
+
+          return item;
         }),
       };
-
     default:
       return state;
   }

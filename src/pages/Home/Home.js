@@ -87,7 +87,7 @@ class Home extends React.Component {
         <TextInput name="text" onChange={this.onChange} label="Текст задания" />
         <Select options={this.getOptions()} onChange={this.onTypeChange} label="Механика" />
         <React.Fragment>
-          <AddAnswer />
+          {/* <AddAnswer /> */}
           <DragAndDrop></DragAndDrop>
         </React.Fragment>
         {mechanicInterface}

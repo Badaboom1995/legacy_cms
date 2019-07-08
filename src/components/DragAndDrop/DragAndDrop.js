@@ -4,11 +4,33 @@ import { connect } from 'react-redux';
 import uuid from 'uuid';
 import './drag-and-drop.scss';
 import Column from './Column';
-import { addColumn } from 'actions/general';
+import AddAnswer from 'components/AddAnswer/AddAnswer';
+import { addColumn, changeAnswerIndex } from 'actions/general';
 
 class DragAndDrop extends Component {
+  state = {
+    answers: {},
+    columns: {
+      'column-1': {
+        id: 'column-1',
+        title: 'Делится на 3',
+        answerIds: [],
+      },
+      'column-2': {
+        id: 'column-2',
+        title: 'Делится на 5',
+        answerIds: [],
+      },
+      'column-3': {
+        id: 'column-3',
+        title: 'Делится на 28',
+        answerIds: [],
+      },
+    },
+    // Facilitate reordering of the columns
+    columnOrder: ['column-1', 'column-2', 'column-3'],
+  };
   onDragEnd = result => {
-    console.log(this.props.general);
     const { destination, source, draggableId } = result;
 
     // За пределами колонок
@@ -20,8 +42,8 @@ class DragAndDrop extends Component {
       return;
     }
 
-    const start = this.props.general.columns[source.droppableId];
-    const finish = this.props.general.columns[destination.droppableId];
+    const start = this.state.columns[source.droppableId];
+    const finish = this.state.columns[destination.droppableId];
 
     if (start === finish) {
       this.changeAnswerIndex(start, source, destination, draggableId);
@@ -40,11 +62,10 @@ class DragAndDrop extends Component {
       ...start,
       answerIds: newAnswerIds,
     };
-
     const newState = {
-      ...this.props.general,
+      ...this.state,
       columns: {
-        ...this.props.general.columns,
+        ...this.state.columns,
         [newColumn.id]: newColumn,
       },
     };
@@ -68,9 +89,9 @@ class DragAndDrop extends Component {
     };
 
     const newState = {
-      ...this.props.general,
+      ...this.state,
       columns: {
-        ...this.props.general.columns,
+        ...this.state.columns,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish,
       },
@@ -79,23 +100,83 @@ class DragAndDrop extends Component {
     this.setState(newState);
   };
   addColumn = column => {
-    this.props.dispatch(
-      addColumn({
-        id: uuid(),
-        ...column,
+    const id = uuid();
+    const newColumn = {
+      id,
+      title: 'New column',
+      answerIds: [],
+    };
+    console.log(newColumn);
+    this.setState(
+      state => ({
+        columns: { ...this.state.columns, [id]: newColumn },
+        columnOrder: [...this.state.columnOrder, id],
       }),
+      () => {
+        console.log(this.state);
+      },
     );
+  };
+  addAnswer = content => {
+    const id = uuid();
+    const newAnswer = { id, content };
+    const firstColumnKey = Object.keys(this.state.columns)[0];
+
+    console.log({
+      answers: {
+        ...this.state.answers,
+        [id]: newAnswer,
+      },
+      columns: {
+        ...this.state.columns,
+        [firstColumnKey]: {
+          ...this.state.columns,
+          answerIds: [...this.state.columns[firstColumnKey].answerIds, id],
+        },
+      },
+    });
+    changeTitle = (id, title) => {
+      this.setState(() => ({
+        columns: {
+          [id]: {
+            ...this.state.columns[id],
+            title,
+          },
+        },
+      }));
+    };
+
+    this.setState(() => ({
+      answers: {
+        ...this.state.answers,
+        [id]: newAnswer,
+      },
+      columns: {
+        ...this.state.columns,
+        [firstColumnKey]: {
+          ...this.state.columns[firstColumnKey],
+          answerIds: [...this.state.columns[firstColumnKey].answerIds, id],
+        },
+      },
+    }));
   };
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
+        <AddAnswer addAnswer={this.addAnswer}></AddAnswer>
         <div className="drag-container">
-          {this.props.general.columnOrder.map(columnId => {
-            const column = this.props.general.columns[columnId];
-            const items = column.answerIds.map(answerId => this.props.general.answers[answerId]);
+          {this.state.columnOrder.map(columnId => {
+            const column = this.state.columns[columnId];
+            const items = column.answerIds.map(answerId => this.state.answers[answerId]);
 
             return (
-              <Column key={column.id} id={column.id} title={column.title} items={items}></Column>
+              <Column
+                changeTitle={this.changeTitle}
+                key={column.id}
+                id={column.id}
+                title={column.title}
+                items={items}
+              ></Column>
             );
           })}
         </div>
@@ -111,7 +192,9 @@ class DragAndDrop extends Component {
   }
 }
 
-const syncAnswers = (answers, columns) => {
+const syncAnswers = (answers, columns, state) => {
+  // const adoptedAnswers = columns.reduce((accum, item) => {}, {});
+  console.log(state);
   const newAnswers = answers.reduce((accum, item) => {
     const answerId = uuid();
     const content = item;
@@ -120,41 +203,30 @@ const syncAnswers = (answers, columns) => {
     return { ...accum, [answerId]: newAnswer };
   }, {});
 
-  const newColumns = columns.reduce((accum, item) => {
-    const columnId = item.id;
-    const content = item;
+  // const newColumns = columns.reduce((accum, item) => {
+  //   const columnId = item.id;
+  //   const content = item;
+  //   const newAnswerIds = Object.keys(newAnswers);
+  //   content.answerIds = newAnswerIds;
 
-    return { ...accum, [columnId]: content };
-  }, {});
+  //   return { ...accum, [columnId]: content };
+  // }, {});
 
-  const newAnswersIds = Object.keys(newAnswers);
+  // const oldColumnIds = columns.map(column => column.id);
 
-  const newColumn = {
-    id: uuid(),
-    title: 'initial',
-    answerIds: newAnswersIds,
-  };
-  const oldColumnIds = columns.map(column => column.id);
   // console.log({
   //   answers: newAnswers,
   //   columns: {
   //     ...newColumns,
-  //     [newColumn.id]: newColumn,
   //   },
-  //   columnOrder: [newColumn.id, ...oldColumnIds],
+  //   columnOrder: [...oldColumnIds],
   // });
-  return {
-    answers: newAnswers,
-    columns: {
-      ...newColumns,
-      [newColumn.id]: newColumn,
-    },
-    columnOrder: [newColumn.id, ...oldColumnIds],
-  };
+
+  return newAnswers;
 };
 
 const mapStateToProps = state => ({
-  general: syncAnswers(state.general.answers, state.general.columns),
+  general: syncAnswers(state.general.answers, state.general.columns, state),
 });
 
 export default connect(mapStateToProps)(DragAndDrop);

@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 export const addAnswer = answer => ({
   type: 'ADD_ANSWER',
   answer,
@@ -10,7 +12,7 @@ export const removeAnswer = answer => ({
   type: 'REMOVE_ANSWER',
   answer,
 });
-export const removeColumn = id => ({
-  type: 'REMOVE_COLUMN',
-  id,
+export const changeAnswerIndex = column => ({
+  type: 'CHANGE_ANSWER_INDEX',
+  column,
 });

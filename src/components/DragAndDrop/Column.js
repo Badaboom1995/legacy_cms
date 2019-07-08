@@ -5,10 +5,30 @@ import uuid from 'uuid';
 import Item from './Item';
 
 class Column extends Component {
+  state = {
+    titleChanging: false,
+  };
+  showInput = () => {
+    this.setState(() => ({
+      titleChanging: true,
+    }));
+  };
+  hideInput = e => {
+    this.setState(() => ({
+      titleChanging: false,
+    }));
+    this.props.changeTitle(this.props.id, e.target.value);
+  };
   render() {
     return (
       <div className="drag-column">
-        <h3 className="drag-column__title">{this.props.title}</h3>
+        {this.state.titleChanging ? (
+          <input type="text" value={this.props.title} onChange={this.hideInput} />
+        ) : (
+          <h3 className="drag-column__title" onClick={this.showInput}>
+            {this.props.title}
+          </h3>
+        )}
         <Droppable droppableId={this.props.id}>
           {(provided, snapshot) => (
             <div
