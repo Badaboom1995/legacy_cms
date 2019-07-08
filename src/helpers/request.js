@@ -1,4 +1,4 @@
-const SERVER_ENDPOINT = ' https://43079.shot-uchi.ru/b2t/api/v1/teachers/checks';
+const SERVER_ENDPOINT = ' https://43187.shot-uchi.ru/b2t/api/v1/teachers/checks';
 
 export default class ChecksService {
   async getChecks() {

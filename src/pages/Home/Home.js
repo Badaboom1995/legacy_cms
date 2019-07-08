@@ -46,6 +46,13 @@ class Home extends React.Component {
 
   getActiveMechanic = () => {
     const { mechanicOptions, kind } = this.state;
+    if (kind === 'Перетаскивание') {
+      return (
+        <React.Fragment>
+          {mechanicOptions.filter(item => item.name === kind)[0].component}
+        </React.Fragment>
+      );
+    }
     return (
       <React.Fragment>
         <AddAnswer />
@@ -86,10 +93,6 @@ class Home extends React.Component {
         />
         <TextInput name="text" onChange={this.onChange} label="Текст задания" />
         <Select options={this.getOptions()} onChange={this.onTypeChange} label="Механика" />
-        <React.Fragment>
-          {/* <AddAnswer /> */}
-          <DragAndDrop></DragAndDrop>
-        </React.Fragment>
         {mechanicInterface}
         <Select options={types} onChange={this.onChange} label="Тип задания" />
         <Select options={difficulty} onChange={this.onChange} label="Сложность" />
