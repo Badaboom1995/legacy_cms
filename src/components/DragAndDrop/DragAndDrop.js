@@ -148,16 +148,16 @@ class DragAndDrop extends Component {
         },
       },
     }));
-    changeTitle = (id, title) => {
-      this.setState(() => ({
-        columns: {
-          [id]: {
-            ...this.state.columns[id],
-            title,
-          },
+  };
+  changeTitle = (id, title) => {
+    this.setState(() => ({
+      columns: {
+        [id]: {
+          ...this.state.columns[id],
+          title,
         },
-      }));
-    };
+      },
+    }));
   };
   render() {
     return (
