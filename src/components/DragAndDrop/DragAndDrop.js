@@ -135,17 +135,6 @@ class DragAndDrop extends Component {
         },
       },
     });
-    changeTitle = (id, title) => {
-      this.setState(() => ({
-        columns: {
-          [id]: {
-            ...this.state.columns[id],
-            title,
-          },
-        },
-      }));
-    };
-
     this.setState(() => ({
       answers: {
         ...this.state.answers,
@@ -159,6 +148,16 @@ class DragAndDrop extends Component {
         },
       },
     }));
+    changeTitle = (id, title) => {
+      this.setState(() => ({
+        columns: {
+          [id]: {
+            ...this.state.columns[id],
+            title,
+          },
+        },
+      }));
+    };
   };
   render() {
     return (
