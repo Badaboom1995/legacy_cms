@@ -8,12 +8,12 @@ const Auth = () => WrappedComponent => {
     };
 
     componentDidMount() {
-      // const Req = new Request();
-      // if (Req.getChecks()) {
-      //   this.setState(() => ({
-      //     isAuth: true,
-      //   }));
-      // }
+      const Req = new Request();
+      if (Req.getChecks()) {
+        this.setState(() => ({
+          isAuth: true,
+        }));
+      }
     }
 
     render() {

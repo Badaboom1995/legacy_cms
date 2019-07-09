@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Answers from 'components/Answers/Answers';
-import SelectButtons from 'components/SelectButtons/SelectButtons';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
 import './content.scss';

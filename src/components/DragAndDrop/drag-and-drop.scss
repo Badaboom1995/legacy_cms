@@ -13,6 +13,17 @@
       background-color: #999;
     }
   }
+  &__title,
+  &__edit-title {
+    font-size: 18px;
+    font-weight: normal;
+    border: none;
+    margin: 15px;
+    padding: 0;
+    line-height: 18px;
+    background-color: transparent;
+    outline: none;
+  }
   &__item {
     padding: 8px;
     background-color: #4f4f4f;
