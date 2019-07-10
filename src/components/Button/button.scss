@@ -13,11 +13,11 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: normal;
-}
-.button--add {
-  margin-bottom: 30px;
-}
-.button--primary {
-  margin-bottom: 0px;
-  margin-left: 0;
+  &--add {
+    margin-bottom: 30px;
+  }
+  &--primary {
+    margin-bottom: 0px;
+    margin-left: 0;
+  }
 }

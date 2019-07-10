@@ -5,6 +5,10 @@ import Select from 'components/Select/Select';
 import Answers from 'components/Answers/Answers';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
+import Button from '@material-ui/core/Button';
+import Stepper from 'components/Stepper/Stepper';
+
+import Request from 'helpers/createTask';
 import './content.scss';
 
 class Home extends React.Component {
@@ -77,27 +81,105 @@ class Home extends React.Component {
   onTypeChange = value => {
     this.setState(() => ({ kind: value }));
   };
+  createTask = () => {
+    const Req = new Request();
+    if (Req.getChecks()) {
+      this.setState(() => ({
+        isAuth: true,
+      }));
+    }
+  };
 
   render() {
     const { kind, types, difficulty } = this.state;
     const mechanicInterface = kind && this.getActiveMechanic();
-    return (
-      <div className="content">
-        <p className="content__title">Конструктор заданий</p>
+
+    const firstStep = (
+      <div className="content__fragment">
         <TextInput
           name="name"
           placeholder="Например: Найди значение функции по графику"
           onChange={this.onChange}
           label="Название задания"
         />
+        <Select
+          modificators="select--in-row"
+          options={types}
+          onChange={this.onChange}
+          label="Тип задания"
+        />
+        <Select
+          modificators="select--in-row"
+          options={difficulty}
+          onChange={this.onChange}
+          label="Сложность"
+        />
+        <Select
+          modificators="select--in-row"
+          options={difficulty}
+          onChange={this.onChange}
+          label="Предмет"
+        />
+        <Select
+          modificators="select--in-row"
+          options={difficulty}
+          onChange={this.onChange}
+          label="Класс"
+        />
+        <Select
+          modificators="select--in-row"
+          options={this.getOptions()}
+          onChange={this.onTypeChange}
+          label="Механика"
+        />
+      </div>
+    );
+
+    const secondStep = (
+      <div className="content__fragment">
         <TextInput name="text" onChange={this.onChange} label="Текст задания" />
-        <Select options={this.getOptions()} onChange={this.onTypeChange} label="Механика" />
         {mechanicInterface}
-        <Select options={types} onChange={this.onChange} label="Тип задания" />
-        <Select options={difficulty} onChange={this.onChange} label="Сложность" />
-        <button type="button" className="button button--primary" onClick={this.onSubmit}>
+        <Button
+          variant="contained"
+          color="primary"
+          classes={{ root: 'button button--primary' }}
+          onClick={this.createTask}
+        >
+          Добавить генерацию
+        </Button>
+      </div>
+    );
+
+    return (
+      <div className="content">
+        <Stepper
+          settings={[
+            { name: 'Базовые параметры', component: firstStep },
+            { name: 'Параметры генераций', component: secondStep },
+            { name: 'Завершение', component: <p>Посмотрел на результат, отправил.</p> },
+          ]}
+          title="Конструктор заданий"
+        />
+
+        {/* <TextInput
+          name="name"
+          placeholder="Например: Найди значение функции по графику"
+          onChange={this.onChange}
+          label="Название задания"
+        /> */}
+        {/* <TextInput name="text" onChange={this.onChange} label="Текст задания" />
+        <Select options={this.getOptions()} onChange={this.onTypeChange} label="Механика" />
+        {mechanicInterface} */}
+        {/* <Select options={types} onChange={this.onChange} label="Тип задания" />
+        <Select options={difficulty} onChange={this.onChange} label="Сложность" /> */}
+        {/* <Button
+          variant="contained"
+          color="primary"
+          classes={{ root: 'button button--primary' }}
+          onClick={this.createTask}
+        >
           Создать задание
-        </button>
+        </Button> */}
       </div>
     );
   }

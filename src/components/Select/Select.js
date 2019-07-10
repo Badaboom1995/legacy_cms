@@ -54,7 +54,7 @@ export default class Select extends React.Component {
     const { modificators } = this.props;
     return (
       <div className={`select ${modificators}`} onBlur={this.hideList}>
-        {this.props.label && <label className="label">{this.props.label}</label>}
+        {this.props.label && <label className="select__label">{this.props.label}</label>}
         <div className="select__controls">
           <button onClick={this.toggleList} className="button button--select">
             {this.setDefaultValue()}
