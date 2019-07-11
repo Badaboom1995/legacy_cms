@@ -14,7 +14,7 @@ class TextInput extends React.Component {
   };
 
   render() {
-    const { modificators, className, fullWidth, name, label, placeholder, value } = this.props;
+    const { modificators, className, fullWidth, name, label, placeholder, value } = this.state;
     const wrapperExtraClasses = className;
     return (
       <div className={`text-input ${fullWidth && 'text-input--full-width'} ${wrapperExtraClasses}`}>
@@ -29,7 +29,7 @@ class TextInput extends React.Component {
           placeholder={placeholder}
           onChange={this.onInputChange}
           name={name}
-          value={value || this.state.value}
+          value={value}
           ref={text => (this.text = text)}
         />
       </div>

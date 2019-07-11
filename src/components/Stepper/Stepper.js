@@ -6,8 +6,6 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import AddAnswer from 'components/AddAnswer/AddAnswer';
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '90%',
@@ -30,16 +28,6 @@ export default function HorizontalLinearStepper(props) {
   }
   function getStepContent(step) {
     return props.settings[step].component;
-    // switch (step) {
-    //   case 0:
-    //     return <AddAnswer />;
-    //   case 1:
-    //     return 'What is an ad group anyways?';
-    //   case 2:
-    //     return 'This is the bit I really care about!';
-    //   default:
-    //     return 'Unknown step';
-    // }
   }
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -47,7 +35,6 @@ export default function HorizontalLinearStepper(props) {
   const steps = getSteps();
 
   function isStepOptional(step) {
-    // return step === 1;
     return false;
   }
 
