@@ -1,4 +1,4 @@
-const SERVER_ENDPOINT = 'http://43187.shot-uchi.ru/b2t/api/v1/teachers/checks/2/check_jobs';
+const SERVER_ENDPOINT = 'https://43187.shot-uchi.ru/b2t/api/v1/teachers/checks/2/check_jobs';
 const json = require('./body.json');
 
 export default class CreateGeneration {
