@@ -1,8 +1,8 @@
-const SERVER_ENDPOINT = 'http://43187.shot-uchi.ru/b2t/api/v1/teachers/checks/2/check_jobs';
-const json = require('./body.json');
+const SERVER_ENDPOINT = 'http://localhost:3000/b2t/api/v1/teachers/checks/2/check_jobs';
+const json = require('./generationJson.json');
 
-export default class CreateGeneration {
-  async postCheck() {
+export default class CreateTask {
+  async postGeneration() {
     this.url = `${SERVER_ENDPOINT}`;
     this.response = await fetch(this.url, {
       method: 'POST',

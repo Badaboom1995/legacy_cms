@@ -1,0 +1,28 @@
+{
+    "id": 1,
+    "name": "Найди значение выражения -56:8 + 3,1",
+    "kind": "variant",
+    "active": true,
+    "check_job_id": 1,
+    "data": {
+      "variants": {
+        "a": {
+          "name": "-5,3",
+          "value": "-5,3"
+        },
+        "b": {
+          "name": "-4,3",
+          "right": true,
+          "value": "-4,3"
+        },
+        "c": {
+          "name": "4,3",
+          "value": "4,3"
+        },
+        "d": {
+          "name": "-4,7",
+          "value": "-4,7"
+        }
+      }
+    }
+  },

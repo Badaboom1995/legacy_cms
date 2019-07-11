@@ -1,14 +1,15 @@
 {
   "check_job": {
-    "name": "2+2?",
-    "subject": "1",
-    "learning_level_id": "13",
-    "kind": "variant",
-    "data": {
-      "variants": {
-        "a": { "name": "4", "right": true, "value": "2" },
-        "b": { "name": "3", "value": "3" }
-      }
+    "id": 1,
+    "learning_level_id": 13,
+    "difficulty": "A",
+    "name": "Задание 1",
+    "subject": 1,
+    "active": true,
+    "learning_level": {
+      "id": 13,
+      "value": 7,
+      "name": "7 класс"
     }
   }
 }
