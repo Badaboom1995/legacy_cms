@@ -4,7 +4,7 @@ import Request from 'helpers/request';
 const Auth = () => WrappedComponent => {
   return class AuthHOC extends Component {
     state = {
-      isAuth: true,
+      isAuth: false,
     };
 
     componentDidMount() {

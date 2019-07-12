@@ -1,14 +1,10 @@
 {
   "check_job": {
+    "id": 123,
+    "subject_id": 1,
     "name": "2+2?",
     "subject": "1",
     "learning_level_id": "13",
-    "kind": "variant",
-    "data": {
-      "variants": {
-        "a": { "name": "4", "right": true, "value": "2" },
-        "b": { "name": "3", "value": "3" }
-      }
-    }
+    "difficulty": "A"
   }
 }
