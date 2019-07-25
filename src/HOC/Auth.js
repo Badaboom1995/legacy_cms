@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import Request from 'helpers/request';
+// import Request from 'helpers/request';
 
 const Auth = () => WrappedComponent => {
   return class AuthHOC extends Component {
     state = {
-      isAuth: false,
+      isAuth: true,
     };
 
     componentDidMount() {
-      const Req = new Request();
-      if (Req.getChecks()) {
-        this.setState(() => ({
-          isAuth: true,
-        }));
-      }
+      // const Req = new Request();
+      // if (Req.getChecks()) {
+      //   this.setState(() => ({
+      //     isAuth: true,
+      //   }));
+      // }
     }
 
     render() {

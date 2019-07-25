@@ -4,11 +4,19 @@ import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 
 class AddTaskInfo extends React.Component {
-  types = ['Уравнение', 'Пример', 'Задача'];
-  difficulty = ['Просто', 'Средне', 'Сложно'];
-  subjects = ['Математика'];
+  difficulty = ['A', 'B', 'C'];
+  subjects = { Математика: 1, Русский: 2 };
   grade = ['1', '2', '3'];
 
+  getSubjectNames = subjects => {
+    return Object.keys(subjects);
+  };
+
+  onChange = (value, name) => {
+    const subjectObj = { name: value, id: this.subjects[value] };
+    this.props.onChange(subjectObj, name);
+    // console.log(subjectObj, name);
+  };
   render() {
     return (
       <div className="content__fragment">
@@ -17,13 +25,6 @@ class AddTaskInfo extends React.Component {
           placeholder="Например: Найди значение функции по графику"
           onChange={this.props.onChange}
           label="Название задания"
-        />
-        <Select
-          name="type"
-          modificators="select--in-row"
-          options={this.types}
-          onChange={this.props.onChange}
-          label="Тип задания"
         />
         <Select
           name="difficulty"
@@ -35,8 +36,8 @@ class AddTaskInfo extends React.Component {
         <Select
           name="subject"
           modificators="select--in-row"
-          options={this.subjects}
-          onChange={this.props.onChange}
+          options={this.getSubjectNames(this.subjects)}
+          onChange={this.onChange}
           label="Предмет"
         />
         <Select

@@ -6,19 +6,24 @@ import Answers from 'components/Answers/Answers';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
 import Button from '@material-ui/core/Button';
+import { clearState } from 'actions/general';
 
 class AddTaskInfo extends React.Component {
   mechanicOptions = [
     {
-      name: 'Ввод ответа',
+      name: 'inputs',
       component: <Answers />,
     },
     {
-      name: 'Выбор одного ответа',
+      name: 'variant',
       component: <Answers />,
     },
     {
-      name: 'Выбор множества ответа',
+      name: 'variants',
+      component: <Answers multipleChoise />,
+    },
+    {
+      name: 'variants_all',
       component: <Answers multipleChoise />,
     },
     {
@@ -35,7 +40,10 @@ class AddTaskInfo extends React.Component {
     const { mechanicOptions } = this;
     return mechanicOptions.map(item => item.name);
   };
-
+  saveGeneration = () => {
+    console.log(this.props.general);
+    this.props.dispatch(clearState());
+  };
   getActiveMechanic = () => {
     const { kind } = this.props;
     const { mechanicOptions } = this;
@@ -81,4 +89,8 @@ class AddTaskInfo extends React.Component {
   }
 }
 
-export default connect()(AddTaskInfo);
+const mapStateToProps = state => ({
+  general: state.general,
+});
+
+export default connect(mapStateToProps)(AddTaskInfo);

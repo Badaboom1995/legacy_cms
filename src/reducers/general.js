@@ -1,7 +1,6 @@
-import uuid from 'uuid';
-
 const generalReducerDefaultState = {
   answers: [],
+  rightAnswers: [],
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -10,6 +9,16 @@ export default (state = generalReducerDefaultState, action) => {
       return {
         ...state,
         answers: [...state.answers, action.answer],
+      };
+    case 'ADD_RIGHT_ANSWER':
+      return {
+        ...state,
+        rightAnswers: [action.answer],
+      };
+    case 'ADD_RIGHT_ANSWERS':
+      return {
+        ...state,
+        rightAnswers: [...state.rightAnswers, action.answer],
       };
     case 'ADD_COLUMN':
       return {
@@ -23,17 +32,15 @@ export default (state = generalReducerDefaultState, action) => {
           return item != action.answer;
         }),
       };
-    case 'CHANGE_ANSWER_INDEX':
+    case 'REMOVE_RIGHT_ANSWER':
       return {
         ...state,
-        columns: state.columns.map(item => {
-          if (item.id === action.column.id) {
-            return action.column;
-          }
-
-          return item;
+        rightAnswers: state.rightAnswers.filter(item => {
+          return item != action.answer;
         }),
       };
+    case 'CLEAR_STATE':
+      return generalReducerDefaultState;
     default:
       return state;
   }

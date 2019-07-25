@@ -42,13 +42,13 @@ export default function HorizontalLinearStepper(props) {
     return skipped.has(step);
   }
 
-  function handleNext() {
+  function handleNext(step) {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
+    console.log(step);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
     setSkipped(newSkipped);
   }
@@ -127,7 +127,9 @@ export default function HorizontalLinearStepper(props) {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleNext}
+                onClick={() => {
+                  handleNext(activeStep);
+                }}
                 className={classes.button}
               >
                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
