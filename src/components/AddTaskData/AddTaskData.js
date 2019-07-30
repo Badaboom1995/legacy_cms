@@ -4,7 +4,7 @@ import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 
 class AddTaskInfo extends React.Component {
-  difficulty = ['A', 'B', 'C'];
+  difficulty = ['A', 'B'];
   subjects = { Математика: 1, Русский: 2 };
   grade = ['1', '2', '3'];
 
@@ -12,10 +12,13 @@ class AddTaskInfo extends React.Component {
     return Object.keys(subjects);
   };
 
-  onChange = (value, name) => {
+  onSubjectChange = (value, name) => {
     const subjectObj = { name: value, id: this.subjects[value] };
     this.props.onChange(subjectObj, name);
-    // console.log(subjectObj, name);
+  };
+  onWeightChange = (value, name) => {
+    const weight = parseInt(value);
+    this.props.onChange(weight, name);
   };
   render() {
     return (
@@ -37,7 +40,7 @@ class AddTaskInfo extends React.Component {
           name="subject"
           modificators="select--in-row"
           options={this.getSubjectNames(this.subjects)}
-          onChange={this.onChange}
+          onChange={this.onSubjectChange}
           label="Предмет"
         />
         <Select
@@ -47,13 +50,15 @@ class AddTaskInfo extends React.Component {
           onChange={this.props.onChange}
           label="Класс"
         />
+        <TextInput
+          name="difficulty_custom"
+          placeholder="Вес задания"
+          onChange={this.onWeightChange}
+          label="Ввведите целое число"
+        />
       </div>
     );
   }
 }
-
-// const mapStateToProps = state => ({
-//   general: state.general,
-// });
 
 export default connect()(AddTaskInfo);

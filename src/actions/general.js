@@ -26,6 +26,15 @@ export const changeAnswerIndex = column => ({
   type: 'CHANGE_ANSWER_INDEX',
   column,
 });
+export const saveGeneration = generation => ({
+  type: 'SAVE_GENERATION',
+  generation,
+});
+export const changeOption = (name, value) => ({
+  type: 'CHANGE_OPTION',
+  name,
+  value,
+});
 export const clearState = () => ({
   type: 'CLEAR_STATE',
 });

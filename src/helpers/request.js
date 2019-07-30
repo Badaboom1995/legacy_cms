@@ -24,6 +24,7 @@ export default class ChecksService {
     console.log(data);
     return data;
   }
+
   async createTask(json) {
     this.url = 'http://localhost:3001/b2t/api/v1/teachers/checks/2/check_jobs';
     this.response = await fetch(this.url, {

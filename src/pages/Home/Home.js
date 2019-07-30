@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import Stepper from 'components/Stepper/Stepper';
 import AddTaskData from 'components/AddTaskData/AddTaskData';
 import AddGenerationData from 'components/AddGenerationData/AddGenerationData';
+import FinishAddingTask from 'components/FinishAddingTask/FinishAddingTask';
+import { addOption } from 'actions/tasks';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
@@ -12,15 +14,11 @@ class Home extends React.Component {
     kind: '',
     generations: [],
   };
-  onChange = (value, name) => {
-    this.setState(
-      () => ({ [name]: value }),
-      () => {
-        console.log(this.state);
-      },
-    );
-  };
 
+  onChange = (value, name) => {
+    this.setState(() => ({ [name]: value }));
+    this.props.dispatch(addOption(name, value));
+  };
   getTaskObject = () => {
     const { difficulty, name, subject, grade } = this.state;
     const taskObject = {
@@ -33,8 +31,8 @@ class Home extends React.Component {
 
     return taskObject;
   };
-  getGenerationObject = () => {
-    const { answers, rightAnswers } = this.props.general;
+  getGenerationData = item => {
+    const { answers, rightAnswers } = item;
     const newAnswers = answers.map(item => {
       if (rightAnswers.includes(item)) {
         return {
@@ -56,23 +54,34 @@ class Home extends React.Component {
   };
 
   createTask = () => {
-    const Request = new Tasks();
-    const response = Request.createTask(this.getTaskObject());
-    response.then(response => {
-      this.setState(() => ({
-        task_id: response.id,
-      }));
+    return new Promise((resolve, reject) => {
+      const Request = new Tasks();
+      const response = Request.createTask(this.getTaskObject());
+      response.then(response => {
+        resolve(response);
+        this.setState(() => ({
+          task_id: response.id,
+        }));
+      });
     });
   };
 
-  createGeneration = () => {
+  createJob = () => {
+    this.createTask().then(response => {
+      this.props.general.generations.map(item => {
+        this.createGeneration(item);
+      });
+    });
+  };
+
+  createGeneration = item => {
     const generation = {
       id: this.state.task_id,
-      name: this.state.text,
-      kind: this.state.kind,
+      name: item.text,
+      kind: item.kind,
       active: true,
       check_job_id: this.state.task_id,
-      data: this.getGenerationObject(),
+      data: this.getGenerationData(item),
     };
     console.log(generation);
     const Request = new Tasks();
@@ -82,6 +91,7 @@ class Home extends React.Component {
   checkTask = () => {
     const CheckTask = new Tasks();
     CheckTask.getTask(this.state.task_id);
+    console.log('task state', this.props.tasks);
   };
   checkTasks = () => {
     const CheckTask = new Request();
@@ -104,16 +114,11 @@ class Home extends React.Component {
                 />
               ),
             },
-            { name: 'Завершение', component: <p>Посмотрел на результат, отправил.</p> },
+            { name: 'Завершение', component: <FinishAddingTask /> },
           ]}
           title="Конструктор заданий"
+          createJob={this.createJob}
         />
-        <div>
-          <button onClick={this.createTask}>Create Task</button>
-          <button onClick={this.createGeneration}>Create Generation</button>
-          <button onClick={this.checkTask}>checkTask</button>
-          <button onClick={this.checkTasks}>checkTasks</button>
-        </div>
       </div>
     );
   }
@@ -121,6 +126,7 @@ class Home extends React.Component {
 
 const mapStateToProps = state => ({
   general: state.general,
+  tasks: state.tasks,
 });
 
 export default connect(mapStateToProps)(Home);

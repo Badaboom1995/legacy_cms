@@ -47,9 +47,8 @@ export default class ChecksService {
     console.log(data);
     return data;
   }
-
-  async createCheckJob(checkId, jobData) {
-    const path = `/teachers/checks/${checkId}/check_jobs`;
+  async createCheckJobs(checkId, taskIds) {
+    const path = `/teachers/check_move_jobs/${checkId}/${taskIds}`;
     const response = await fetch(`${base_url}${path}`, {
       method: 'POST',
       headers: {
@@ -59,7 +58,6 @@ export default class ChecksService {
         'Uchi-User-Id': 12,
         crossDomain: true,
       },
-      body: JSON.stringify(jobData),
     });
 
     if (!response.ok) {
@@ -71,7 +69,7 @@ export default class ChecksService {
     return data;
   }
 
-  async createCheck(json) {
+  async createCheck(name, subject, grade) {
     const path = `/teachers/checks`;
     const response = await fetch(`${base_url}${path}`, {
       method: 'POST',
@@ -82,7 +80,7 @@ export default class ChecksService {
         'Uchi-User-Id': 12,
         crossDomain: true,
       },
-      body: JSON.stringify({ checks: { subject: '1', learning_level_id: '13', name: 'Тест' } }),
+      body: JSON.stringify({ checks: { subject, learning_level_id: grade, name } }),
     });
 
     if (!response.ok) {

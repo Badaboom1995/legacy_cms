@@ -48,6 +48,9 @@ export default function HorizontalLinearStepper(props) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
+    if (activeStep === steps.length - 1) {
+      props.createJob();
+    }
     console.log(step);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
     setSkipped(newSkipped);

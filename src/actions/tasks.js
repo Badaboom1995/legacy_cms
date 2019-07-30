@@ -1,5 +1,5 @@
 export const addOption = (name, value) => ({
-  type: 'ADD_ANSWER',
+  type: 'ADD_OPTION',
   name,
   value,
 });

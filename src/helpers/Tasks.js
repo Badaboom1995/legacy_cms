@@ -1,5 +1,11 @@
 const SERVER_ENDPOINT = 'http://localhost:3001/b2t/api/v1/subjects';
 const base_url = 'http://localhost:3001/b2t/api/v1';
+const base_headers = {
+  Accept: 'application/json',
+  'Uchi-User-Type': 'Teacher',
+  'Uchi-User-Id': 12,
+  crossDomain: true,
+};
 
 export default class ChecksService {
   async createTask(json) {
@@ -7,11 +13,8 @@ export default class ChecksService {
     this.response = await fetch(`${base_url}${path}`, {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
+        ...base_headers,
         'Content-type': 'application/json',
-        'Uchi-User-Type': 'Teacher',
-        'Uchi-User-Id': 12,
-        crossDomain: true,
       },
       body: JSON.stringify(json),
     });
@@ -29,13 +32,30 @@ export default class ChecksService {
     this.response = await fetch(`${base_url}${path}`, {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
+        ...base_headers,
         'Content-type': 'application/json',
+      },
+      body: JSON.stringify(json),
+    });
+
+    if (!this.response.ok) {
+      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    }
+
+    const data = await this.response.json();
+    console.log(data);
+  }
+  async deleteTask(id) {
+    const path = `/teachers/check_lessons/${id}`;
+    this.response = await fetch(`${base_url}${path}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
         'Uchi-User-Type': 'Teacher',
         'Uchi-User-Id': 12,
         crossDomain: true,
+        'Content-type': 'application/json',
       },
-      body: JSON.stringify(json),
     });
 
     if (!this.response.ok) {

@@ -1,6 +1,7 @@
 const generalReducerDefaultState = {
   answers: [],
   rightAnswers: [],
+  generations: [],
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -20,11 +21,6 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         rightAnswers: [...state.rightAnswers, action.answer],
       };
-    case 'ADD_COLUMN':
-      return {
-        ...state,
-        columns: [...state.columns, action.column],
-      };
     case 'REMOVE_ANSWER':
       return {
         ...state,
@@ -39,8 +35,22 @@ export default (state = generalReducerDefaultState, action) => {
           return item != action.answer;
         }),
       };
+    case 'CHANGE_OPTION':
+      return {
+        ...state,
+        [action.name]: action.value,
+      };
+    case 'SAVE_GENERATION':
+      return {
+        ...state,
+        generations: [...state.generations, action.generation],
+      };
     case 'CLEAR_STATE':
-      return generalReducerDefaultState;
+      return {
+        ...state,
+        answers: [],
+        rightAnswers: [],
+      };
     default:
       return state;
   }
