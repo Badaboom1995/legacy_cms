@@ -1,5 +1,6 @@
 .content {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   padding: 15px;
   width: 900px;
@@ -17,7 +18,7 @@
   &__test {
     position: fixed;
     left: 960px;
-    top: 45px;
+    top: 92px;
     max-height: 100vh;
     overflow: scroll;
     width: 600px;
@@ -31,6 +32,7 @@
     font-size: 24px;
     margin-bottom: 30px;
     margin-left: 24px;
+    margin-right: 15px;
   }
   &__fragment {
     margin: 50px 0px;

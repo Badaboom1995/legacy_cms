@@ -95,7 +95,9 @@ class CreateTest extends React.Component {
     return (
       <div className="content content--create">
         <p className="content__title">Конструктор теста</p>
-        <button onClick={this.createCheckJob}>Добавить задание в тест</button>
+        <button style={{ height: '30px' }} onClick={this.createCheckJob}>
+          Добавить задание в тест
+        </button>
         <div className="create-test">
           {this.state.tasks.map((item, index) => {
             return (

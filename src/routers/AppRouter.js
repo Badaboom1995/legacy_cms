@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, Switch, Link } from 'react-router-dom';
+import { Router, Route, Switch, NavLink } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import Home from '../pages/Home/Home';
 import CreateTest from 'pages/CreateTest/CreateTest';
@@ -10,9 +10,15 @@ export const history = createBrowserHistory();
 
 const AppRouter = () => (
   <Router history={history}>
-    <Link to="/">Create task</Link>
-    <span> </span>
-    <Link to="/tests">Create test</Link>
+    {console.log(history)}
+    <nav className="main-nav">
+      <NavLink exact activeClassName="main-nav__link--active" className="main-nav__link" to="/">
+        Задания
+      </NavLink>
+      <NavLink activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
+        Тесты
+      </NavLink>
+    </nav>
     <div className="dashboard">
       <Switch>
         <Route path="/" component={Home} exact />
