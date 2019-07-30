@@ -14,7 +14,9 @@ class Home extends React.Component {
     kind: '',
     generations: [],
   };
-
+  componentDidMount() {
+    this.checkTask();
+  }
   onChange = (value, name) => {
     this.setState(() => ({ [name]: value }));
     this.props.dispatch(addOption(name, value));
@@ -90,7 +92,7 @@ class Home extends React.Component {
 
   checkTask = () => {
     const CheckTask = new Tasks();
-    CheckTask.getTask(this.state.task_id);
+    CheckTask.getTask(1, 12);
     console.log('task state', this.props.tasks);
   };
   checkTasks = () => {

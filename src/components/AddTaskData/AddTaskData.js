@@ -50,12 +50,12 @@ class AddTaskInfo extends React.Component {
           onChange={this.props.onChange}
           label="Класс"
         />
-        <TextInput
+        {/* <TextInput
           name="difficulty_custom"
           placeholder="Вес задания"
           onChange={this.onWeightChange}
           label="Ввведите целое число"
-        />
+        /> */}
       </div>
     );
   }

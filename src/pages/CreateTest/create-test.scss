@@ -7,5 +7,28 @@
     &--choosed {
       background-color: #aceb98;
     }
+    &--preview {
+      box-shadow: none;
+    }
+  }
+  &__title {
+    padding: 18px 20px;
+    font-weight: normal;
+    font-size: 22px;
+    border-bottom: 1px solid;
+  }
+  &__name {
+    font-weight: normal;
+    font-size: 22px;
+    display: block;
+    margin-bottom: 10px;
+    &--preview {
+      font-size: 16px;
+    }
+  }
+  &__text {
+    font-weight: normal;
+    font-size: 13px;
+    color: #767676;
   }
 }

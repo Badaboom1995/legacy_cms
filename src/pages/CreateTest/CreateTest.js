@@ -45,8 +45,9 @@ class CreateTest extends React.Component {
   };
 
   createCheck = () => {
+    const { test_name, subject, grade } = this.state;
     const Request = new Checks();
-    Request.createCheck(this.state.test_name, 1, 1).then(res => {
+    Request.createCheck(test_name, subject.id, grade).then(res => {
       this.setState(() => ({
         check_id: res.id,
         check: res,
@@ -80,8 +81,9 @@ class CreateTest extends React.Component {
   };
 
   createCheckJob = () => {
+    const { check_id, choosedTasksIds } = this.state;
     const Request = new Checks();
-    Request.createCheckJobs(this.state.check_id, this.state.choosedTasksIds.toString()).then(() => {
+    Request.createCheckJobs(check_id, choosedTasksIds.toString()).then(() => {
       this.updateCheck();
       this.setState(() => ({
         choosedTasksIds: [],
@@ -92,37 +94,7 @@ class CreateTest extends React.Component {
   render() {
     return (
       <div className="content content--create">
-        <div className="content__test">
-          <TextInput
-            name="test_name"
-            placeholder="Контрольная для седьмого класса"
-            onChange={this.onChange}
-            label="Название теста"
-          />
-          <Select
-            name="grade"
-            modificators="select--in-row"
-            options={this.grade}
-            onChange={this.onChange}
-            label="Класс"
-          />
-          <Select
-            name="subject"
-            modificators="select--in-row"
-            options={this.getSubjectNames(this.subjects)}
-            onChange={this.onSubjectChange}
-            label="Предмет"
-          />
-          <button onClick={this.createCheck}>Создать тест</button>
-          <p>{this.state.check.name && this.state.check.name}</p>
-          <ul>
-            {this.state.check.check_jobs &&
-              this.state.check.check_jobs.map((item, index) => {
-                return <li key={index}>{item.name}</li>;
-              })}
-          </ul>
-        </div>
-        <p className="content__tile">Конструктор теста</p>
+        <p className="content__title">Конструктор теста</p>
         <button onClick={this.createCheckJob}>Добавить задание в тест</button>
         <div className="create-test">
           {this.state.tasks.map((item, index) => {
@@ -138,7 +110,10 @@ class CreateTest extends React.Component {
                 <div className="create-test__item-gens">
                   <p>
                     {this.state.choosedTasksIds.includes(item.id) && <span></span>}
-                    <b>{item.check_generations[0] && item.check_generations[0].name}</b>
+                    <b className="create-test__name">{item.name && item.name}</b>
+                    <b className="create-test__text">
+                      {item.check_generations[0] && item.check_generations[0].name}
+                    </b>
                   </p>
                   <p>Тип: {item.check_generations[0] && item.check_generations[0].kind}</p>
                   <div>
@@ -166,6 +141,51 @@ class CreateTest extends React.Component {
               </div>
             );
           })}
+        </div>
+        <div className="content__test">
+          <TextInput
+            name="test_name"
+            placeholder="Контрольная для седьмого класса"
+            onChange={this.onChange}
+            label="Название теста"
+          />
+          <Select
+            name="grade"
+            modificators="select--in-row"
+            options={this.grade}
+            onChange={this.onChange}
+            label="Класс"
+          />
+          <Select
+            name="subject"
+            modificators="select--in-row"
+            options={this.getSubjectNames(this.subjects)}
+            onChange={this.onSubjectChange}
+            label="Предмет"
+          />
+          <button onClick={this.createCheck}>Создать тест</button>
+          {this.state.check.name && <h3 className="create-test__title">{this.state.check.name}</h3>}
+          <div className="create-test">
+            {this.state.check.check_jobs &&
+              this.state.check.check_jobs.map((item, index) => {
+                return (
+                  <div className={'create-test__item create-test__item--preview'} key={index}>
+                    <div className="create-test__item-gens">
+                      <p>
+                        {this.state.choosedTasksIds.includes(item.id) && <span></span>}
+                        <b className="create-test__name create-test__name--preview">
+                          {item.name && item.name}
+                        </b>
+                        <b className="create-test__text">
+                          {item.check_generations[0] && item.check_generations[0].name}
+                        </b>
+                      </p>
+                      <p>Тип: {item.check_generations[0] && item.check_generations[0].kind}</p>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
     );
