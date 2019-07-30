@@ -6,7 +6,7 @@ import Select from 'components/Select/Select';
 class AddTaskInfo extends React.Component {
   difficulty = ['A', 'B'];
   subjects = { Математика: 1, Русский: 2 };
-  grade = ['1', '2', '3'];
+  grade = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 
   getSubjectNames = subjects => {
     return Object.keys(subjects);

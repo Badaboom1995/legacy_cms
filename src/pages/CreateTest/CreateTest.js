@@ -10,7 +10,7 @@ import './create-test.scss';
 
 class CreateTest extends React.Component {
   subjects = { Математика: 1, Русский: 2 };
-  grade = ['1', '2', '3'];
+  grade = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
   state = {
     tasks: [],
     choosedTasksIds: [],
@@ -134,6 +134,7 @@ class CreateTest extends React.Component {
                   </div>
                 </div>
                 <button
+                  disabled
                   onClick={() => {
                     this.deleteTask(item.id);
                   }}
@@ -171,7 +172,7 @@ class CreateTest extends React.Component {
             {this.state.check.check_jobs &&
               this.state.check.check_jobs.map((item, index) => {
                 return (
-                  <div className={'create-test__item create-test__item--preview'} key={index}>
+                  <div className={'create-test__item'} key={index}>
                     <div className="create-test__item-gens">
                       <p>
                         {this.state.choosedTasksIds.includes(item.id) && <span></span>}
