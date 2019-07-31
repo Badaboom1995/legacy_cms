@@ -21,8 +21,8 @@ class CreateTest extends React.Component {
     this.getTasks();
   }
   getTasks = () => {
-    const CheckTask = new Request();
-    CheckTask.send(`http://localhost:3001/b2t/api/v1/teachers/check_jobs`, 'GET').then(response => {
+    const Request = new Tasks();
+    Request.getTasks().then(response => {
       this.setState(() => ({ tasks: response }));
       console.log(response);
     });

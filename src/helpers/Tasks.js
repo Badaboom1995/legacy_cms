@@ -1,5 +1,6 @@
-const SERVER_ENDPOINT = 'http://localhost:3001/b2t/api/v1/subjects';
-const base_url = 'http://localhost:3001/b2t/api/v1';
+import config from '../config';
+
+const base_url = config.api.url;
 const base_headers = {
   Accept: 'application/json',
   'Uchi-User-Type': 'Teacher',
@@ -86,6 +87,26 @@ export default class ChecksService {
 
   async getTask(id, test_id) {
     const path = `/teachers/checks/${test_id}/check_jobs/${id}`;
+    this.response = await fetch(`${base_url}${path}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Uchi-User-Type': 'Teacher',
+        'Uchi-User-Id': 12,
+        crossDomain: true,
+      },
+    });
+
+    if (!this.response.ok) {
+      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    }
+
+    const data = await this.response.json();
+    console.log(data);
+    return data;
+  }
+  async getTasks() {
+    const path = `teachers/check_jobs`;
     this.response = await fetch(`${base_url}${path}`, {
       method: 'GET',
       headers: {

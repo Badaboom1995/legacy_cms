@@ -1,5 +1,6 @@
-const SERVER_ENDPOINT = 'http://localhost:3001/b2t/api/v1/subjects';
-const base_url = 'http://localhost:3001/b2t/api/v1';
+import config from '../config';
+
+const base_url = config.api.url;
 
 export default class ChecksService {
   async send(server_endpoint, method, json) {
