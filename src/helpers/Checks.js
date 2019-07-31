@@ -4,7 +4,6 @@ const base_url = config.api.url;
 const base_headers = {
   Accept: 'application/json',
   'Uchi-User-Type': 'Teacher',
-  'Uchi-User-Id': 12,
   crossDomain: true,
 };
 
