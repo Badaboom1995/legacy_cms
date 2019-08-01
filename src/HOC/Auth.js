@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import Request from 'helpers/request';
 
 const Auth = () => WrappedComponent => {
   return class AuthHOC extends Component {
@@ -7,14 +6,7 @@ const Auth = () => WrappedComponent => {
       isAuth: true,
     };
 
-    componentDidMount() {
-      // const Req = new Request();
-      // if (Req.getChecks()) {
-      //   this.setState(() => ({
-      //     isAuth: true,
-      //   }));
-      // }
-    }
+    componentDidMount() {}
 
     render() {
       const { isAuth } = this.state;

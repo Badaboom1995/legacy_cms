@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
+import Structure from 'helpers/Structure';
 
 class AddTaskInfo extends React.Component {
   difficulty = ['A', 'B'];
@@ -19,6 +20,18 @@ class AddTaskInfo extends React.Component {
   onWeightChange = (value, name) => {
     const weight = parseInt(value);
     this.props.onChange(weight, name);
+  };
+  getSubjects = () => {
+    const Request = new Structure();
+    Request.getSubjects();
+  };
+  getTopics = () => {
+    const Request = new Structure();
+    Request.getTopics();
+  };
+  getChapters = () => {
+    const Request = new Structure();
+    Request.getChapters();
   };
   render() {
     return (
@@ -50,6 +63,9 @@ class AddTaskInfo extends React.Component {
           onChange={this.props.onChange}
           label="Класс"
         />
+        <button onClick={this.getSubjects}>getTasks</button>
+        <button onClick={this.getTopics}>getTopics</button>
+        <button onClick={this.getChapters}>getChapters</button>
         {/* <TextInput
           name="difficulty_custom"
           placeholder="Вес задания"

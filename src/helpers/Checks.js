@@ -4,10 +4,33 @@ const base_url = config.api.url;
 const base_headers = {
   Accept: 'application/json',
   'Uchi-User-Type': 'Teacher',
+  'Uchi-User-Id': 12,
   crossDomain: true,
 };
 
 export default class ChecksService {
+  async request(method, path, body) {
+    this.response = await fetch(`${base_url}${path}`, {
+      method: method,
+      headers: {
+        Accept: 'application/json',
+        ...(method === 'POST' && { 'Content-type': 'application/json' }),
+        'Uchi-User-Type': 'Teacher',
+        'Uchi-User-Id': 12,
+        crossDomain: true,
+      },
+      ...(body && { body }),
+    });
+
+    if (!this.response.ok) {
+      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    }
+
+    const data = await this.response.json();
+    console.log(data);
+    return data;
+  }
+
   async getChecks() {
     const path = '/teachers/checks';
     this.response = await fetch(`${base_url}${path}`, {
@@ -79,7 +102,7 @@ export default class ChecksService {
         'Uchi-User-Id': 12,
         crossDomain: true,
       },
-      body: JSON.stringify({ checks: { subject, learning_level_id: grade, name } }),
+      body: JSON.stringify({ checks: { subject, learning_level_id: grade, name, base: true } }),
     });
 
     if (!response.ok) {

@@ -4,19 +4,42 @@ const base_url = config.api.url;
 const base_headers = {
   Accept: 'application/json',
   'Uchi-User-Type': 'Teacher',
+  'Uchi-User-Id': 12,
   crossDomain: true,
 };
 
 export default class ChecksService {
+  async request(method, path, body) {
+    this.response = await fetch(`${base_url}${path}`, {
+      method: method,
+      headers: {
+        Accept: 'application/json',
+        ...(method === 'POST' && { 'Content-type': 'application/json' }),
+        'Uchi-User-Type': 'Teacher',
+        'Uchi-User-Id': 12,
+        crossDomain: true,
+      },
+      ...(body && { body }),
+    });
+
+    if (!this.response.ok) {
+      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    }
+
+    const data = await this.response.json();
+    console.log(data);
+    return data;
+  }
   async createTask(json) {
-    const path = '/teachers/checks/2/check_jobs';
+    const body = { ...json, base: true };
+    const path = 'teachers/checks/2/check_jobs';
     this.response = await fetch(`${base_url}${path}`, {
       method: 'POST',
       headers: {
         ...base_headers,
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(json),
+      body: JSON.stringify(body),
     });
 
     if (!this.response.ok) {
@@ -105,23 +128,24 @@ export default class ChecksService {
     return data;
   }
   async getTasks() {
-    const path = `teachers/check_jobs`;
-    this.response = await fetch(`${base_url}${path}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Uchi-User-Type': 'Teacher',
-        'Uchi-User-Id': 12,
-        crossDomain: true,
-      },
-    });
+    return this.request('GET', 'teachers/check_jobs');
+    // const path = `teachers/check_jobs`;
+    // this.response = await fetch(`${base_url}${path}`, {
+    //   method: 'GET',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Uchi-User-Type': 'Teacher',
+    //     'Uchi-User-Id': 12,
+    //     crossDomain: true,
+    //   },
+    // });
 
-    if (!this.response.ok) {
-      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
-    }
+    // if (!this.response.ok) {
+    //   throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    // }
 
-    const data = await this.response.json();
-    console.log(data);
-    return data;
+    // const data = await this.response.json();
+    // console.log(data);
+    // return data;
   }
 }

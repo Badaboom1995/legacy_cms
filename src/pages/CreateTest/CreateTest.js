@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Request from 'helpers/request';
 import Checks from 'helpers/Checks';
 import Tasks from 'helpers/Tasks';
 import TextInput from 'components/TextInput/TextInput';
