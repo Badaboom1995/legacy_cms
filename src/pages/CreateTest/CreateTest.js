@@ -165,7 +165,9 @@ class CreateTest extends React.Component {
             onChange={this.onSubjectChange}
             label="Предмет"
           />
-          <button onClick={this.createCheck}>Создать тест</button>
+          <button onClick={this.createCheck} className="button">
+            Создать тест
+          </button>
           {this.state.check.name && <h3 className="create-test__title">{this.state.check.name}</h3>}
           <div className="create-test">
             {this.state.check.check_jobs &&

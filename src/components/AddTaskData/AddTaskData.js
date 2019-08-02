@@ -63,9 +63,9 @@ class AddTaskInfo extends React.Component {
           onChange={this.props.onChange}
           label="Класс"
         />
-        <button onClick={this.getSubjects}>getTasks</button>
+        {/* <button onClick={this.getSubjects}>getTasks</button>
         <button onClick={this.getTopics}>getTopics</button>
-        <button onClick={this.getChapters}>getChapters</button>
+        <button onClick={this.getChapters}>getChapters</button> */}
         {/* <TextInput
           name="difficulty_custom"
           placeholder="Вес задания"

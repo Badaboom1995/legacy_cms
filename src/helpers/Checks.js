@@ -70,6 +70,7 @@ export default class ChecksService {
     return data;
   }
   async createCheckJobs(checkId, taskIds) {
+    console.log(taskIds);
     const path = `/teachers/check_move_jobs/${checkId}/${taskIds}`;
     const response = await fetch(`${base_url}${path}`, {
       method: 'POST',

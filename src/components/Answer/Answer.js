@@ -4,9 +4,14 @@ import './answer.scss';
 import { removeAnswer } from 'actions/general';
 
 class Answer extends React.Component {
+  decodeHTML = html => {
+    var txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  };
   chooseAnswer = e => {
     e.persist();
-    const answerChoosed = this.props.rightAnswers.includes(e.target.innerHTML);
+    const answerChoosed = this.props.rightAnswers.includes(this.decodeHTML(e.target.innerHTML));
     const timer = setTimeout(() => {
       if (answerChoosed) {
         this.props.unchooseAnswer(e);

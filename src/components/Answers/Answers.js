@@ -8,29 +8,33 @@ class Answers extends React.Component {
   state = {
     rightAnswers: [],
   };
-
+  decodeHTML = html => {
+    var txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  };
   chooseAnswer = e => {
     e.persist();
     if (this.props.multipleChoise) {
       this.setState(state => ({
-        rightAnswers: [...state.rightAnswers, e.target.innerHTML],
+        rightAnswers: [...state.rightAnswers, this.decodeHTML(e.target.innerHTML)],
       }));
-      this.props.dispatch(addRightAnswers(e.target.innerHTML));
+      this.props.dispatch(addRightAnswers(this.decodeHTML(e.target.innerHTML)));
     } else {
       this.setState(state => ({
-        rightAnswers: [e.target.innerHTML],
+        rightAnswers: [this.decodeHTML(e.target.innerHTML)],
       }));
-      this.props.dispatch(addRightAnswer(e.target.innerHTML));
+      this.props.dispatch(addRightAnswer(this.decodeHTML(e.target.innerHTML)));
     }
     console.log(this.props.general);
   };
 
   unchooseAnswer = e => {
     const rightAnswers = this.state.rightAnswers.filter(answer => {
-      return answer != e.target.innerHTML;
+      return answer != this.decodeHTML(e.target.innerHTML);
     });
     this.setState(() => ({ rightAnswers }));
-    this.props.dispatch(removeRightAnswer(e.target.innerHTML));
+    this.props.dispatch(removeRightAnswer(this.decodeHTML(e.target.innerHTML)));
     console.log(this.props.general);
   };
 
