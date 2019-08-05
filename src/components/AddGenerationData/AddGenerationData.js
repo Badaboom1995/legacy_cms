@@ -11,11 +11,15 @@ import { clearState, changeOption, saveGeneration } from 'actions/general';
 class AddTaskInfo extends React.Component {
   mechanicOptions = [
     {
+      name: 'variant',
+      component: <Answers />,
+    },
+    {
       name: 'inputs',
       component: <Answers />,
     },
     {
-      name: 'variant',
+      name: 'dropdown',
       component: <Answers />,
     },
     {

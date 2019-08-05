@@ -30,12 +30,12 @@ export default class ChecksService {
     return data;
   }
   async getSubjects() {
-    this.request('GET', 'subjects');
+    return this.request('GET', 'subjects');
   }
   async getTopics() {
-    this.request('GET', 'topics');
+    return this.request('GET', 'topics');
   }
   async getChapters() {
-    this.request('GET', 'chapters');
+    return this.request('GET', 'chapters');
   }
 }

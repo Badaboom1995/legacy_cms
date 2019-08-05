@@ -42,6 +42,9 @@ body {
   cursor: pointer;
   font-size: 14px;
   font-weight: normal;
+  &--popup {
+    background-color: #666;
+  }
   &--add {
     margin-bottom: 30px;
   }

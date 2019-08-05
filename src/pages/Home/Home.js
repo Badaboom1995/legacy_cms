@@ -22,13 +22,14 @@ class Home extends React.Component {
     this.props.dispatch(addOption(name, value));
   };
   getTaskObject = () => {
-    const { difficulty, name, subject, grade } = this.state;
+    const { difficulty, name, subject, grade, chapter } = this.state;
     const taskObject = {
       subject_id: subject.id,
       name: name,
       subject: subject.id.toString(),
       learning_level_id: grade,
       difficulty: difficulty,
+      chapter_id: chapter,
     };
 
     return taskObject;

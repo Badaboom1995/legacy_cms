@@ -127,6 +127,7 @@ class CreateTest extends React.Component {
                     <b className="create-test__text">
                       {item.check_generations[0] && item.check_generations[0].name}
                     </b>
+                    <b>{item.chapter && item.chapter}</b>
                   </p>
                   <p>Тип: {item.check_generations[0] && item.check_generations[0].kind}</p>
                 </div>

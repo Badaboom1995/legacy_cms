@@ -9,6 +9,7 @@ class TaskPreview extends React.Component {
   render() {
     return (
       <div className="content__fragment">
+        <p>Тема: {this.props.tasks.chapter}</p>
         <p>Сложность: {this.props.tasks.difficulty}</p>
         <p>Класс: {this.props.tasks.grade}</p>
         <p>Предмет: {this.props.tasks.subject.name}</p>
