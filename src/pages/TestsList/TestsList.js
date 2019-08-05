@@ -7,7 +7,7 @@ import Select from 'components/Select/Select';
 
 import './create-test.scss';
 
-class CreateTest extends React.Component {
+class TestsList extends React.Component {
   subjects = { Математика: 1, Русский: 2 };
   grade = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
   state = {
@@ -197,4 +197,4 @@ const mapStateToProps = state => ({
   general: state.general,
 });
 
-export default connect(mapStateToProps)(CreateTest);
+export default connect(mapStateToProps)(TestsList);

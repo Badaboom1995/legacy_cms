@@ -30,6 +30,10 @@ export const saveGeneration = generation => ({
   type: 'SAVE_GENERATION',
   generation,
 });
+export const removeGeneration = index => ({
+  type: 'REMOVE_GENERATION',
+  index,
+});
 export const changeOption = (name, value) => ({
   type: 'CHANGE_OPTION',
   name,

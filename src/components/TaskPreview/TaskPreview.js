@@ -1,16 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './generations.scss';
 import { removeGeneration } from 'actions/general';
-import TaskPreview from 'components/TaskPreview/TaskPreview';
 
-class FinishAddingTask extends React.Component {
+class TaskPreview extends React.Component {
   deleteGeneration = index => {
     this.props.dispatch(removeGeneration(index));
   };
   render() {
-    return <TaskPreview />;
-    /* <div className="content__fragment">
+    return (
+      <div className="content__fragment">
         <p>Сложность: {this.props.tasks.difficulty}</p>
         <p>Класс: {this.props.tasks.grade}</p>
         <p>Предмет: {this.props.tasks.subject.name}</p>
@@ -47,7 +45,8 @@ class FinishAddingTask extends React.Component {
             );
           })}
         </div>
-      </div> */
+      </div>
+    );
   }
 }
 
@@ -56,4 +55,4 @@ const mapStateToProps = state => ({
   tasks: state.tasks,
 });
 
-export default connect(mapStateToProps)(FinishAddingTask);
+export default connect(mapStateToProps)(TaskPreview);

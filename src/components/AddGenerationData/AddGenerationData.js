@@ -52,6 +52,7 @@ class AddTaskInfo extends React.Component {
     this.props.dispatch(saveGeneration(generation));
     this.props.dispatch(clearState());
   };
+
   getActiveMechanic = () => {
     const { kind } = this.props;
     const { mechanicOptions } = this;

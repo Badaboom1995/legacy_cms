@@ -92,7 +92,7 @@ class Home extends React.Component {
 
   checkTask = () => {
     const CheckTask = new Tasks();
-    CheckTask.getTask(1, 12);
+    CheckTask.getTasks();
     console.log('task state', this.props.tasks);
   };
   checkTasks = () => {

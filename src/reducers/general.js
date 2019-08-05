@@ -45,6 +45,14 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         generations: [...state.generations, action.generation],
       };
+    case 'REMOVE_GENERATION':
+      return {
+        ...state,
+        generations: state.generations.filter((item, index) => {
+          console.log(index, ':', action.index);
+          return index != action.index;
+        }),
+      };
     case 'CLEAR_STATE':
       return {
         ...state,

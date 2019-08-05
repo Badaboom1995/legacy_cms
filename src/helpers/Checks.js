@@ -32,7 +32,7 @@ export default class ChecksService {
   }
 
   async getChecks() {
-    const path = '/teachers/checks';
+    const path = 'teachers/checks';
     this.response = await fetch(`${base_url}${path}`, {
       method: 'GET',
       headers: { ...base_headers },
@@ -104,6 +104,27 @@ export default class ChecksService {
         crossDomain: true,
       },
       body: JSON.stringify({ checks: { subject, learning_level_id: grade, name, base: true } }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`RequestService createCheckJob failed, HTTP status ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+  async deleteCheck(id) {
+    const path = `teachers/checks/${id}`;
+    const response = await fetch(`${base_url}${path}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+        'Uchi-User-Type': 'Teacher',
+        'Uchi-User-Id': 12,
+        crossDomain: true,
+      },
     });
 
     if (!response.ok) {
