@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Answers from 'components/Answers/Answers';
+import MultipleAnswers from 'components/MultipleAnswers/MultipleAnswers';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
 import Button from '@material-ui/core/Button';
@@ -12,6 +13,10 @@ class AddTaskInfo extends React.Component {
   mechanicOptions = [
     {
       name: 'variant',
+      component: <Answers />,
+    },
+    {
+      name: 'input',
       component: <Answers />,
     },
     {

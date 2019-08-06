@@ -93,7 +93,7 @@ export default class ChecksService {
   }
 
   async createCheck(name, subject, grade) {
-    const path = `/teachers/checks`;
+    const path = `teachers/checks`;
     const response = await fetch(`${base_url}${path}`, {
       method: 'POST',
       headers: {

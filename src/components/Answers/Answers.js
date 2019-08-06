@@ -9,6 +9,7 @@ class Answers extends React.Component {
     rightAnswers: [],
   };
   decodeHTML = html => {
+    // Функция для распознавания спецсимволов <, >, /, и тд
     var txt = document.createElement('textarea');
     txt.innerHTML = html;
     return txt.value;

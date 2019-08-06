@@ -46,6 +46,14 @@ class AddTaskInfo extends React.Component {
     });
     this.togglePopupVisibility(e);
   };
+  getChapterName = id => {
+    if (this.state.elementsObj) {
+      const chapter = this.state.elementsObj.filter((item, index) => {
+        return item.id == id;
+      })[0].name;
+      return chapter;
+    }
+  };
   getChapters = e => {
     const Request = new Structure();
     Request.getChapters().then(response => {
@@ -103,10 +111,14 @@ class AddTaskInfo extends React.Component {
         >
           {this.state.filteredElements || this.state.elements}
         </SearchPopup>
-        <Button onClick={this.getChapters}>Раздел</Button>
+        <Button onClick={this.getChapters}>{this.props.tasks.chapter || 'Раздел'}</Button>
       </div>
     );
   }
 }
 
-export default connect()(AddTaskInfo);
+const mapStateToProps = state => ({
+  tasks: state.tasks,
+});
+
+export default connect(mapStateToProps)(AddTaskInfo);

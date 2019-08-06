@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Checks from 'helpers/Checks';
 import Tasks from 'helpers/Tasks';
+import Structure from 'helpers/Structure';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 
@@ -19,6 +20,19 @@ class CreateTest extends React.Component {
   componentDidMount() {
     this.getTasks();
   }
+  getTopics = e => {
+    const Request = new Structure();
+    Request.getTopics().then(response => {
+      const topicNames = response.map(item => item.name);
+      this.setState(() => ({ elements: topicNames }));
+    });
+    this.togglePopupVisibility(e);
+  };
+  togglePopupVisibility = e => {
+    if (e.target == e.currentTarget) {
+      this.setState(state => ({ popupVisible: state.popupVisible ? false : true }));
+    }
+  };
   getTasks = () => {
     const Request = new Tasks();
     Request.getTasks().then(response => {
@@ -130,6 +144,7 @@ class CreateTest extends React.Component {
                     <b>{item.chapter && item.chapter}</b>
                   </p>
                   <p>Тип: {item.check_generations[0] && item.check_generations[0].kind}</p>
+                  <p>Раздел: {item.chapter_id && item.chapter_id}</p>
                 </div>
                 <button
                   onClick={() => {
