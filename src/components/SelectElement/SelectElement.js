@@ -2,9 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
 import { addOption } from 'actions/tasks';
+import Button from 'components/Button/Button';
 import './search-popup.scss';
 
 class AddTaskInfo extends React.Component {
+  state = {
+    popupVisible: true,
+  };
   chooseElement = (name, value, e) => {
     console.log(name, value);
     this.props.onChange(value, name);
@@ -41,7 +45,7 @@ class AddTaskInfo extends React.Component {
             onChange={this.filterSearchData}
           ></TextInput>
           <div className="search-popup__elements">
-            {this.props.children.map((item, index) => {
+            {this.props.elements.map((item, index) => {
               return (
                 <div
                   onClick={e => {
@@ -56,7 +60,7 @@ class AddTaskInfo extends React.Component {
             })}
           </div>
         </div>
-        <Button onClick={this.getChapters}>{this.props.tasks.chapter || 'Раздел'}</Button>
+        <Button onClick={this.getChapters}>{'Раздел'}</Button>
       </div>
     );
   }

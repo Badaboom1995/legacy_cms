@@ -5,6 +5,7 @@ import Select from 'components/Select/Select';
 import Structure from 'helpers/Structure';
 import Button from 'components/Button/Button';
 import SearchPopup from 'components/SearchPopup/SearchPopup';
+import SelectElement from 'components/SelectElement/SelectElement';
 
 class AddTaskInfo extends React.Component {
   difficulty = ['A', 'B'];
@@ -62,6 +63,13 @@ class AddTaskInfo extends React.Component {
     });
     this.togglePopupVisibility(e);
   };
+  getChaptersNew = e => {
+    const Request = new Structure();
+    return Request.getChapters().then(response => {
+      const topicNames = response.map(item => item.name);
+      return topicNames;
+    });
+  };
   filterSearchData = filter => {
     const filteredData = this.state.elements.filter(item => {
       return item.includes(filter);
@@ -111,6 +119,7 @@ class AddTaskInfo extends React.Component {
         >
           {this.state.filteredElements || this.state.elements}
         </SearchPopup>
+        {/* <SelectElement elements={this.state.elements} getElements={''} /> */}
         <Button onClick={this.getChapters}>{this.props.tasks.chapter || 'Раздел'}</Button>
       </div>
     );
