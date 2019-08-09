@@ -4,6 +4,7 @@ import Stepper from 'components/Stepper/Stepper';
 import AddTaskData from 'components/AddTaskData/AddTaskData';
 import AddGenerationData from 'components/AddGenerationData/AddGenerationData';
 import FinishAddingTask from 'components/FinishAddingTask/FinishAddingTask';
+
 import { addOption } from 'actions/tasks';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
@@ -22,16 +23,18 @@ class Home extends React.Component {
     this.props.dispatch(addOption(name, value));
   };
   getTaskObject = () => {
-    const { difficulty, name, subject, grade, chapter } = this.state;
+    const { difficulty, name, subject, grade, chapter } = this.props.tasks;
     const taskObject = {
       subject_id: subject.id,
       name: name,
       subject: subject.id.toString(),
       learning_level_id: grade,
       difficulty: difficulty,
-      chapter_id: chapter,
+      chapter_id: this.props.tasks.chapters.filter(item => {
+        return item.name == this.props.tasks.chapter;
+      })[0].id,
     };
-
+    console.log(taskObject);
     return taskObject;
   };
   getGenerationData = item => {
@@ -70,11 +73,14 @@ class Home extends React.Component {
   };
 
   createJob = () => {
-    this.createTask().then(response => {
-      this.props.general.generations.map(item => {
-        this.createGeneration(item);
-      });
-    });
+    // Соединяет задание с генерациями и отправляет на сервер
+    this.createTask()
+      .then(response => {
+        this.props.general.generations.map(item => {
+          this.createGeneration(item);
+        });
+      })
+      .then(console.log('this.props.tasks'));
   };
 
   createGeneration = item => {
@@ -100,28 +106,34 @@ class Home extends React.Component {
     const CheckTask = new Request();
     CheckTask.send(`http://localhost:3001/b2t/api/v1/teachers/check_jobs`, 'GET');
   };
+  setStep = step => {
+    this.setState(() => ({ step }));
+  };
 
   render() {
     return (
       <div className="content">
-        <Stepper
-          settings={[
-            { name: 'Базовые параметры', component: <AddTaskData onChange={this.onChange} /> },
-            {
-              name: 'Параметры генераций',
-              component: (
-                <AddGenerationData
-                  kind={this.state.kind}
-                  onChange={this.onChange}
-                  getGenerationObject={this.getGenerationObject}
-                />
-              ),
-            },
-            { name: 'Завершение', component: <FinishAddingTask /> },
-          ]}
-          title="Конструктор заданий"
-          createJob={this.createJob}
-        />
+        <div className="content__main">
+          <Stepper
+            settings={[
+              { name: 'Базовые параметры', component: <AddTaskData onChange={this.onChange} /> },
+              {
+                name: 'Параметры генераций',
+                component: (
+                  <AddGenerationData
+                    kind={this.state.kind}
+                    onChange={this.onChange}
+                    getGenerationObject={this.getGenerationObject}
+                  />
+                ),
+              },
+              { name: 'Завершение', component: <FinishAddingTask /> },
+            ]}
+            title="Конструктор заданий"
+            createJob={this.createJob}
+            setStep={this.setStep}
+          />
+        </div>
       </div>
     );
   }

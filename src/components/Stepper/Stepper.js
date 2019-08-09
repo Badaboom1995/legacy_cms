@@ -54,10 +54,12 @@ export default function HorizontalLinearStepper(props) {
     console.log(step);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
     setSkipped(newSkipped);
+    props.setStep(activeStep);
   }
 
   function handleBack() {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
+    props.setStep(activeStep);
   }
 
   function handleSkip() {

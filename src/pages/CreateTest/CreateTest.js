@@ -118,12 +118,11 @@ class CreateTest extends React.Component {
   render() {
     return (
       <div className="content content--create">
-        <p className="content__title">Конструктор теста</p>
-        <button style={{ height: '30px' }} onClick={this.createCheckJob}>
-          Добавить задание в тест
-        </button>
-        <button onClick={this.deleteTask}>get checks</button>
         <div className="create-test">
+          <p className="content__title">Конструктор теста</p>
+          <button style={{ height: '30px' }} onClick={this.createCheckJob}>
+            Добавить задания в тест
+          </button>
           {this.state.tasks.map((item, index) => {
             return (
               <div
@@ -157,7 +156,7 @@ class CreateTest extends React.Component {
             );
           })}
         </div>
-        <div className="content__test">
+        <div className="create-test__preview">
           <TextInput
             name="test_name"
             placeholder="Контрольная для седьмого класса"
@@ -182,7 +181,7 @@ class CreateTest extends React.Component {
             Создать тест
           </button>
           {this.state.check.name && <h3 className="create-test__title">{this.state.check.name}</h3>}
-          <div className="create-test">
+          <div className="create-test create-test--preview">
             {this.state.check.check_jobs &&
               this.state.check.check_jobs.map((item, index) => {
                 return (

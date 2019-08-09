@@ -10,18 +10,19 @@ export const history = createBrowserHistory();
 
 const AppRouter = () => (
   <Router history={history}>
-    <nav className="main-nav">
-      <NavLink exact activeClassName="main-nav__link--active" className="main-nav__link" to="/">
-        Задания
-      </NavLink>
-      <NavLink activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
-        Тесты
-      </NavLink>
-      {/* <NavLink activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
-        Список тестов
-      </NavLink> */}
-    </nav>
     <div className="dashboard">
+      <nav className="main-nav">
+        <NavLink exact activeClassName="main-nav__link--active" className="main-nav__link" to="/">
+          Задания
+        </NavLink>
+        <NavLink activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
+          Тесты
+        </NavLink>
+        {/* <NavLink 
+        activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
+          Список тестов
+        </NavLink> */}
+      </nav>
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/tests" component={CreateTest} />

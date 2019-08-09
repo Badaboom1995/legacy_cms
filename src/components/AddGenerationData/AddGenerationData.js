@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Answers from 'components/Answers/Answers';
-import MultipleAnswers from 'components/MultipleAnswers/MultipleAnswers';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
+import TaskPreview from 'components/TaskPreview/TaskPreview';
 import Button from '@material-ui/core/Button';
+import { addOption } from 'actions/tasks';
 import { clearState, changeOption, saveGeneration } from 'actions/general';
 
 class AddTaskInfo extends React.Component {
@@ -16,24 +17,16 @@ class AddTaskInfo extends React.Component {
       component: <Answers />,
     },
     {
-      name: 'input',
-      component: <Answers />,
-    },
-    {
-      name: 'inputs',
-      component: <Answers />,
-    },
-    {
-      name: 'dropdown',
-      component: <Answers />,
-    },
-    {
       name: 'variants',
       component: <Answers multipleChoise />,
     },
     {
       name: 'variants_all',
       component: <Answers multipleChoise />,
+    },
+    {
+      name: 'inputs',
+      component: <Answers />,
     },
     {
       name: 'Перетаскивание',
@@ -84,24 +77,27 @@ class AddTaskInfo extends React.Component {
     const { kind } = this.props;
     const mechanicInterface = kind && this.getActiveMechanic();
     return (
-      <div className="content__fragment">
-        <TextInput name="text" onChange={this.onChange} label="Текст задания" />
-        <Select
-          name="kind"
-          modificators="select--in-row"
-          options={this.getOptions()}
-          onChange={this.onChange}
-          label="Механика"
-        />
-        {mechanicInterface}
-        <Button
-          variant="contained"
-          color="primary"
-          classes={{ root: 'button button--primary' }}
-          onClick={this.saveGeneration}
-        >
-          Добавить генерацию
-        </Button>
+      <div className="content__wrap">
+        <div className="content__fragment">
+          <TextInput name="text" onChange={this.onChange} label="Текст задания" />
+          <Select
+            name="kind"
+            modificators="select--in-row"
+            options={this.getOptions()}
+            onChange={this.onChange}
+            label="Механика"
+          />
+          {mechanicInterface}
+          <Button
+            variant="contained"
+            color="primary"
+            classes={{ root: 'button button--primary' }}
+            onClick={this.saveGeneration}
+          >
+            Добавить генерацию
+          </Button>
+        </div>
+        <TaskPreview className="content__secondary" />
       </div>
     );
   }

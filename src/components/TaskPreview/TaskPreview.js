@@ -1,47 +1,51 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { removeGeneration } from 'actions/general';
+import './task-preview.scss';
 
 class TaskPreview extends React.Component {
   deleteGeneration = index => {
     this.props.dispatch(removeGeneration(index));
   };
   render() {
+    const { chapter, difficulty, grade, subject, name } = this.props.tasks;
     return (
-      <div className="content__fragment">
-        <p>Тема: {this.props.tasks.chapter}</p>
-        <p>Сложность: {this.props.tasks.difficulty}</p>
-        <p>Класс: {this.props.tasks.grade}</p>
-        <p>Предмет: {this.props.tasks.subject.name}</p>
+      <div className={`${this.props.className} task-preview `}>
+        <div className="task-preview__main">
+          <p className="task-preview__title">{name || 'Название'}</p>
+          <p className="task-preview__subtitle">{chapter || 'Тема'}</p>
+          <span className="task-preview__param">{difficulty || 'Cложность'}</span>
+          <span className="task-preview__param">{grade ? `${grade} класс` : 'Класс'}</span>
+          <span className="task-preview__param">{(subject && subject.name) || 'Предмет'}</span>
+        </div>
+
         <div>
-          <p>Генерации:</p>
           {this.props.general.generations.map((generation, index) => {
             return (
-              <div className="generation" key={index}>
-                <h3>{generation.text}</h3>
-                <span>{generation.kind}</span>
-                <p>
-                  <button
-                    onClick={() => {
-                      this.deleteGeneration(index);
-                    }}
-                  >
-                    delete
-                  </button>
-                </p>
-
-                <br />
-                <br />
-                {generation.answers.map((answer, index) => {
-                  return generation.rightAnswers.includes(answer) ? (
-                    <p key={index}>
-                      <b>{answer}</b>
-                    </p>
-                  ) : (
-                    <p key={index}>{answer}</p>
-                  );
-                })}
-                <br />
+              <div className="task-preview__main task-preview__main--generation" key={index}>
+                <h3 className="task-preview__title">{generation.text}</h3>
+                <span className="task-preview__subtitle">{generation.kind}</span>
+                <div className="task-preview__generations">
+                  {generation.answers.map((answer, index) => {
+                    return (
+                      <p
+                        className={`task-preview__generation-answer 
+                        ${generation.rightAnswers.includes(answer) &&
+                          'task-preview__generation-answer--right'}`}
+                        key={index}
+                      >
+                        {answer}
+                      </p>
+                    );
+                  })}
+                </div>
+                <button
+                  onClick={() => {
+                    this.deleteGeneration(index);
+                  }}
+                >
+                  delete
+                </button>
               </div>
             );
           })}

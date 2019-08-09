@@ -7,7 +7,12 @@
   left: 0;
   z-index: 100;
   &--hidden {
-    display: none;
+    z-index: 1;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    position: relative;
+    background-color: transparent;
   }
   &__wrapper {
     position: absolute;
@@ -19,6 +24,9 @@
     background-color: #fff;
     max-height: calc(100vh - 100px);
     overflow: scroll;
+    &--hidden {
+      display: none;
+    }
   }
   &__elements {
     display: flex;
