@@ -61,6 +61,7 @@ body {
 }
 .main-nav {
   display: flex;
+  z-index: 1;
   flex-direction: column;
   position: fixed;
   top: 0;
