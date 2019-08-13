@@ -74,7 +74,7 @@ class AddTaskInfo extends React.Component {
           />
           <SelectElement getElementsAsync={this.getChapters} />
         </div>
-        <TaskPreview className="content__secondary" />
+        <TaskPreview tasks={this.props.tasks} className="content__secondary" />
       </div>
     );
   }

@@ -4,7 +4,9 @@ import Checks from 'helpers/Checks';
 import Tasks from 'helpers/Tasks';
 import Structure from 'helpers/Structure';
 import TextInput from 'components/TextInput/TextInput';
+import TasksList from 'components/TasksList/TasksList';
 import Select from 'components/Select/Select';
+import { getTasks } from 'actions/tasks';
 
 import './create-test.scss';
 
@@ -19,6 +21,7 @@ class CreateTest extends React.Component {
   };
   componentDidMount() {
     this.getTasks();
+    this.props.dispatch(getTasks());
   }
   getTopics = e => {
     const Request = new Structure();
@@ -34,13 +37,6 @@ class CreateTest extends React.Component {
     }
   };
   getTasks = () => {
-    const Request = new Tasks();
-    Request.getTasks().then(response => {
-      this.setState(() => ({ tasks: response }));
-      console.log(response);
-    });
-  };
-  getChecks = () => {
     const Request = new Tasks();
     Request.getTasks().then(response => {
       this.setState(() => ({ tasks: response }));
@@ -117,10 +113,12 @@ class CreateTest extends React.Component {
 
   render() {
     return (
-      <div className="content content--create">
-        <div className="create-test">
+      <div className="content">
+        <div className="content__main">
           <p className="content__title">Конструктор теста</p>
-          <button style={{ height: '30px' }} onClick={this.createCheckJob}>
+
+          <TasksList tasks={this.props.tasks.taskList} />
+          {/* <button style={{ height: '30px' }} onClick={this.createCheckJob}>
             Добавить задания в тест
           </button>
           {this.state.tasks.map((item, index) => {
@@ -154,9 +152,9 @@ class CreateTest extends React.Component {
                 </button>
               </div>
             );
-          })}
+          })} */}
         </div>
-        <div className="create-test__preview">
+        <div className="content__secondary">
           <TextInput
             name="test_name"
             placeholder="Контрольная для седьмого класса"
@@ -210,6 +208,7 @@ class CreateTest extends React.Component {
 
 const mapStateToProps = state => ({
   general: state.general,
+  tasks: state.tasks,
 });
 
 export default connect(mapStateToProps)(CreateTest);

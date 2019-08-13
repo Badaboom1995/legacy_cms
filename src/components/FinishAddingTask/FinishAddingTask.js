@@ -9,7 +9,7 @@ class FinishAddingTask extends React.Component {
     this.props.dispatch(removeGeneration(index));
   };
   render() {
-    return <TaskPreview />;
+    return <TaskPreview generationsHidden />;
   }
 }
 

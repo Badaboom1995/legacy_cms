@@ -3,3 +3,6 @@ export const addOption = (name, value) => ({
   name,
   value,
 });
+export const getTasks = () => ({
+  type: 'GET_TASKS',
+});
