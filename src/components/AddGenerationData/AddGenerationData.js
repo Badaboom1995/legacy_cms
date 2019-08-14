@@ -7,7 +7,6 @@ import AddAnswer from 'components/AddAnswer/AddAnswer';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
 import Button from '@material-ui/core/Button';
-import { addOption } from 'actions/tasks';
 import { clearState, changeOption, saveGeneration } from 'actions/general';
 
 class AddTaskInfo extends React.Component {

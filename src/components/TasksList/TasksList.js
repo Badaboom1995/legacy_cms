@@ -8,7 +8,9 @@ class TaskPreview extends React.Component {
     return (
       <div>
         {this.props.tasks &&
-          this.props.tasks.map((item, index) => <TasksPreview key={index} tasks={item} />)}
+          this.props.tasks.map((item, index) => (
+            <TasksPreview generationsHidden key={index} tasks={item} />
+          ))}
         {console.log(this.props.tasks)}
       </div>
     );
