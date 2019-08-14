@@ -1,4 +1,5 @@
 const generalReducerDefaultState = {
+  expressions: [],
   answers: [],
   rightAnswers: [],
   generations: [],
@@ -26,6 +27,18 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         answers: state.answers.filter(item => {
           return item != action.answer;
+        }),
+      };
+    case 'ADD_EXPRESSION':
+      return {
+        ...state,
+        expressions: [...state.expressions, action.expression],
+      };
+    case 'REMOVE_EXPRESSION':
+      return {
+        ...state,
+        expressions: state.expressions.filter(item => {
+          return item.question != action.expression.question;
         }),
       };
     case 'REMOVE_RIGHT_ANSWER':
@@ -56,6 +69,7 @@ export default (state = generalReducerDefaultState, action) => {
     case 'CLEAR_STATE':
       return {
         ...state,
+        expressions: [],
         answers: [],
         rightAnswers: [],
       };

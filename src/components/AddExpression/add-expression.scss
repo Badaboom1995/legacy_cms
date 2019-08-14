@@ -1,0 +1,13 @@
+.add-expression {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+.expression-warning {
+  position: absolute;
+  bottom: 9px;
+  left: 0;
+  font-size: 13px;
+  color: #e71f1f;
+}

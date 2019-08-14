@@ -9,9 +9,51 @@ class TaskPreview extends React.Component {
   deleteGeneration = index => {
     this.props.dispatch(removeGeneration(index));
   };
+
+  renderGeneration = generation => {
+    const { kind } = generation;
+    let result = '';
+    if (['variant', 'variants', 'variants_all'].some(name => name === kind)) {
+      result = (
+        <ul className="task-preview__generations">
+          {generation.answers.map((answer, index) => {
+            return (
+              <li
+                className={`task-preview__generation-answer
+                ${generation.rightAnswers.includes(answer) &&
+                'task-preview__generation-answer--right'}`}
+                key={index}
+              >
+                {answer}
+              </li>
+            );
+          })}
+        </ul>
+      );
+    } else if (kind === 'inputs') {
+      result = (
+        <ul className="task-preview__generations">
+          {generation.expressions.map((exp, index) => {
+            return (
+              <li
+                className={`task-preview__generation-answer`}
+                key={index}
+              >
+                {exp.question}
+              </li>
+            );
+          })}
+        </ul>
+      );
+    }
+
+    return result;
+  };
+
   render() {
     const { generationsHidden } = this.props;
     const { chapter, difficulty, grade, subject, name } = this.props.tasks;
+
     return (
       <React.Fragment>
         {/* <TaskPreviewContainer task={this.props.tasks} /> */}
@@ -27,24 +69,12 @@ class TaskPreview extends React.Component {
           <div>
             {!generationsHidden &&
               this.props.general.generations.map((generation, index) => {
+
                 return (
                   <div className="task-preview__main task-preview__main--generation" key={index}>
                     <h3 className="task-preview__title">{generation.text}</h3>
                     <span className="task-preview__subtitle">{generation.kind}</span>
-                    <ul className="task-preview__generations">
-                      {generation.answers.map((answer, index) => {
-                        return (
-                          <li
-                            className={`task-preview__generation-answer 
-                        ${generation.rightAnswers.includes(answer) &&
-                          'task-preview__generation-answer--right'}`}
-                            key={index}
-                          >
-                            {answer}
-                          </li>
-                        );
-                      })}
-                    </ul>
+                    {this.renderGeneration(generation)}
                     <button
                       onClick={() => {
                         this.deleteGeneration(index);

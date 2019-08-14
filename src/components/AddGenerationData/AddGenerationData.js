@@ -4,6 +4,8 @@ import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Answers from 'components/Answers/Answers';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
+import ExpressionsList from 'components/ExpressionsList/ExpressionsList';
+import AddExpression from 'components/AddExpression/AddExpression';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
 import Button from '@material-ui/core/Button';
@@ -25,7 +27,7 @@ class AddTaskInfo extends React.Component {
     },
     {
       name: 'inputs',
-      component: <Answers />,
+      component: <ExpressionsList />,
     },
     {
       name: 'Перетаскивание',
@@ -48,8 +50,14 @@ class AddTaskInfo extends React.Component {
     }
   };
   saveGeneration = () => {
-    const { answers, kind, rightAnswers, text } = this.props.general;
-    const generation = { answers, kind, rightAnswers, text };
+    const { answers, kind, rightAnswers, text, expressions } = this.props.general;
+    let generation = { kind, text };
+    if (['variant', 'variants', 'variants_all'].some(name => name === kind)) {
+      generation = { ...generation, answers, rightAnswers };
+    } else if (kind === 'inputs') {
+      generation = { ...generation, expressions };
+    }
+
     this.props.dispatch(saveGeneration(generation));
     this.props.dispatch(clearState());
   };
@@ -60,6 +68,13 @@ class AddTaskInfo extends React.Component {
     if (kind === 'Перетаскивание') {
       return (
         <React.Fragment>
+          {mechanicOptions.filter(item => item.name === kind)[0].component}
+        </React.Fragment>
+      );
+    } else if (kind === 'inputs') {
+      return (
+        <React.Fragment>
+          <AddExpression />
           {mechanicOptions.filter(item => item.name === kind)[0].component}
         </React.Fragment>
       );

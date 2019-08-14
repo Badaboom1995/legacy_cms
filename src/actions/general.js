@@ -22,6 +22,14 @@ export const removeRightAnswer = answer => ({
   type: 'REMOVE_RIGHT_ANSWER',
   answer,
 });
+export const addExpression = expression => ({
+  type: 'ADD_EXPRESSION',
+  expression,
+});
+export const removeExpression = expression => ({
+  type: 'REMOVE_EXPRESSION',
+  expression,
+});
 export const changeAnswerIndex = column => ({
   type: 'CHANGE_ANSWER_INDEX',
   column,

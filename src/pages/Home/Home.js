@@ -38,25 +38,35 @@ class Home extends React.Component {
     return taskObject;
   };
   getGenerationData = item => {
-    const { answers, rightAnswers } = item;
-    const newAnswers = answers.map(item => {
-      if (rightAnswers.includes(item)) {
-        return {
-          name: item,
-          value: item,
-          right: true,
-        };
-      } else {
-        return {
-          name: item,
-          value: item,
-        };
-      }
-    });
-    const newAnswersObject = newAnswers.reduce((accum, item, index) => {
+    const { kind } = item;
+    const genData = {};
+
+    let values = [];
+    let fieldName = 'variants';
+    if (/^variant/.test(kind)) {
+      const { answers, rightAnswers } = item;
+      values = answers.map(item => {
+        const obj = {
+                name: item,
+                value: item,
+              };
+        if (rightAnswers.includes(item)) obj.right = true;
+        return obj;
+      });
+      fieldName = 'variants';
+    } else if (kind === 'inputs') {
+      const { expressions } = item;
+      values = expressions;
+      fieldName = 'inputs';
+    }
+
+    const valuesObject = values.reduce((accum, item, index) => {
       return { ...accum, [String.fromCharCode(97 + index)]: item };
     }, {});
-    return { variants: newAnswersObject };
+
+    genData[fieldName] = valuesObject;
+    console.log(genData);
+    return genData;
   };
 
   createTask = () => {
