@@ -47,5 +47,8 @@ COPY --from=builder /app/build/static /usr/share/nginx/html/b2t/constructor/stat
 RUN rm -rf /usr/share/nginx/html/static
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
+
+EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]
 
