@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TasksPreview from 'components/TaskPreview/TaskPreview';
+import TasksPreviewFetched from 'components/TaskPreview/TaskPreviewFetched';
 
 class TaskPreview extends React.Component {
   render() {
@@ -9,7 +10,7 @@ class TaskPreview extends React.Component {
       <div>
         {this.props.tasks &&
           this.props.tasks.map((item, index) => (
-            <TasksPreview
+            <TasksPreviewFetched
               generationsHidden
               key={index}
               task={item}
