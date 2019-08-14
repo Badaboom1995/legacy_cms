@@ -22,7 +22,7 @@ class TaskPreviewContainer extends React.Component {
 
         <div>
           {!generationsHidden &&
-            this.props.task.check_generations.map((generation, index) => {
+            this.props.generations.map((generation, index) => {
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
                   <h3 className="task-preview__title">{generation.text}</h3>
