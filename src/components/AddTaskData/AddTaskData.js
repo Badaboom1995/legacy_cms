@@ -74,7 +74,11 @@ class AddTaskInfo extends React.Component {
           />
           <SelectElement getElementsAsync={this.getChapters} />
         </div>
-        <TaskPreview tasks={this.props.tasks} className="content__secondary" />
+        <TaskPreview
+          task={this.props.tasks}
+          generations={this.props.general.generations}
+          className="content__secondary"
+        />
       </div>
     );
   }
@@ -82,6 +86,7 @@ class AddTaskInfo extends React.Component {
 
 const mapStateToProps = state => ({
   tasks: state.tasks,
+  general: state.general,
 });
 
 export default connect(mapStateToProps)(AddTaskInfo);
