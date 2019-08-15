@@ -21,7 +21,7 @@ class TaskPreview extends React.Component {
               <li
                 className={`task-preview__generation-answer
                 ${generation.rightAnswers.includes(answer) &&
-                'task-preview__generation-answer--right'}`}
+                  'task-preview__generation-answer--right'}`}
                 key={index}
               >
                 {answer}
@@ -35,10 +35,7 @@ class TaskPreview extends React.Component {
         <ul className="task-preview__generations">
           {generation.expressions.map((exp, index) => {
             return (
-              <li
-                className={`task-preview__generation-answer`}
-                key={index}
-              >
+              <li className={`task-preview__generation-answer`} key={index}>
                 {exp.value}
               </li>
             );
@@ -52,7 +49,7 @@ class TaskPreview extends React.Component {
 
   render() {
     const { generationsHidden } = this.props;
-    const { chapter, difficulty, grade, subject, name } = this.props.tasks;
+    const { chapter, difficulty, grade, subject, name } = this.props.tasks || {};
     return (
       <React.Fragment>
         {/* <TaskPreviewContainer
@@ -72,7 +69,6 @@ class TaskPreview extends React.Component {
           <div>
             {!generationsHidden &&
               this.props.general.generations.map((generation, index) => {
-
                 return (
                   <div className="task-preview__main task-preview__main--generation" key={index}>
                     <h3 className="task-preview__title">{generation.text}</h3>
