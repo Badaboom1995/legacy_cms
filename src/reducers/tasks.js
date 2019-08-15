@@ -1,4 +1,7 @@
-const tasksReducerDefaultState = {};
+const tasksReducerDefaultState = {
+  tasksList: [],
+  loading: false,
+};
 
 export default (state = tasksReducerDefaultState, action) => {
   switch (action.type) {
@@ -14,6 +17,13 @@ export default (state = tasksReducerDefaultState, action) => {
         ...state,
         taskList: action.tasks,
         loading: false,
+      };
+    case 'DELETE_TASK':
+      return {
+        ...state,
+        taskList: state.taskList.filter(item => {
+          return item.id != action.id;
+        }),
       };
     default:
       return state;

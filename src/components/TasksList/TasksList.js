@@ -1,10 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import TasksPreview from 'components/TaskPreview/TaskPreview';
 import TasksPreviewFetched from 'components/TaskPreview/TaskPreviewFetched';
+import Tasks from 'helpers/Tasks';
+import { deleteTask } from 'actions/tasks';
 
 class TaskPreview extends React.Component {
+  deleteTask = id => {
+    this.props.dispatch(deleteTask(id));
+    const Request = new Tasks();
+    Request.deleteTask(id);
+  };
   render() {
     return (
       <div>
@@ -15,9 +21,9 @@ class TaskPreview extends React.Component {
               key={index}
               task={item}
               generations={item.check_generations}
+              deleteTask={this.deleteTask}
             />
           ))}
-        {console.log(this.props.tasks)}
       </div>
     );
   }
