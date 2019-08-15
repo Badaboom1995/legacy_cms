@@ -60,7 +60,7 @@ export default class ChecksService {
       },
       body: JSON.stringify(json),
     });
-
+    console.log(JSON.stringify(json))
     if (!this.response.ok) {
       throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
     }
