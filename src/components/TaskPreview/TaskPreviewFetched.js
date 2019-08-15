@@ -46,6 +46,7 @@ class TaskPreviewFetched extends React.Component {
     return (
       <React.Fragment>
         <TaskPreviewContainer
+          generationsHidden
           className={this.props.className}
           task={this.getTaskObject()}
           generations={this.getGenerationsArray()}
