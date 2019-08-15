@@ -111,7 +111,11 @@ class AddTaskInfo extends React.Component {
             Добавить генерацию
           </Button>
         </div>
-        <TaskPreview tasks={this.props.tasks} className="content__secondary" />
+        <TaskPreview
+          task={this.props.tasks}
+          generations={this.props.general.generations}
+          className="content__secondary"
+        />
       </div>
     );
   }

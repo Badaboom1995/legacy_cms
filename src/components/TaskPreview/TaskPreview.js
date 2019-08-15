@@ -53,10 +53,13 @@ class TaskPreview extends React.Component {
   render() {
     const { generationsHidden } = this.props;
     const { chapter, difficulty, grade, subject, name } = this.props.tasks;
-
     return (
       <React.Fragment>
-        {/* <TaskPreviewContainer task={this.props.tasks} /> */}
+        {/* <TaskPreviewContainer
+          className={this.props.className}
+          task={this.props.task}
+          generations={this.props.generations}
+        /> */}
         <div key={this.props.key} className={`${this.props.className} task-preview `}>
           <div className="task-preview__main">
             <p className="task-preview__title">{name || 'Название'}</p>
