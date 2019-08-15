@@ -39,7 +39,7 @@ class TaskPreview extends React.Component {
                 className={`task-preview__generation-answer`}
                 key={index}
               >
-                {exp.question}
+                {exp.value}
               </li>
             );
           })}

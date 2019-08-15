@@ -38,7 +38,7 @@ export default (state = generalReducerDefaultState, action) => {
       return {
         ...state,
         expressions: state.expressions.filter(item => {
-          return item.question != action.expression.question;
+          return item.value != action.expression.value;
         }),
       };
     case 'REMOVE_RIGHT_ANSWER':

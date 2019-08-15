@@ -16,10 +16,12 @@ class AddExpression extends React.Component {
   addExpression = () => {
     const { value } = this.state;
     const regexp = /%\{([^{}]+)\}/g;
-    if (regexp.test(value)) {
+    const isUnique = this.props.general.expressions.every(exp => exp.value !== value);
+    if (regexp.test(value) && isUnique) {
       const expression = {
         question: '',
-        answers: {}
+        answers: {},
+        value,
       };
       let charCode = 97;
       console.log(this.props);
@@ -33,7 +35,7 @@ class AddExpression extends React.Component {
 
       console.log(expression);
       this.props.dispatch(addExpression(expression));
-    } else {
+    } else if (isUnique) {
       this.setState({ wrongExpression: true });
     }
   };

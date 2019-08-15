@@ -56,7 +56,10 @@ class Home extends React.Component {
       fieldName = 'variants';
     } else if (kind === 'inputs') {
       const { expressions } = item;
-      values = expressions;
+      values = expressions.map(exp => {
+        delete exp.value;
+        return exp;
+      });
       fieldName = 'inputs';
     }
 

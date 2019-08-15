@@ -10,7 +10,7 @@ class Expression extends React.Component {
 
   render() {
     const { index, expression } = this.props;
-    const { question } = expression;
+    const { value } = expression;
     return (
       <li
         className={`expression__item`}
@@ -18,7 +18,7 @@ class Expression extends React.Component {
         data-key={index}
         onDoubleClick={this.removeExpression}
       >
-        {question}
+        {value}
       </li>
     );
   }
