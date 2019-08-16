@@ -167,41 +167,6 @@ class CreateTest extends React.Component {
           <p className="content__title">Конструктор теста</p>
 
           <TasksList tasks={this.props.tasks.taskList} />
-          {/* <button style={{ height: '30px' }} onClick={this.createCheckJob}>
-            Добавить задания в тест
-          </button>
-          {this.state.tasks.map((item, index) => {
-            return (
-              <div
-                className={`create-test__item ${this.state.choosedTasksIds.includes(item.id) &&
-                  'create-test__item--choosed'}`}
-                onClick={() => {
-                  this.toggleTask(item.id);
-                }}
-                key={index}
-              >
-                <div className="create-test__item-gens">
-                  <p>
-                    {this.state.choosedTasksIds.includes(item.id) && <span></span>}
-                    <b className="create-test__name">{item.name && item.name}</b>
-                    <b className="create-test__text">
-                      {item.check_generations[0] && item.check_generations[0].name}
-                    </b>
-                    <b>{item.chapter && item.chapter}</b>
-                  </p>
-                  <p>Тип: {item.check_generations[0] && item.check_generations[0].kind}</p>
-                  <p>Раздел: {item.chapter_id && item.chapter_id}</p>
-                </div>
-                <button
-                  onClick={() => {
-                    this.deleteTask(item.id);
-                  }}
-                >
-                  delete
-                </button>
-              </div>
-            );
-          })} */}
         </div>
         <div className="content__secondary">
           <TextInput
@@ -261,25 +226,6 @@ class CreateTest extends React.Component {
                 />
               );
             })}
-            {/* {this.state.check.check_jobs &&
-              this.state.check.check_jobs.map((item, index) => {
-                return (
-                  <div className={'create-test__item'} key={index}>
-                    <div className="create-test__item-gens">
-                      <p>
-                        {this.state.choosedTasksIds.includes(item.id) && <span></span>}
-                        <b className="create-test__name create-test__name--preview">
-                          {item.name && item.name}
-                        </b>
-                        <b className="create-test__text">
-                          {item.check_generations[0] && item.check_generations[0].name}
-                        </b>
-                      </p>
-                      <p>Тип: {item.check_generations[0] && item.check_generations[0].kind}</p>
-                    </div>
-                  </div>
-                );
-              })} */}
           </div>
         </div>
       </div>

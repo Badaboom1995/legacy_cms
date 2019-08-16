@@ -75,10 +75,7 @@ class AddTaskInfo extends React.Component {
             this.getElements(e);
           }}
         >
-          {this.props.tasks[this.props.type] ||
-            this.props.tasks.chapter ||
-            this.props.name ||
-            'Раздел'}
+          {this.props.tasks[this.props.type] || this.props.name}
         </Button>
       </div>
     );
