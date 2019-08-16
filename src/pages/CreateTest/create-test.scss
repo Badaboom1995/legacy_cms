@@ -1,5 +1,9 @@
 .create-test {
   width: 55%;
+  &--preview {
+    width: 100%;
+    padding: 30px 0px;
+  }
   &__item {
     margin: 10px;
     padding: 10px;

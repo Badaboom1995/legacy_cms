@@ -92,7 +92,8 @@ export default class ChecksService {
     return data;
   }
 
-  async createCheck(name, subject, grade) {
+  async createCheck(name, subject, grade, difficulty, type, chapter, topic) {
+    console.log(name, subject, grade);
     const path = `teachers/checks`;
     const response = await fetch(`${base_url}${path}`, {
       method: 'POST',
@@ -103,7 +104,17 @@ export default class ChecksService {
         'Uchi-User-Id': 12,
         crossDomain: true,
       },
-      body: JSON.stringify({ checks: { subject, learning_level_id: grade, name, base: true } }),
+      body: JSON.stringify({
+        checks: {
+          subject,
+          learning_level_id: grade,
+          name,
+          check_scale_id: difficulty.id,
+          check_mode_id: type.id,
+          chapter_id: chapter,
+          topic_id: topic,
+        },
+      }),
     });
 
     if (!response.ok) {

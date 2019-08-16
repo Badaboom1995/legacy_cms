@@ -57,6 +57,7 @@ class TaskPreview extends React.Component {
           task={this.props.task}
           generations={this.props.generations}
           deleteGeneration={this.deleteGeneration}
+          generationsHidden={this.props.generationsHidden}
         />
         {/* <div key={this.props.key} className={`${this.props.className} task-preview `}>
           <div className="task-preview__main">

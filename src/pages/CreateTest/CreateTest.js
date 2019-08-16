@@ -7,11 +7,16 @@ import TextInput from 'components/TextInput/TextInput';
 import TasksList from 'components/TasksList/TasksList';
 import Select from 'components/Select/Select';
 import { getTasks } from 'actions/tasks';
+import { addTaskToTest, addOption } from 'actions/checks';
+import TaskPreview from 'components/TaskPreview/TaskPreview';
+import SelectElement from 'components/SelectElement/SelectElement';
 
 import './create-test.scss';
 
 class CreateTest extends React.Component {
   subjects = { Математика: 1, Русский: 2 };
+  difficulty = { Базовый: 1, Продвинутый: 2 };
+  type = { Тест: 1, Контрольная: 2, Итоговая: 3 };
   grade = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
   state = {
     tasks: [],
@@ -19,10 +24,12 @@ class CreateTest extends React.Component {
     check: {},
     checkJobs: [],
   };
+
   componentDidMount() {
     this.getTasks();
     this.props.dispatch(getTasks());
   }
+
   getTopics = e => {
     const Request = new Structure();
     Request.getTopics().then(response => {
@@ -47,12 +54,13 @@ class CreateTest extends React.Component {
     const Request = new Tasks();
     Request.deleteTask();
   };
-  onSubjectChange = (value, name) => {
-    const subjectObj = { name: value, id: this.subjects[value] };
-    this.onChange(subjectObj, name);
+  onCustomChange = (value, name, list) => {
+    console.log(list, value);
+    const Obj = { name: value, id: list[value] };
+    this.onChange(Obj, name);
   };
-  getSubjectNames = subjects => {
-    return Object.keys(subjects);
+  getNames = obj => {
+    return Object.keys(obj);
   };
   updateCheck = () => {
     console.log(this.state.check);
@@ -63,11 +71,57 @@ class CreateTest extends React.Component {
       }));
     });
   };
+  getChapters = () => {
+    const Request = new Structure();
+    return Request.getChapters().then(response => {
+      this.props.dispatch(addOption('chapters', response));
+      const topicNames = response.map(item => item.name);
+      return topicNames;
+    });
+  };
+  getTopics = () => {
+    const Request = new Structure();
+    return Request.getTopics().then(response => {
+      this.props.dispatch(addOption('topics', response));
+      const topicNames = response.map(item => item.name);
+      return topicNames;
+    });
+  };
+  getChapterId = () => {
+    const chapter = this.props.checks.chapters.filter(item => {
+      return item.name === this.props.tasks.chapter;
+    });
+    return chapter[0].id;
+  };
+  getTopicId = () => {
+    const topic = this.props.checks.topics.filter(item => {
+      return item.name === this.props.tasks.topic;
+    });
+    return topic[0].id;
+  };
 
   createCheck = () => {
-    const { test_name, subject, grade } = this.state;
+    const { test_name, subject, grade, difficulty, type } = this.props.checks;
     const Request = new Checks();
-    Request.createCheck(test_name, subject.id, grade).then(res => {
+    console.log(
+      test_name,
+      subject,
+      grade,
+      difficulty,
+      type,
+      this.getChapterId(),
+      this.getTopicId(),
+    );
+    Request.createCheck(
+      test_name,
+      subject.id,
+      grade,
+      difficulty,
+      type,
+      this.getChapterId(),
+      this.getTopicId(),
+    ).then(res => {
+      this.props.dispatch(addOption('id', res.id));
       this.setState(() => ({
         check_id: res.id,
         check: res,
@@ -75,12 +129,7 @@ class CreateTest extends React.Component {
     });
   };
   onChange = (value, name) => {
-    this.setState(
-      () => ({ [name]: value }),
-      () => {
-        console.log(this.state);
-      },
-    );
+    this.props.dispatch(addOption(name, value));
   };
   toggleTask = id => {
     if (this.state.choosedTasksIds.includes(id)) {
@@ -171,16 +220,48 @@ class CreateTest extends React.Component {
           <Select
             name="subject"
             modificators="select--in-row"
-            options={this.getSubjectNames(this.subjects)}
-            onChange={this.onSubjectChange}
+            options={this.getNames(this.subjects)}
+            onChange={(value, name) => {
+              this.onCustomChange(value, name, this.subjects);
+            }}
             label="Предмет"
           />
+          <Select
+            name="difficulty"
+            modificators="select--in-row"
+            options={this.getNames(this.difficulty)}
+            onChange={(value, name) => {
+              this.onCustomChange(value, name, this.difficulty);
+            }}
+            label="Сложность"
+          />
+          <Select
+            name="type"
+            modificators="select--in-row"
+            options={this.getNames(this.type)}
+            onChange={(value, name) => {
+              this.onCustomChange(value, name, this.type);
+            }}
+            label="Тип"
+          />
+          <SelectElement type="topic" name="Тема" getElementsAsync={this.getTopics} />
+          <SelectElement type="chapter" name="Раздел" getElementsAsync={this.getChapters} />
           <button onClick={this.createCheck} className="button">
             Создать тест
           </button>
           {this.state.check.name && <h3 className="create-test__title">{this.state.check.name}</h3>}
           <div className="create-test create-test--preview">
-            {this.state.check.check_jobs &&
+            {this.props.checks.tasks.map((item, index) => {
+              return (
+                <TaskPreview
+                  key={index}
+                  task={item.task}
+                  generations={item.generations}
+                  generationsHidden
+                />
+              );
+            })}
+            {/* {this.state.check.check_jobs &&
               this.state.check.check_jobs.map((item, index) => {
                 return (
                   <div className={'create-test__item'} key={index}>
@@ -198,7 +279,7 @@ class CreateTest extends React.Component {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
           </div>
         </div>
       </div>
@@ -209,6 +290,7 @@ class CreateTest extends React.Component {
 const mapStateToProps = state => ({
   general: state.general,
   tasks: state.tasks,
+  checks: state.checks,
 });
 
 export default connect(mapStateToProps)(CreateTest);

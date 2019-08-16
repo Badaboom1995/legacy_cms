@@ -3,6 +3,7 @@ import { removeGeneration } from 'actions/general';
 import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
+import { addTaskToTest } from 'actions/checks';
 
 class TaskPreviewContainer extends React.Component {
   state = {
@@ -16,7 +17,7 @@ class TaskPreviewContainer extends React.Component {
   render() {
     const { generationsHidden } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
-    const showGens = generationsHidden && this.state.showGens;
+    const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
@@ -32,7 +33,18 @@ class TaskPreviewContainer extends React.Component {
           >
             Удалить задание
           </button>
-          <button onClick={this.toggleGens}>Показать генерации</button>
+          {generationsHidden && <button onClick={this.toggleGens}>Показать генерации</button>}
+          {generationsHidden && (
+            <button
+              onClick={() => {
+                this.props.dispatch(
+                  addTaskToTest({ task: this.props.task, generations: this.props.generations }),
+                );
+              }}
+            >
+              Добавить задание в тест
+            </button>
+          )}
         </div>
 
         <div>
