@@ -81,7 +81,9 @@ class CreateTest extends React.Component {
   };
   getTopics = () => {
     const Request = new Structure();
+    console.log('get topics');
     return Request.getTopics().then(response => {
+      console.log(response);
       this.props.dispatch(addOption('topics', response));
       const topicNames = response.map(item => item.name);
       return topicNames;
