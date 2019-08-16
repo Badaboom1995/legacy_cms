@@ -12,10 +12,19 @@ const AppRouter = () => (
   <Router history={history}>
     <div className="dashboard">
       <nav className="main-nav">
-        <NavLink exact activeClassName="main-nav__link--active" className="main-nav__link" to="/">
+        <NavLink
+          exact
+          activeClassName="main-nav__link--active"
+          className="main-nav__link"
+          to="/b2t/constructor/"
+        >
           Задания
         </NavLink>
-        <NavLink activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
+        <NavLink
+          activeClassName="main-nav__link--active"
+          className="main-nav__link"
+          to="/b2t/constructor/tests"
+        >
           Тесты
         </NavLink>
         {/* <NavLink 
@@ -24,8 +33,8 @@ const AppRouter = () => (
         </NavLink> */}
       </nav>
       <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/tests" component={CreateTest} />
+        <Route path="/b2t/constructor/" component={Home} exact />
+        <Route path="/b2t/constructor/tests" component={CreateTest} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>
