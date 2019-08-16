@@ -52,12 +52,14 @@ class TaskPreview extends React.Component {
     const { chapter, difficulty, grade, subject, name } = this.props.tasks || {};
     return (
       <React.Fragment>
-        {/* <TaskPreviewContainer
+        <TaskPreviewContainer
           className={this.props.className}
           task={this.props.task}
           generations={this.props.generations}
-        /> */}
-        <div key={this.props.key} className={`${this.props.className} task-preview `}>
+          deleteGeneration={this.deleteGeneration}
+          generationsHidden={this.props.generationsHidden}
+        />
+        {/* <div key={this.props.key} className={`${this.props.className} task-preview `}>
           <div className="task-preview__main">
             <p className="task-preview__title">{name || 'Название'}</p>
             <p className="task-preview__subtitle">{chapter || 'Тема'}</p>
@@ -85,7 +87,7 @@ class TaskPreview extends React.Component {
                 );
               })}
           </div>
-        </div>
+        </div> */}
       </React.Fragment>
     );
   }

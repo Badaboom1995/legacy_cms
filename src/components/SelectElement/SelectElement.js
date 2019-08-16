@@ -58,7 +58,7 @@ class AddTaskInfo extends React.Component {
               return (
                 <div
                   onClick={e => {
-                    this.chooseElement('chapter', item, e);
+                    this.chooseElement(this.props.type || 'chapter', item, e);
                   }}
                   className="search-popup__elements-item"
                   key={index}
@@ -75,7 +75,10 @@ class AddTaskInfo extends React.Component {
             this.getElements(e);
           }}
         >
-          {this.props.tasks.chapter || 'Раздел'}
+          {this.props.tasks[this.props.type] ||
+            this.props.tasks.chapter ||
+            this.props.name ||
+            'Раздел'}
         </Button>
       </div>
     );

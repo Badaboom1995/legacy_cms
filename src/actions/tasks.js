@@ -6,3 +6,7 @@ export const addOption = (name, value) => ({
 export const getTasks = () => ({
   type: 'GET_TASKS',
 });
+export const deleteTask = id => ({
+  type: 'DELETE_TASK',
+  id,
+});
