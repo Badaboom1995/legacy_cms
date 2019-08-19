@@ -3,6 +3,7 @@ import { Router, Route, Switch, NavLink } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import Home from '../pages/Home/Home';
 import CreateTest from 'pages/CreateTest/CreateTest';
+import TestsList from 'pages/TestsList/TestsList';
 import NotFoundPage from '../pages/NotFoundPage';
 import Auth from '../HOC/Auth';
 
@@ -27,6 +28,13 @@ const AppRouter = () => (
         >
           Тесты
         </NavLink>
+        <NavLink
+          activeClassName="main-nav__link--active"
+          className="main-nav__link"
+          to="/b2t/constructor/tests_list"
+        >
+          Список тестов
+        </NavLink>
         {/* <NavLink 
         activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
           Список тестов
@@ -35,6 +43,7 @@ const AppRouter = () => (
       <Switch>
         <Route path="/b2t/constructor/" component={Home} exact />
         <Route path="/b2t/constructor/tests" component={CreateTest} />
+        <Route path="/b2t/constructor/tests_list" component={TestsList} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

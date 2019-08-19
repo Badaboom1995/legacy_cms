@@ -10,11 +10,15 @@ export function* getTasks() {
   yield put({ type: 'TASKS_RECEIVED', tasks: response });
 }
 
+export function* getChecks() {
+  const Request = new Checks();
+  const response = yield Request.getChecks();
+  console.log(response);
+  yield put({ type: 'CHECKS_RECEIVED', checks: response });
+}
+
 export function* addTask() {
   const store = yield select(getStore);
-  console.log(store);
-  console.log(store.checks.tasks[store.checks.tasks.length - 1].task.id);
-
   const Request = new Checks();
   Request.createCheckJobs(
     store.checks.id,
@@ -24,8 +28,13 @@ export function* addTask() {
   yield put({ type: 'TASK_ADDED' });
 }
 
+///////////////////////
+
 export function* actionWatcher() {
   yield takeLatest('GET_TASKS', getTasks);
+}
+export function* getChecksWatcher() {
+  yield takeLatest('GET_CHECKS', getChecks);
 }
 
 export function* addTaskWatcher() {
@@ -33,5 +42,5 @@ export function* addTaskWatcher() {
 }
 
 export default function* rootSaga() {
-  yield all([actionWatcher(), addTaskWatcher()]);
+  yield all([actionWatcher(), addTaskWatcher(), getChecksWatcher()]);
 }

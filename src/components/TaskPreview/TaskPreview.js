@@ -13,7 +13,7 @@ class TaskPreview extends React.Component {
   renderGeneration = generation => {
     const { kind } = generation;
     let result = '';
-    if (['variant', 'variants', 'variants_all'].some(name => name === kind)) {
+    if (['variant', 'variants', 'variants_all'].includes(kind)) {
       result = (
         <ul className="task-preview__generations">
           {generation.answers.map((answer, index) => {
@@ -59,35 +59,6 @@ class TaskPreview extends React.Component {
           deleteGeneration={this.deleteGeneration}
           generationsHidden={this.props.generationsHidden}
         />
-        {/* <div key={this.props.key} className={`${this.props.className} task-preview `}>
-          <div className="task-preview__main">
-            <p className="task-preview__title">{name || 'Название'}</p>
-            <p className="task-preview__subtitle">{chapter || 'Тема'}</p>
-            <span className="task-preview__param">{difficulty || 'Cложность'}</span>
-            <span className="task-preview__param">{grade ? `${grade} класс` : 'Класс'}</span>
-            <span className="task-preview__param">{(subject && subject.name) || 'Предмет'}</span>
-          </div>
-
-          <div>
-            {!generationsHidden &&
-              this.props.general.generations.map((generation, index) => {
-                return (
-                  <div className="task-preview__main task-preview__main--generation" key={index}>
-                    <h3 className="task-preview__title">{generation.text}</h3>
-                    <span className="task-preview__subtitle">{generation.kind}</span>
-                    {this.renderGeneration(generation)}
-                    <button
-                      onClick={() => {
-                        this.deleteGeneration(index);
-                      }}
-                    >
-                      delete
-                    </button>
-                  </div>
-                );
-              })}
-          </div>
-        </div> */}
       </React.Fragment>
     );
   }

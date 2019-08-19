@@ -11,3 +11,6 @@ export const addTaskToTest = task => ({
   type: 'ADD_TASK_TO_TEST',
   task,
 });
+export const getChecks = () => ({
+  type: 'GET_CHECKS',
+});

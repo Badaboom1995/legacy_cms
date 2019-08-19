@@ -16,7 +16,7 @@ import './create-test.scss';
 class CreateTest extends React.Component {
   subjects = { Математика: 1, Русский: 2 };
   difficulty = { Базовый: 1, Продвинутый: 2 };
-  type = { Тест: 1, Контрольная: 2, Итоговая: 3 };
+  type = { 'Самостоятельная работа': 3, 'Контрольная работа': 2 };
   grade = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
   state = {
     tasks: [],

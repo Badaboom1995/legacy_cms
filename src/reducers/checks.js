@@ -5,6 +5,8 @@ const generalReducerDefaultState = {
   difficulty: '',
   type: '',
   tasks: [],
+  checks_list: [],
+  loading: false,
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -27,6 +29,11 @@ export default (state = generalReducerDefaultState, action) => {
       return {
         ...state,
         tasks: [...state.tasks, action.task],
+      };
+    case 'GET_CHECKS':
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

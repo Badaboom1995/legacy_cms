@@ -20,6 +20,7 @@ class TaskPreviewContainer extends React.Component {
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
+        {console.log(this.props.task)}
         <div className="task-preview__main">
           <p className="task-preview__title">{name || 'Название'}</p>
           <p className="task-preview__subtitle">{chapter || 'Тема'}</p>
