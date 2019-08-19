@@ -30,6 +30,10 @@ class AddTaskInfo extends React.Component {
       component: <ExpressionsList />,
     },
     {
+      name: 'dropdown',
+      component: <ExpressionsList />,
+    },
+    {
       name: 'Перетаскивание',
       component: <DragAndDrop />,
     },
@@ -54,7 +58,7 @@ class AddTaskInfo extends React.Component {
     let generation = { kind, text };
     if (['variant', 'variants', 'variants_all'].some(name => name === kind)) {
       generation = { ...generation, answers, rightAnswers };
-    } else if (kind === 'inputs') {
+    } else if (kind === 'inputs' || kind === 'dropdown') {
       generation = { ...generation, expressions };
     }
 
@@ -71,10 +75,10 @@ class AddTaskInfo extends React.Component {
           {mechanicOptions.filter(item => item.name === kind)[0].component}
         </React.Fragment>
       );
-    } else if (kind === 'inputs') {
+    } else if (kind === 'inputs' || kind === 'dropdown') {
       return (
         <React.Fragment>
-          <AddExpression />
+          <AddExpression kind={kind}/>
           {mechanicOptions.filter(item => item.name === kind)[0].component}
         </React.Fragment>
       );

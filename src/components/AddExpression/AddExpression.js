@@ -9,15 +9,24 @@ class AddExpression extends React.Component {
     value: '',
     wrongExpression: false,
   };
+
+  RegExps = {
+    inputs: /%\{([^{}]+)\}/g,
+    dropdown: /%\{([^|{}]+\|?){2,5}\}/g, // От двух до пяти вариантов в дропдауне
+  };
+
   onChange = value => {
     this.setState(() => ({ value, wrongExpression: false }));
   };
 
   addExpression = () => {
-    const { value } = this.state;
-    const regexp = /%\{([^{}]+)\}/g;
+    const { kind } = this.props;
+    const value = String(this.state.value);
+    const regexp = this.RegExps[kind];
+    const isValid = value.search(regexp) !== -1;
     const isUnique = this.props.general.expressions.every(exp => exp.value !== value);
-    if (regexp.test(value) && isUnique) {
+    console.log(isValid, isUnique, regexp, value)
+    if (isValid && isUnique) {
       const expression = {
         question: '',
         answers: {},
@@ -27,10 +36,18 @@ class AddExpression extends React.Component {
       console.log(this.props);
       expression.question = value.replace(regexp, (str, match) => {
         const char = String.fromCharCode(charCode);
-        console.log(char);
-        expression.answers[char] = match;
+        console.log(char, match);
+        if (kind === 'inputs') {
+          expression.answers[char] = match;
+        } else if (kind === 'dropdown') {
+          const answers = [];
+          str.replace(/((?<=(?:{|\|))[^\|{}]+)(?=(?:\||}))/g, (raw, variant) => {
+            console.log(raw, variant, v2, v3);
+          })
+        }
+
         charCode++;
-        return `%\{${char}}`;
+        // return `%\{${char}}`;
       });
 
       console.log(expression);
@@ -41,18 +58,31 @@ class AddExpression extends React.Component {
   };
 
   render() {
-    const { wrongExpression } = this.state;
+    const { kind } = this.props;
+    const { wrongExpression, value } = this.state;
+
+    let warningText = 'инпута вида "%{значение}';
+    switch (kind) {
+      case 'inputs':
+        warningText = 'инпута вида "%{значение}';
+        break;
+
+      case 'dropdown':
+        warningText = 'дропдауна вида "%{значение|правильное*|значение}"';
+        break;
+    }
+
     return (
       <div className="add-expression">
         <TextInput
           name="expressionToAdd"
-          value={this.state.value}
+          value={value}
           onChange={this.onChange}
           label="Добавить выражение"
         />
         {wrongExpression &&
           <div className="expression-warning">
-            {'Выражение должно содержать хотя бы одно место для инпута вида "%{значение}"'}
+            {`Выражение должно содержать хотя бы одно место для ${warningText}`}
           </div>
         }
         <button className="button button--add" onClick={this.addExpression}>
