@@ -72,7 +72,7 @@ class AddTaskInfo extends React.Component {
             onChange={this.onChange}
             label="Класс"
           />
-          <SelectElement getElementsAsync={this.getChapters} />
+          <SelectElement name="Раздел" getElementsAsync={this.getChapters} />
         </div>
         <TaskPreview
           task={this.props.tasks}
