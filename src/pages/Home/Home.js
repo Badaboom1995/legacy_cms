@@ -54,13 +54,13 @@ class Home extends React.Component {
         return obj;
       });
       fieldName = 'variants';
-    } else if (kind === 'inputs') {
+    } else if (kind === 'inputs' || kind === 'dropdown') {
       const { expressions } = item;
       values = expressions.map(exp => {
         delete exp.value;
         return exp;
       });
-      fieldName = 'inputs';
+      fieldName = kind;
     }
 
     const valuesObject = values.reduce((accum, item, index) => {
