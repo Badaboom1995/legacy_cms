@@ -14,3 +14,7 @@ export const addTaskToTest = task => ({
 export const getChecks = () => ({
   type: 'GET_CHECKS',
 });
+export const deleteChecks = id => ({
+  type: 'DELETE_CHECK',
+  id,
+});

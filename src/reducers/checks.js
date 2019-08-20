@@ -30,10 +30,21 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         tasks: [...state.tasks, action.task],
       };
+    case 'CHECKS_RECEIVED':
+      return {
+        ...state,
+        checks_list: action.checks,
+        loading: false,
+      };
     case 'GET_CHECKS':
       return {
         ...state,
         loading: true,
+      };
+    case 'DELETE_CHECK':
+      return {
+        ...state,
+        checks_list: checks_list.filter(item => item.id != action.id),
       };
     default:
       return state;

@@ -1,0 +1,15 @@
+.tests-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  width: 65%;
+  &__test {
+    width: 100%;
+  }
+  &__title {
+    font-size: 30px;
+  }
+  &__test-title {
+    font-size: 24px;
+  }
+}

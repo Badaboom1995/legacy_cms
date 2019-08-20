@@ -32,7 +32,7 @@ export default class ChecksService {
   }
   async createTask(json) {
     const body = { ...json, base: true };
-    const path = 'teachers/checks/2/check_jobs';
+    const path = 'teachers/checks/132/check_jobs';
     this.response = await fetch(`${base_url}${path}`, {
       method: 'POST',
       headers: {
@@ -60,7 +60,7 @@ export default class ChecksService {
       },
       body: JSON.stringify(json),
     });
-    console.log(JSON.stringify(json))
+    console.log(JSON.stringify(json));
     if (!this.response.ok) {
       throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
     }

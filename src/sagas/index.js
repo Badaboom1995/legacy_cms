@@ -13,8 +13,14 @@ export function* getTasks() {
 export function* getChecks() {
   const Request = new Checks();
   const response = yield Request.getChecks();
-  console.log(response);
   yield put({ type: 'CHECKS_RECEIVED', checks: response });
+}
+
+export function* deleteChecks(action) {
+  console.log(action);
+  // const Request = new Checks();
+  // const response = yield Request.deleteChecks();
+  // yield put({ type: 'CHECKS_RECEIVED', checks: response });
 }
 
 export function* addTask() {
@@ -24,23 +30,24 @@ export function* addTask() {
     store.checks.id,
     store.checks.tasks[store.checks.tasks.length - 1].task.id.toString(),
   );
-
   yield put({ type: 'TASK_ADDED' });
 }
 
 ///////////////////////
 
-export function* actionWatcher() {
+function* actionWatcher() {
   yield takeLatest('GET_TASKS', getTasks);
 }
-export function* getChecksWatcher() {
+function* getChecksWatcher() {
   yield takeLatest('GET_CHECKS', getChecks);
 }
-
-export function* addTaskWatcher() {
+function* deleteCheckWatcher() {
+  yield takeLatest('DELETE_CHECK', deleteChecks);
+}
+function* addTaskWatcher() {
   yield takeLatest('ADD_TASK_TO_TEST', addTask);
 }
 
 export default function* rootSaga() {
-  yield all([actionWatcher(), addTaskWatcher(), getChecksWatcher()]);
+  yield all([actionWatcher(), addTaskWatcher(), getChecksWatcher(), deleteCheckWatcher]);
 }
