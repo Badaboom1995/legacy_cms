@@ -50,3 +50,6 @@ export const changeOption = (name, value) => ({
 export const clearState = () => ({
   type: 'CLEAR_STATE',
 });
+export const clearGenerations = () => ({
+  type: 'CLEAR_GENERATIONS',
+});

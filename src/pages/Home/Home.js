@@ -5,7 +5,8 @@ import AddTaskData from 'components/AddTaskData/AddTaskData';
 import AddGenerationData from 'components/AddGenerationData/AddGenerationData';
 import FinishAddingTask from 'components/FinishAddingTask/FinishAddingTask';
 
-import { addOption } from 'actions/tasks';
+import { addOption, clearTasks } from 'actions/tasks';
+import { clearGenerations } from 'actions/general';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
@@ -47,9 +48,9 @@ class Home extends React.Component {
       const { answers, rightAnswers } = item;
       values = answers.map(item => {
         const obj = {
-                name: item,
-                value: item,
-              };
+          name: item,
+          value: item,
+        };
         if (rightAnswers.includes(item)) obj.right = true;
         return obj;
       });
@@ -122,6 +123,10 @@ class Home extends React.Component {
   setStep = step => {
     this.setState(() => ({ step }));
   };
+  clearTaskState = () => {
+    this.props.dispatch(clearTasks());
+    this.props.dispatch(clearGenerations());
+  };
 
   render() {
     return (
@@ -144,6 +149,7 @@ class Home extends React.Component {
             ]}
             title="Конструктор заданий"
             createJob={this.createJob}
+            clearTaskState={this.clearTaskState}
             setStep={this.setStep}
           />
         </div>

@@ -35,10 +35,6 @@ const AppRouter = () => (
         >
           Список тестов
         </NavLink>
-        {/* <NavLink 
-        activeClassName="main-nav__link--active" className="main-nav__link" to="/tests">
-          Список тестов
-        </NavLink> */}
       </nav>
       <Switch>
         <Route path="/b2t/constructor/" component={Home} exact />

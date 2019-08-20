@@ -50,6 +50,7 @@ export default function HorizontalLinearStepper(props) {
     }
     if (activeStep === steps.length - 1) {
       props.createJob();
+      props.clearTaskState();
     }
     console.log(step);
     setActiveStep(prevActiveStep => prevActiveStep + 1);

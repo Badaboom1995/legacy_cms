@@ -73,6 +73,11 @@ export default (state = generalReducerDefaultState, action) => {
         answers: [],
         rightAnswers: [],
       };
+    case 'CLEAR_GENERATIONS':
+      return {
+        ...state,
+        generations: [],
+      };
     default:
       return state;
   }
