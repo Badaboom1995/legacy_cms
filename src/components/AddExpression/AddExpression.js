@@ -33,21 +33,30 @@ class AddExpression extends React.Component {
         value,
       };
       let charCode = 97;
-      console.log(this.props);
       expression.question = value.replace(regexp, (str, match) => {
         const char = String.fromCharCode(charCode);
         console.log(char, match);
         if (kind === 'inputs') {
           expression.answers[char] = match;
         } else if (kind === 'dropdown') {
-          const answers = [];
-          str.replace(/((?<=(?:{|\|))[^\|{}]+)(?=(?:\||}))/g, (raw, variant) => {
-            console.log(raw, variant, v2, v3);
-          })
+          expression.answers[char] = {
+            values: [],
+            expected: null,
+          };
+          // выражение с ретроспективной проверкой
+          str.replace(/((?<=(?:{|\|))[^|{}]+)(?=(?:\||}))/g, (raw, variant) => {
+            console.log(raw, variant);
+            let ddValue = variant;
+            if (variant.slice(-1) === '*') {
+              ddValue = variant.slice(0, -1);
+              expression.answers[char].expected = ddValue;
+            }
+            expression.answers[char].values.push(ddValue);
+          });
         }
 
         charCode++;
-        // return `%\{${char}}`;
+        return `%\{${char}}`;
       });
 
       console.log(expression);
