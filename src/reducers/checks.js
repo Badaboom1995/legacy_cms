@@ -44,7 +44,7 @@ export default (state = generalReducerDefaultState, action) => {
     case 'DELETE_CHECK':
       return {
         ...state,
-        checks_list: checks_list.filter(item => item.id != action.id),
+        checks_list: state.checks_list.filter(item => item.id != action.id),
       };
     default:
       return state;

@@ -17,10 +17,8 @@ export function* getChecks() {
 }
 
 export function* deleteChecks(action) {
-  console.log(action);
-  // const Request = new Checks();
-  // const response = yield Request.deleteChecks();
-  // yield put({ type: 'CHECKS_RECEIVED', checks: response });
+  const Request = new Checks();
+  yield Request.deleteCheck(action.id);
 }
 
 export function* addTask() {
@@ -49,5 +47,5 @@ function* addTaskWatcher() {
 }
 
 export default function* rootSaga() {
-  yield all([actionWatcher(), addTaskWatcher(), getChecksWatcher(), deleteCheckWatcher]);
+  yield all([actionWatcher(), addTaskWatcher(), getChecksWatcher(), deleteCheckWatcher()]);
 }
