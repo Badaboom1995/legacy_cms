@@ -25,6 +25,13 @@ export default (state = tasksReducerDefaultState, action) => {
           return item.id != action.id;
         }),
       };
+    case 'CLEAR_TASKS':
+      return {
+        ...state,
+        taskList: state.taskList.filter(item => {
+          return item.id != action.id;
+        }),
+      };
     default:
       return state;
   }
