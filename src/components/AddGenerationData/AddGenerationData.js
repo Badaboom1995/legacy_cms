@@ -29,10 +29,10 @@ class AddTaskInfo extends React.Component {
       name: 'inputs',
       component: <ExpressionsList />,
     },
-    {
-      name: 'dropdown',
-      component: <ExpressionsList />,
-    },
+    // {
+    //   name: 'dropdown',
+    //   component: <ExpressionsList />,
+    // },
     {
       name: 'Перетаскивание',
       component: <DragAndDrop />,
