@@ -17,8 +17,6 @@ class TestsList extends React.Component {
 
   deleteCheck = id => {
     this.props.dispatch(deleteChecks(id));
-    // const Request = new Checks();
-    // Request.deleteCheck(id);
   };
   render() {
     const { checks_list } = this.props.checks;
@@ -31,8 +29,8 @@ class TestsList extends React.Component {
             return (
               <div key={index} className="task-preview task-preview__main tests-list__test">
                 <p className="tests-list__test-title">{item.name}</p>
-                <span className="task-preview__param">{check_mode.name}</span>
-                <span className="task-preview__param">{check_scale.name}</span>
+                <span className="task-preview__param">{check_mode && check_mode.name}</span>
+                <span className="task-preview__param">{check_scale && check_scale.name}</span>
                 <button
                   onClick={() => {
                     this.deleteCheck(item.id);

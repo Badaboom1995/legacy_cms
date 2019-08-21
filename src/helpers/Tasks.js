@@ -27,12 +27,11 @@ export default class ChecksService {
     }
 
     const data = await this.response.json();
-    console.log(data);
     return data;
   }
   async createTask(json) {
     const body = { ...json, base: true };
-    const path = 'teachers/checks/201/check_jobs';
+    const path = 'teachers/checks/11004/check_jobs';
     this.response = await fetch(`${base_url}${path}`, {
       method: 'POST',
       headers: {

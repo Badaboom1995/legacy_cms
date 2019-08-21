@@ -47,7 +47,6 @@ class CreateTest extends React.Component {
     const Request = new Tasks();
     Request.getTasks().then(response => {
       this.setState(() => ({ tasks: response }));
-      console.log(response);
     });
   };
   deleteTask = () => {

@@ -12,6 +12,7 @@
     "directory-named-webpack-plugin": "^4.0.1",
     "history": "^4.9.0",
     "husky": "^2.5.0",
+    "mathjax": "^2.7.5",
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
