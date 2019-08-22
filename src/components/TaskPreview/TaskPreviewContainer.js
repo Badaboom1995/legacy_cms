@@ -60,13 +60,13 @@ class TaskPreviewContainer extends React.Component {
                     {answers.map((answer, index) => {
                       return (
                         <li
-                          className={`task-preview__generation-answer 
+                          className={`task-preview__generation-answer
                         ${generation.rightAnswers &&
                           generation.rightAnswers.includes(answer) &&
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
-                          {generation.rightAnswers ? answer : answer.question}
+                          {generation.rightAnswers ? answer : answer.value}
                         </li>
                       );
                     })}
