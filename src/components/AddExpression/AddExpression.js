@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import TextInput from 'components/TextInput/TextInput';
+import TextUtilit from 'components/TextUtilit/TextUtilit';
 import { addExpression } from 'actions/general';
 import './add-expression.scss';
 
@@ -12,7 +14,7 @@ class AddExpression extends React.Component {
 
   RegExps = {
     inputs: /%\{([^{}]+)\}/g,
-    dropdown: /%\{([^|{}]+\|?){2,5}\}/g, // От двух до пяти вариантов в дропдауне
+    dropdown: /%\{([^|{}]+\|?){2,4}\}/g, // От двух до четырех вариантов в дропдауне
   };
 
   onChange = value => {
@@ -32,10 +34,11 @@ class AddExpression extends React.Component {
         answers: {},
         value,
       };
+
       let charCode = 97;
       expression.question = value.replace(regexp, (str, match) => {
         const char = String.fromCharCode(charCode);
-        console.log(char, match);
+        console.log(char, str, match);
         if (kind === 'inputs') {
           expression.answers[char] = match;
         } else if (kind === 'dropdown') {
@@ -43,8 +46,8 @@ class AddExpression extends React.Component {
             values: [],
             expected: null,
           };
-          // выражение с ретроспективной проверкой
-          str.replace(/((?<=(?:{|\|))[^|{}]+)(?=(?:\||}))/g, (raw, variant) => {
+
+          str.replace(/\{?([^|{}]+)(?:\}|\|)/g, (raw, variant) => {
             console.log(raw, variant);
             let ddValue = variant;
             if (variant.slice(-1) === '*') {

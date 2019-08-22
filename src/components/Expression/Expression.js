@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './expression.scss';
 import { removeExpression } from 'actions/general';
+import TextUtilit from 'components/TextUtilit/TextUtilit';
 
 class Expression extends React.Component {
   removeExpression = () => {
@@ -11,6 +12,7 @@ class Expression extends React.Component {
   render() {
     const { index, expression } = this.props;
     const { value } = expression;
+
     return (
       <li
         className={`expression__item`}
@@ -18,7 +20,7 @@ class Expression extends React.Component {
         data-key={index}
         onDoubleClick={this.removeExpression}
       >
-        {value}
+        {TextUtilit.styleText(value)}
       </li>
     );
   }
