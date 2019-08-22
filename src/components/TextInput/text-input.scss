@@ -1,9 +1,23 @@
 .text-input {
+  position: relative;
   margin-bottom: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 30px;
+  &__switch-mode {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 5px;
+    top: 38px;
+    border-radius: 50%;
+    border: none;
+  }
+  .math {
+    position: absolute;
+    left: 150px;
+  }
 }
 .text-input__field {
   flex-grow: 1;

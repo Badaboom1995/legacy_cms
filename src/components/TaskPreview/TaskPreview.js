@@ -9,7 +9,6 @@ class TaskPreview extends React.Component {
   deleteGeneration = index => {
     this.props.dispatch(removeGeneration(index));
   };
-
   renderGeneration = generation => {
     const { kind } = generation;
     let result = '';
@@ -34,6 +33,7 @@ class TaskPreview extends React.Component {
       result = (
         <ul className="task-preview__generations">
           {generation.expressions.map((exp, index) => {
+            console.log(exp);
             return (
               <li className={`task-preview__generation-answer`} key={index}>
                 {exp.value}

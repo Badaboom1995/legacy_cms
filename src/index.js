@@ -18,7 +18,6 @@ const store = configureStore();
 store.subscribe(() => {
   // const state = store.getState();
 });
-
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <Provider store={store}>

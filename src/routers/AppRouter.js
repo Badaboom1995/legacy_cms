@@ -6,6 +6,7 @@ import CreateTest from 'pages/CreateTest/CreateTest';
 import TestsList from 'pages/TestsList/TestsList';
 import NotFoundPage from '../pages/NotFoundPage';
 import Auth from '../HOC/Auth';
+import MathJax from 'pages/Math';
 
 export const history = createBrowserHistory();
 
@@ -40,6 +41,7 @@ const AppRouter = () => (
         <Route path="/b2t/constructor/" component={Home} exact />
         <Route path="/b2t/constructor/tests" component={CreateTest} />
         <Route path="/b2t/constructor/tests_list" component={TestsList} />
+        <Route path="/b2t/constructor/math" component={MathJax} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

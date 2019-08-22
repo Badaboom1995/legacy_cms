@@ -50,6 +50,7 @@ class AddTaskInfo extends React.Component {
             placeholder="Например: Найди значение функции по графику"
             onChange={this.onChange}
             label="Название задания"
+            mathMode
           />
           <Select
             name="difficulty"
