@@ -6,7 +6,7 @@ import KaTex from 'components/KaTex/KaTex';
 class TextInput extends React.Component {
   state = {
     value: '',
-    mathMode: true,
+    mathMode: false,
   };
 
   onInputChange = () => {
