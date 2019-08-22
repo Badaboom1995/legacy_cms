@@ -41,7 +41,7 @@ class TextInput extends React.Component {
         {this.props.mathMode && (
           <button
             style={
-              this.state.mathMode ? { backgroundСolor: '#696773' } : { backgroundСolor: '#C9C7C3' }
+              this.state.mathMode ? { backgroundColor: '#696773' } : { backgroundColor: '#C9C7C3' }
             }
             className="text-input__switch-mode"
             onClick={this.switchMode}

@@ -25,7 +25,7 @@ class AddExpression extends React.Component {
     const regexp = this.RegExps[kind];
     const isValid = value.search(regexp) !== -1;
     const isUnique = this.props.general.expressions.every(exp => exp.value !== value);
-    console.log(isValid, isUnique, regexp, value)
+    console.log(isValid, isUnique, regexp, value);
     if (isValid && isUnique) {
       const expression = {
         question: '',
@@ -88,12 +88,13 @@ class AddExpression extends React.Component {
           value={value}
           onChange={this.onChange}
           label="Добавить выражение"
+          mathMode
         />
-        {wrongExpression &&
+        {wrongExpression && (
           <div className="expression-warning">
             {`Выражение должно содержать хотя бы одно место для ${warningText}`}
           </div>
-        }
+        )}
         <button className="button button--add" onClick={this.addExpression}>
           Добавить выражение
         </button>
