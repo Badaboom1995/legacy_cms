@@ -6,7 +6,6 @@ import CreateTest from 'pages/CreateTest/CreateTest';
 import TestsList from 'pages/TestsList/TestsList';
 import NotFoundPage from '../pages/NotFoundPage';
 import Auth from '../HOC/Auth';
-import MathJax from 'pages/Math';
 
 export const history = createBrowserHistory();
 
