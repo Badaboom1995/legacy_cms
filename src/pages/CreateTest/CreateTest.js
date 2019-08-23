@@ -210,8 +210,8 @@ class CreateTest extends React.Component {
             }}
             label="Тип"
           />
-          <SelectElement type="topic" name="Тема" getElementsAsync={this.getTopics} />
-          <SelectElement type="chapter" name="Раздел" getElementsAsync={this.getChapters} />
+          <SelectElement type="topic" name="Раздел" getElementsAsync={this.getTopics} />
+          <SelectElement type="chapter" name="Тема" getElementsAsync={this.getChapters} />
           <button onClick={this.createCheck} className="button">
             Создать тест
           </button>
