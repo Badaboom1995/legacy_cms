@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
 import { addTaskToTest } from 'actions/checks';
+import TextUtilit from 'components/TextUtilit/TextUtilit';
 
 class TaskPreviewContainer extends React.Component {
   state = {
@@ -54,7 +55,7 @@ class TaskPreviewContainer extends React.Component {
               const answers = generation.answers || generation.expressions || [];
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
-                  <h3 className="task-preview__title">{generation.text}</h3>
+                  <h3 className="task-preview__title">{TextUtilit.styleText(generation.text)}</h3>
                   <span className="task-preview__subtitle">{generation.kind}</span>
                   <ul className="task-preview__generations">
                     {answers.map((answer, index) => {
@@ -66,7 +67,7 @@ class TaskPreviewContainer extends React.Component {
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
-                          {generation.rightAnswers ? answer : answer.value}
+                          {TextUtilit.styleText(generation.rightAnswers ? answer : answer.value)}
                         </li>
                       );
                     })}
