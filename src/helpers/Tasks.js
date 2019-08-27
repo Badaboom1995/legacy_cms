@@ -147,6 +147,6 @@ export default class ChecksService {
     return data;
   }
   async getTasks() {
-    return this.request('GET', 'teachers/check_jobs');
+    return this.request('GET', 'teachers/check_jobs?filters[base]=true');
   }
 }
