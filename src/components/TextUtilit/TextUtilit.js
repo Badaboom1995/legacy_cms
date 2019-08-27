@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import ReactHtmlParser from 'react-html-parser';
 
 class TextUtilit {
   RegExps = {
-    bold: /%bf{([^}]+)}/g,
-    italic: /%it{([^}]+)}/g,
+    bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
+      italic: /(?:\*|_)(.+)(?:\*|_)/g,
   };
 
   createMarkdownText(text) {
@@ -21,7 +21,18 @@ class TextUtilit {
   }
 
   styleText(text) {
-    return <ReactMarkdown source={text} />
+    const { bold, italic } = this.RegExps;
+
+    let handledText = text;
+    if (bold.test(text)) {
+      handledText = handledText.replace(bold, '<strong>$1</strong>');
+    }
+
+    if (italic.test(text)) {
+      handledText = handledText.replace(italic, '<em>$1</em>');
+    }
+    const result = (handledText === text) ? text : ReactHtmlParser(handledText);
+    return result;
   }
 }
 
