@@ -69,7 +69,9 @@ class Home extends React.Component {
     }, {});
 
     genData[fieldName] = valuesObject;
-    console.log(genData);
+    if (this.props.general.columns) {
+      genData.params = { columns: parseInt(this.props.general.columns) };
+    }
     return genData;
   };
 

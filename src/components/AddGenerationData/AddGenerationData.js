@@ -100,6 +100,12 @@ class AddTaskInfo extends React.Component {
         <div className="content__fragment">
           <TextInput name="text" onChange={this.onChange} label="Текст задания" mathMode />
           <Select
+            name="columns"
+            options={['1', '2']}
+            onChange={this.onChange}
+            label="Колонки(optional)"
+          />
+          <Select
             name="kind"
             modificators="select--in-row"
             options={this.getOptions()}
