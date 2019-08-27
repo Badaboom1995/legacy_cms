@@ -92,7 +92,7 @@ export default class ChecksService {
     return data;
   }
 
-  async createCheck(name, subject, grade, difficulty, type, chapter, topic) {
+  async createCheck(name, subject, grade, difficulty, type, chapter, topic, time_limit) {
     console.log(name, subject, grade);
     const path = `teachers/checks`;
     const response = await fetch(`${base_url}${path}`, {

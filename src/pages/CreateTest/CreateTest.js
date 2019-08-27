@@ -102,17 +102,8 @@ class CreateTest extends React.Component {
   };
 
   createCheck = () => {
-    const { test_name, subject, grade, difficulty, type } = this.props.checks;
+    const { test_name, subject, grade, difficulty, type, time_limit } = this.props.checks;
     const Request = new Checks();
-    console.log(
-      test_name,
-      subject,
-      grade,
-      difficulty,
-      type,
-      this.getChapterId(),
-      this.getTopicId(),
-    );
     Request.createCheck(
       test_name,
       subject.id,
@@ -121,6 +112,7 @@ class CreateTest extends React.Component {
       type,
       this.getChapterId(),
       this.getTopicId(),
+      parseInt(time_limit),
     ).then(res => {
       this.props.dispatch(addOption('id', res.id));
       this.setState(() => ({
@@ -175,6 +167,12 @@ class CreateTest extends React.Component {
             placeholder="Контрольная для седьмого класса"
             onChange={this.onChange}
             label="Название теста"
+          />
+          <TextInput
+            name="time_limit"
+            placeholder="Время в минутах"
+            onChange={this.onChange}
+            label="Время на тест"
           />
           <Select
             name="grade"
