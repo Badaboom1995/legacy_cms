@@ -29,10 +29,10 @@ class AddTaskInfo extends React.Component {
       name: 'inputs',
       component: <ExpressionsList />,
     },
-    // {
-    //   name: 'dropdown',
-    //   component: <ExpressionsList />,
-    // },
+    {
+      name: 'dropdown',
+      component: <ExpressionsList />,
+    },
     {
       name: 'Перетаскивание',
       component: <DragAndDrop />,
@@ -56,7 +56,6 @@ class AddTaskInfo extends React.Component {
   saveGeneration = () => {
     const { answers, kind, rightAnswers, text, expressions } = this.props.general;
     let generation = { kind, text };
-    console.log(text);
     if (['variant', 'variants', 'variants_all'].some(name => name === kind)) {
       generation = { ...generation, answers, rightAnswers };
     } else if (kind === 'inputs' || kind === 'dropdown') {
