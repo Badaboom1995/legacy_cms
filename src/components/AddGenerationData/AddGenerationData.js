@@ -78,7 +78,7 @@ class AddTaskInfo extends React.Component {
     } else if (kind === 'inputs' || kind === 'dropdown') {
       return (
         <React.Fragment>
-          <AddExpression kind={kind}/>
+          <AddExpression kind={kind} />
           {mechanicOptions.filter(item => item.name === kind)[0].component}
         </React.Fragment>
       );
@@ -97,7 +97,13 @@ class AddTaskInfo extends React.Component {
     return (
       <div className="content__wrap">
         <div className="content__fragment">
-          <TextInput name="text" onChange={this.onChange} label="Текст задания" />
+          <TextInput name="text" onChange={this.onChange} label="Текст задания" mathMode />
+          <Select
+            name="columns"
+            options={['1', '2']}
+            onChange={this.onChange}
+            label="Колонки(optional)"
+          />
           <Select
             name="kind"
             modificators="select--in-row"

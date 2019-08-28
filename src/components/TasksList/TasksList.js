@@ -12,10 +12,15 @@ class TaskPreview extends React.Component {
     Request.deleteTask(id);
   };
   render() {
+    const filteredTasks =
+      this.props.tasks &&
+      this.props.tasks.filter(item => {
+        return item.base;
+      });
     return (
       <div>
         {this.props.tasks &&
-          this.props.tasks.map((item, index) => (
+          filteredTasks.map((item, index) => (
             <TasksPreviewFetched
               generationsHidden
               key={index}

@@ -24,16 +24,19 @@ class Home extends React.Component {
     this.props.dispatch(addOption(name, value));
   };
   getTaskObject = () => {
-    const { difficulty, name, subject, grade, chapter } = this.props.tasks;
+    const { difficulty, name, subject, grade } = this.props.tasks;
+    const chapterObj = this.props.tasks.chapters.filter(item => {
+      return item.name == this.props.tasks.chapter;
+    })[0];
     const taskObject = {
       subject_id: subject.id,
       name: name,
       subject: subject.id.toString(),
       learning_level_id: grade,
       difficulty: difficulty,
-      chapter_id: this.props.tasks.chapters.filter(item => {
-        return item.name == this.props.tasks.chapter;
-      })[0].id,
+      chapter_id: chapterObj.id,
+      topic_id: chapterObj.topic_id,
+      not_for_teacher: true,
     };
     console.log(taskObject);
     return taskObject;
@@ -69,7 +72,9 @@ class Home extends React.Component {
     }, {});
 
     genData[fieldName] = valuesObject;
-    console.log(genData);
+    if (this.props.general.columns) {
+      genData.params = { columns: parseInt(this.props.general.columns) };
+    }
     return genData;
   };
 

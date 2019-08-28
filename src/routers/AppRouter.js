@@ -40,7 +40,6 @@ const AppRouter = () => (
         <Route path="/b2t/constructor/" component={Home} exact />
         <Route path="/b2t/constructor/tests" component={CreateTest} />
         <Route path="/b2t/constructor/tests_list" component={TestsList} />
-        <Route path="/b2t/constructor/math" component={MathJax} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

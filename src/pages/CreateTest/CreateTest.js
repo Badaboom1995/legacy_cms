@@ -102,17 +102,8 @@ class CreateTest extends React.Component {
   };
 
   createCheck = () => {
-    const { test_name, subject, grade, difficulty, type } = this.props.checks;
+    const { test_name, subject, grade, difficulty, type, time_limit } = this.props.checks;
     const Request = new Checks();
-    console.log(
-      test_name,
-      subject,
-      grade,
-      difficulty,
-      type,
-      this.getChapterId(),
-      this.getTopicId(),
-    );
     Request.createCheck(
       test_name,
       subject.id,
@@ -121,6 +112,7 @@ class CreateTest extends React.Component {
       type,
       this.getChapterId(),
       this.getTopicId(),
+      parseInt(time_limit),
     ).then(res => {
       this.props.dispatch(addOption('id', res.id));
       this.setState(() => ({
@@ -176,6 +168,12 @@ class CreateTest extends React.Component {
             onChange={this.onChange}
             label="Название теста"
           />
+          <TextInput
+            name="time_limit"
+            placeholder="Время в минутах"
+            onChange={this.onChange}
+            label="Время на тест"
+          />
           <Select
             name="grade"
             modificators="select--in-row"
@@ -210,8 +208,8 @@ class CreateTest extends React.Component {
             }}
             label="Тип"
           />
-          <SelectElement type="topic" name="Тема" getElementsAsync={this.getTopics} />
-          <SelectElement type="chapter" name="Раздел" getElementsAsync={this.getChapters} />
+          <SelectElement type="topic" name="Раздел" getElementsAsync={this.getTopics} />
+          <SelectElement type="chapter" name="Тема" getElementsAsync={this.getChapters} />
           <button onClick={this.createCheck} className="button">
             Создать тест
           </button>

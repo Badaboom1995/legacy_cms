@@ -6,7 +6,7 @@ import KaTex from 'components/KaTex/KaTex';
 class TextInput extends React.Component {
   state = {
     value: '',
-    mathMode: true,
+    mathMode: false,
   };
 
   onInputChange = () => {
@@ -41,9 +41,7 @@ class TextInput extends React.Component {
         {this.props.mathMode && (
           <button
             style={
-              this.state.mathMode
-                ? { 'background-color': '#696773' }
-                : { 'background-color': '#C9C7C3' }
+              this.state.mathMode ? { backgroundColor: '#696773' } : { backgroundColor: '#C9C7C3' }
             }
             className="text-input__switch-mode"
             onClick={this.switchMode}

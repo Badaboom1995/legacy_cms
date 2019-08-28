@@ -27,6 +27,7 @@ class AddAnswer extends React.Component {
           value={this.state.answer}
           onChange={this.onChange}
           label="Добавить ответ"
+          mathMode
         />
         <button className="button button--add" onClick={this.addAnswer}>
           Добавить ответ

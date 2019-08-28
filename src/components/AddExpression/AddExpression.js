@@ -100,12 +100,13 @@ class AddExpression extends React.Component {
           value={value}
           onChange={this.onChange}
           label="Добавить выражение"
+          mathMode
         />
-        {wrongExpression &&
+        {wrongExpression && (
           <div className="expression-warning">
             {`Ожидаемое выражение: ${warningText}`}
           </div>
-        }
+        )}
         <button className="button button--add" onClick={this.addExpression}>
           Добавить выражение
         </button>
