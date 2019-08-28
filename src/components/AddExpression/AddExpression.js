@@ -12,22 +12,17 @@ class AddExpression extends React.Component {
     wrongExpression: false,
   };
 
-  RegExps = {
-    b2t: /%b2t\{((%\{.+?\})+)\}%/g,
-    inputs: /%\{([^{}]+)\}/g,
-    dropdown: /%\{(([^|{}]+\|?){2,4})\}/g, // От двух до четырех вариантов в дропдауне
-  };
-
   onChange = value => {
     this.setState(() => ({ value, wrongExpression: false }));
   };
 
   addExpression = (e) => {
     e.persist();
+    const { RegExps } = TextUtilit;
     const { kind } = this.props;
     const value = String(this.state.value);
-    const mainRegexp = this.RegExps.b2t;
-    const kindRegexp = this.RegExps[kind];
+    const mainRegexp = RegExps.b2t;
+    const kindRegexp = RegExps[kind];
     const isValid = mainRegexp.test(value) && kindRegexp.test(value);
     const isUnique = this.props.general.expressions.every(exp => exp.value !== value);
     console.log(isValid, isUnique, value)
@@ -50,7 +45,7 @@ class AddExpression extends React.Component {
               expected: null,
             };
 
-            str.replace(/\{?([^|{}]+)(?:\}|\|)/g, (raw, variant) => {
+            str.replace(RegExps.dropdownInner, (raw, variant) => {
               console.log(raw, variant);
               let ddValue = variant;
               if (variant.slice(-1) === '*') {

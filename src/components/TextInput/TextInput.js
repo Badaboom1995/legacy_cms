@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './text-input.scss';
 import KaTex from 'components/KaTex/KaTex';
+import TextUtilit from 'components/TextUtilit/TextUtilit';
 
 class TextInput extends React.Component {
   state = {
@@ -47,7 +48,12 @@ class TextInput extends React.Component {
             onClick={this.switchMode}
           ></button>
         )}
-        {this.props.mathMode && this.state.mathMode && <KaTex math={this.state.value} />}
+        {(this.props.mathMode && this.state.mathMode)
+          ? <div className="math">
+              {TextUtilit.handleText(this.state.value)}
+            </div>
+          : ''
+        }
       </div>
     );
   }
