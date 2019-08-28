@@ -6,7 +6,7 @@ class TextUtilit {
   RegExps = {
     markdown: /%m\{(.+?)\}%/g,
     latex: /%l\{(.+?)\}%/g,
-    b2t: /%b2t\{((%\{.+?\})+)\}%/g,
+    b2t: /%b2t\{((%\{.+?\})+(?:.)*?)\}%/g,
     bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
     italic: /(?:\*|_)(.+)(?:\*|_)/g,
     inputs: /%\{([^|]+?)\}/g,
@@ -14,15 +14,16 @@ class TextUtilit {
     dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
   };
 
+
   Kinds = ['inputs', 'dropdown'];
 
-  handleText(text, kind = null) {
+  handleText(text) {
     const { markdown, latex, b2t } = this.RegExps;
     let result = text;
     let needParse = false;
 
     if (b2t.test(text)) {
-      result = this.createB2tText(result, kind);
+      result = this.createB2tText(result);
     }
 
     if (markdown.test(result)) {
