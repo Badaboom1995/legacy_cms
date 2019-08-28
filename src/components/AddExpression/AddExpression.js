@@ -13,57 +13,66 @@ class AddExpression extends React.Component {
   };
 
   RegExps = {
+    b2t: /%b2t\{((%\{.+?\})+)\}%/g,
     inputs: /%\{([^{}]+)\}/g,
-    dropdown: /%\{([^|{}]+\|?){2,4}\}/g, // От двух до четырех вариантов в дропдауне
+    dropdown: /%\{(([^|{}]+\|?){2,4})\}/g, // От двух до четырех вариантов в дропдауне
   };
 
   onChange = value => {
     this.setState(() => ({ value, wrongExpression: false }));
   };
 
-  addExpression = () => {
+  addExpression = (e) => {
+    e.persist();
     const { kind } = this.props;
     const value = String(this.state.value);
-    const regexp = this.RegExps[kind];
-    const isValid = value.search(regexp) !== -1;
+    const mainRegexp = this.RegExps.b2t;
+    const kindRegexp = this.RegExps[kind];
+    const isValid = mainRegexp.test(value) && kindRegexp.test(value);
     const isUnique = this.props.general.expressions.every(exp => exp.value !== value);
-    console.log(isValid, isUnique, regexp, value);
+    console.log(isValid, isUnique, value)
     if (isValid && isUnique) {
       const expression = {
         question: '',
         answers: {},
-        value,
       };
 
       let charCode = 97;
-      expression.question = value.replace(regexp, (str, match) => {
-        const char = String.fromCharCode(charCode);
-        console.log(char, str, match);
-        if (kind === 'inputs') {
-          expression.answers[char] = match;
-        } else if (kind === 'dropdown') {
-          expression.answers[char] = {
-            values: [],
-            expected: null,
-          };
+      expression.question = value.replace(mainRegexp, (b2tPlace, b2texp) => {
+        const question = b2texp.replace(kindRegexp, (str, match) => {
+          const char = String.fromCharCode(charCode);
+          console.log(char, str, match);
+          if (kind === 'inputs') {
+            expression.answers[char] = match;
+          } else if (kind === 'dropdown') {
+            expression.answers[char] = {
+              values: [],
+              expected: null,
+            };
 
-          str.replace(/\{?([^|{}]+)(?:\}|\|)/g, (raw, variant) => {
-            console.log(raw, variant);
-            let ddValue = variant;
-            if (variant.slice(-1) === '*') {
-              ddValue = variant.slice(0, -1);
-              expression.answers[char].expected = ddValue;
-            }
-            expression.answers[char].values.push(ddValue);
-          });
-        }
+            str.replace(/\{?([^|{}]+)(?:\}|\|)/g, (raw, variant) => {
+              console.log(raw, variant);
+              let ddValue = variant;
+              if (variant.slice(-1) === '*') {
+                ddValue = variant.slice(0, -1);
+                expression.answers[char].expected = ddValue;
+              }
+              expression.answers[char].values.push(ddValue);
+            });
+          }
 
-        charCode++;
-        return `%\{${char}}`;
+          charCode++;
+          return `%\{${char}}`;
+        });
+
+        return question;
       });
 
-      console.log(expression);
+      expression.value = value.replace(mainRegexp, (b2tPlace, b2texp) => {
+        return b2texp.replace(kindRegexp, `${kind.substr(0,2)}($1)`);
+      });
       this.props.dispatch(addExpression(expression));
+      console.log(expression);
     } else if (isUnique) {
       this.setState({ wrongExpression: true });
     }
@@ -73,14 +82,14 @@ class AddExpression extends React.Component {
     const { kind } = this.props;
     const { wrongExpression, value } = this.state;
 
-    let warningText = 'инпута вида "%{значение}';
+    let warningText = '"%b2t{%{значение}}%"';
     switch (kind) {
       case 'inputs':
-        warningText = 'инпута вида "%{значение}';
+        warningText = '"%b2t{%{значение}}%"';
         break;
 
       case 'dropdown':
-        warningText = 'дропдауна вида "%{значение|правильное*|значение}"';
+        warningText = '"%b2t{%{значение|правильное*|значение}}%"';
         break;
     }
 
@@ -95,7 +104,7 @@ class AddExpression extends React.Component {
         />
         {wrongExpression && (
           <div className="expression-warning">
-            {`Выражение должно содержать хотя бы одно место для ${warningText}`}
+            {`Ожидаемое выражение: ${warningText}`}
           </div>
         )}
         <button className="button button--add" onClick={this.addExpression}>

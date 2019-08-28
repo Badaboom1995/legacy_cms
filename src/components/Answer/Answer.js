@@ -35,7 +35,7 @@ class Answer extends React.Component {
         onClick={this.chooseAnswer}
         onDoubleClick={this.removeAnswer}
       >
-        {TextUtilit.styleText(answer)}
+        {TextUtilit.handleText(answer)}
       </li>
     );
   }
