@@ -20,7 +20,7 @@ class Expression extends React.Component {
         data-key={index}
         onDoubleClick={this.removeExpression}
       >
-        {TextUtilit.styleText(value)}
+        {TextUtilit.handleText(value)}
       </li>
     );
   }
