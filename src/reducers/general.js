@@ -48,10 +48,37 @@ export default (state = generalReducerDefaultState, action) => {
           return item != action.answer;
         }),
       };
-    case 'CHANGE_OPTION':
+    case 'ADD_GENERAL_OPTION':
       return {
         ...state,
         [action.name]: action.value,
+      };
+    case 'GET_CHAPTERS':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'GET_TOPICS':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'GET_CHAPTERS':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'CHAPTERS_RECEIVED':
+      return {
+        ...state,
+        chapters: action.response,
+        chaptersNames: action.chaptersNames,
+      };
+    case 'TOPICS_RECEIVED':
+      return {
+        ...state,
+        topics: action.response,
+        topicsNames: action.topicsNames,
       };
     case 'SAVE_GENERATION':
       return {

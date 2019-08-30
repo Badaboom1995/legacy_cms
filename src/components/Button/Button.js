@@ -5,7 +5,7 @@ import './button.scss';
 class Button extends React.Component {
   render() {
     return (
-      <button onClick={this.props.onClick} className={`button ${this.props.className}`}>
+      <button onClick={this.props.onClick} className={`${this.props.className} button`}>
         {this.props.children}
       </button>
     );

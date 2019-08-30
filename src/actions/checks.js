@@ -2,7 +2,7 @@ export const createCheck = check => ({
   type: 'CREATE_CHECK',
   check,
 });
-export const addOption = (name, value) => ({
+export const addCheckOption = (name, value) => ({
   type: 'ADD_OPTION_CHECK',
   name,
   value,

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
 import { addOption } from 'actions/tasks';
+import { addCheckOption } from 'actions/checks';
 import Button from 'components/Button/Button';
 import './search-popup.scss';
 
@@ -12,7 +13,12 @@ class AddTaskInfo extends React.Component {
     filteredElements: [],
   };
   chooseElement = (name, value, e) => {
-    this.props.dispatch(addOption(name, value));
+    if (this.props.reduxStore === 'tasks') {
+      this.props.dispatch(addOption(name, value));
+    } else {
+      this.props.dispatch(addCheckOption(name, value));
+    }
+
     this.togglePopupVisibility(e);
   };
   togglePopupVisibility = e => {
@@ -20,19 +26,18 @@ class AddTaskInfo extends React.Component {
       this.setState(state => ({ popupVisible: state.popupVisible ? false : true }));
     }
   };
-  getElements = e => {
-    this.props.getElementsAsync().then(response => {
-      this.setState(() => ({
-        elements: response,
-      }));
-    });
-    this.togglePopupVisibility(e);
-  };
   filterSearchData = filter => {
     const filteredData = this.state.elements.filter(item => {
       return item.includes(filter);
     });
     this.setState(() => ({ filteredElements: filteredData }));
+  };
+  getCurrentElement = () => {
+    if (this.props.reduxStore === 'tasks') {
+      return this.props.tasks[this.props.type] || this.props.name;
+    } else {
+      return this.props.checks[this.props.type] || this.props.name;
+    }
   };
   render() {
     return (
@@ -53,12 +58,12 @@ class AddTaskInfo extends React.Component {
           <div className="search-popup__elements">
             {(this.state.filteredElements.length
               ? this.state.filteredElements
-              : this.state.elements
+              : this.props.elements || []
             ).map((item, index) => {
               return (
                 <div
                   onClick={e => {
-                    this.chooseElement(this.props.type || 'chapter', item, e);
+                    this.chooseElement(this.props.type, item, e);
                   }}
                   className="search-popup__elements-item"
                   key={index}
@@ -70,12 +75,12 @@ class AddTaskInfo extends React.Component {
           </div>
         </div>
         <Button
-          className={this.state.popupVisible && 'button--hidden'}
+          className={`${this.state.popupVisible && 'button--hidden'} button--select-element`}
           onClick={e => {
-            this.getElements(e);
+            this.togglePopupVisibility(e);
           }}
         >
-          {this.props.tasks[this.props.type] || this.props.name}
+          {this.getCurrentElement()}
         </Button>
       </div>
     );
@@ -84,6 +89,7 @@ class AddTaskInfo extends React.Component {
 
 const mapStateToProps = state => ({
   tasks: state.tasks,
+  checks: state.checks,
 });
 
 export default connect(mapStateToProps)(AddTaskInfo);

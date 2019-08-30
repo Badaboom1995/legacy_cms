@@ -27,35 +27,6 @@ body {
   display: flex;
   margin-bottom: 30px;
 }
-.button {
-  padding: 11px 15px 12px;
-  font-size: 14px;
-  line-height: 1.2;
-  text-align: center;
-  font-weight: bold;
-  letter-spacing: 0.9px;
-  color: #fff;
-  background-color: #2eb8f2;
-  border: 0;
-  border-radius: 10px;
-  margin-left: 15px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: normal;
-  &--popup {
-    background-color: #666;
-  }
-  &--add {
-    margin-bottom: 30px;
-  }
-  &--primary {
-    margin-bottom: 0px;
-    margin-left: 0;
-  }
-  &--select {
-    margin-left: 0;
-  }
-}
 .dashboard {
   display: flex;
 }

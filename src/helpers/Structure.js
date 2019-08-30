@@ -1,11 +1,6 @@
 import config from '../config';
 
 const base_url = config.api.url;
-const base_headers = {
-  Accept: 'application/json',
-  'Uchi-User-Type': 'Teacher',
-  crossDomain: true,
-};
 
 export default class ChecksService {
   async request(method, path, body) {

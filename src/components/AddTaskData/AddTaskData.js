@@ -6,6 +6,7 @@ import Structure from 'helpers/Structure';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
 
 import { addOption } from 'actions/tasks';
+import { getChapters } from 'actions/general';
 import SelectElement from 'components/SelectElement/SelectElement';
 
 class AddTaskInfo extends React.Component {
@@ -33,14 +34,13 @@ class AddTaskInfo extends React.Component {
     Request.getSubjects();
   };
   getChapters = () => {
+    this.props.dispatch(getChapters());
     const Request = new Structure();
     return Request.getChapters().then(response => {
-      this.props.dispatch(addOption('chapters', response));
       const topicNames = response.map(item => item.name);
       return topicNames;
     });
   };
-
   render() {
     return (
       <div className="content__wrapper">
@@ -73,7 +73,12 @@ class AddTaskInfo extends React.Component {
             onChange={this.onChange}
             label="Класс"
           />
-          <SelectElement name="Тема" type="chapter" getElementsAsync={this.getChapters} />
+          <SelectElement
+            name="Выбрать тему"
+            type="chapter"
+            elements={this.props.general.chaptersNames}
+            reduxStore="tasks"
+          />
         </div>
         <TaskPreview
           task={this.props.tasks}

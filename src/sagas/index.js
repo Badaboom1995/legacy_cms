@@ -1,27 +1,42 @@
 import { put, takeLatest, all, select } from 'redux-saga/effects';
 import Tasks from 'helpers/Tasks';
 import Checks from 'helpers/Checks';
+import Structure from 'helpers/Structure';
 
 const getStore = state => state;
 
-export function* getTasks() {
+function* getTasks() {
   const Request = new Tasks();
   const response = yield Request.getTasks();
   yield put({ type: 'TASKS_RECEIVED', tasks: response });
 }
 
-export function* getChecks() {
+function* getChecks() {
   const Request = new Checks();
   const response = yield Request.getChecks();
   yield put({ type: 'CHECKS_RECEIVED', checks: response });
 }
 
-export function* deleteChecks(action) {
+function* getChapters() {
+  const Request = new Structure();
+  const response = yield Request.getChapters();
+  const chaptersNames = response.map(item => item.name);
+  yield put({ type: 'CHAPTERS_RECEIVED', response, chaptersNames });
+}
+
+function* getTopics() {
+  const Request = new Structure();
+  const response = yield Request.getTopics();
+  const topicsNames = response.map(item => item.name);
+  yield put({ type: 'TOPICS_RECEIVED', response, topicsNames });
+}
+
+function* deleteChecks(action) {
   const Request = new Checks();
   yield Request.deleteCheck(action.id);
 }
 
-export function* addTask() {
+function* addTask() {
   const store = yield select(getStore);
   const Request = new Checks();
   Request.createCheckJobs(
@@ -39,6 +54,12 @@ function* actionWatcher() {
 function* getChecksWatcher() {
   yield takeLatest('GET_CHECKS', getChecks);
 }
+function* getChaptersWatcher() {
+  yield takeLatest('GET_CHAPTERS', getChapters);
+}
+function* getTopicsWatcher() {
+  yield takeLatest('GET_TOPICS', getTopics);
+}
 function* deleteCheckWatcher() {
   yield takeLatest('DELETE_CHECK', deleteChecks);
 }
@@ -47,5 +68,12 @@ function* addTaskWatcher() {
 }
 
 export default function* rootSaga() {
-  yield all([actionWatcher(), addTaskWatcher(), getChecksWatcher(), deleteCheckWatcher()]);
+  yield all([
+    actionWatcher(),
+    addTaskWatcher(),
+    getChecksWatcher(),
+    deleteCheckWatcher(),
+    getChaptersWatcher(),
+    getTopicsWatcher(),
+  ]);
 }

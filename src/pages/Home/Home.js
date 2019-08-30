@@ -6,7 +6,7 @@ import AddGenerationData from 'components/AddGenerationData/AddGenerationData';
 import FinishAddingTask from 'components/FinishAddingTask/FinishAddingTask';
 
 import { addOption, clearTasks } from 'actions/tasks';
-import { clearGenerations } from 'actions/general';
+import { clearGenerations, getChapters, getTopics } from 'actions/general';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
@@ -18,6 +18,8 @@ class Home extends React.Component {
   };
   componentDidMount() {
     this.checkTask();
+    this.props.dispatch(getChapters());
+    this.props.dispatch(getTopics());
   }
   onChange = (value, name) => {
     this.setState(() => ({ [name]: value }));
@@ -25,7 +27,7 @@ class Home extends React.Component {
   };
   getTaskObject = () => {
     const { difficulty, name, subject, grade } = this.props.tasks;
-    const chapterObj = this.props.tasks.chapters.filter(item => {
+    const chapterObj = this.props.general.chapters.filter(item => {
       return item.name == this.props.tasks.chapter;
     })[0];
     const taskObject = {
@@ -38,7 +40,6 @@ class Home extends React.Component {
       topic_id: chapterObj.topic_id,
       not_for_teacher: true,
     };
-    console.log(taskObject);
     return taskObject;
   };
   getGenerationData = item => {
@@ -97,9 +98,13 @@ class Home extends React.Component {
       .then(response => {
         this.props.general.generations.map(item => {
           this.createGeneration(item);
+          return response;
         });
       })
-      .then(console.log('this.props.tasks'));
+      .then(() => {
+        this.props.dispatch(clearTasks());
+        this.props.dispatch(clearGenerations());
+      });
   };
 
   createGeneration = item => {
@@ -111,7 +116,6 @@ class Home extends React.Component {
       check_job_id: this.state.task_id,
       data: this.getGenerationData(item),
     };
-    console.log(generation);
     const Request = new Tasks();
     Request.createGeneration(generation);
   };
@@ -119,7 +123,6 @@ class Home extends React.Component {
   checkTask = () => {
     const CheckTask = new Tasks();
     CheckTask.getTasks();
-    console.log('task state', this.props.tasks);
   };
   checkTasks = () => {
     const CheckTask = new Request();

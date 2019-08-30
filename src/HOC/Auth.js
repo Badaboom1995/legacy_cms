@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { compose } from 'react-redux';
 
 const Auth = () => WrappedComponent => {
   return class AuthHOC extends Component {

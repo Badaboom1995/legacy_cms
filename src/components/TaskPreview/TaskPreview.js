@@ -57,7 +57,7 @@ class TaskPreview extends React.Component {
           task={this.props.task}
           generations={this.props.generations}
           deleteGeneration={this.deleteGeneration}
-          generationsHidden={this.props.generationsHidden}
+          generationsHidden={generationsHidden}
         />
       </React.Fragment>
     );
