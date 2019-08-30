@@ -22,7 +22,7 @@ class TaskPreviewContainer extends React.Component {
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
-          <p className="task-preview__title">{name || 'Название'}</p>
+          <p className="task-preview__title">{TextUtilit.handleText(name) || 'Название'}</p>
           <p className="task-preview__subtitle">{chapter || 'Тема'}</p>
           <span className="task-preview__param">{difficulty || 'Cложность'}</span>
           <span className="task-preview__param">{grade ? `${grade} класс` : 'Класс'}</span>
