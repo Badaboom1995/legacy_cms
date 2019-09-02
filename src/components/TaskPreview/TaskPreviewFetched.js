@@ -23,16 +23,6 @@ class TaskPreviewFetched extends React.Component {
           return accum;
         }
       }, []);
-      console.log(rightAnswers);
-      // const answers = Object.keys(answersObj).map(item => {
-      //   return answersObj[item].name;
-      // });
-      // let rightAnswers = [];
-      // for (let prop in answersObj) {
-      //   if (answersObj[prop].right) {
-      //     rightAnswers = [...rightAnswers, answersObj[prop].name];
-      //   }
-      // }
       return {
         text: item.name,
         kind: item.kind,
