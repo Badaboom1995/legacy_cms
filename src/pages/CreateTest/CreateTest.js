@@ -102,7 +102,7 @@ class CreateTest extends React.Component {
     const { test_name, subject, grade, difficulty, type, time_limit } = this.props.checks;
     const Request = new Checks();
     Request.createCheck(
-      test_name,
+      test_name.trim(),
       subject.id,
       grade,
       difficulty,

@@ -32,7 +32,7 @@ class Home extends React.Component {
     })[0];
     const taskObject = {
       subject_id: subject.id,
-      name: name,
+      name: name.trim(),
       subject: subject.id.toString(),
       learning_level_id: grade,
       difficulty: difficulty,
