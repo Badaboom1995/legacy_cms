@@ -6,7 +6,7 @@ class TextUtilit {
   RegExps = {
     markdown: /%m\{(.+?)\}%/g,
     latex: /%l\{(.+?)\}%/g,
-    b2t: /%b2t\{((%\{.+?\})+)\}%/g,
+    b2t: /%b2t\{((?:.)*?(%\{.+?\})+(?:.)*?)\}%/g,
     bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
     italic: /(?:\*|_)(.+)(?:\*|_)/g,
     inputs: /%\{([^|]+?)\}/g,
@@ -14,15 +14,16 @@ class TextUtilit {
     dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
   };
 
+
   Kinds = ['inputs', 'dropdown'];
 
-  handleText(text, kind = null) {
+  handleText(text) {
     const { markdown, latex, b2t } = this.RegExps;
     let result = text;
     let needParse = false;
 
     if (b2t.test(text)) {
-      result = this.createB2tText(result, kind);
+      result = this.createB2tText(result);
     }
 
     if (markdown.test(result)) {
@@ -44,7 +45,6 @@ class TextUtilit {
     let result = text;
     result = result.replace(b2t, (b2tPlace, b2texp) => {
       let r = b2texp;
-      console.log(r)
       this.Kinds.forEach((kind) => {
         const kindRegexp = this.RegExps[kind];
         if (kindRegexp.test(r)) {
@@ -78,7 +78,6 @@ class TextUtilit {
     let prevExp;
     const lastMatch = text.match(latex).pop();
     text.replace(new RegExp(latex), (str, latexExp) => {
-      console.log(latexExp, str)
       const stringParts = text.split(str);
       if (prevExp) {
         const subPart = stringParts[0].split(prevExp)[1];
@@ -87,7 +86,7 @@ class TextUtilit {
 
       const [beforeText, afterText] = stringParts;
       content.push(
-        <React.Fragment>
+        <React.Fragment key={latexExp}>
           {needParse ? ReactHtmlParser(beforeText) : beforeText}
           <InlineMath>{latexExp}</InlineMath>
           {(str === lastMatch)

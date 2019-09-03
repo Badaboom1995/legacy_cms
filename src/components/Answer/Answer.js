@@ -12,7 +12,9 @@ class Answer extends React.Component {
   };
   chooseAnswer = e => {
     e.persist();
-    const answerChoosed = this.props.rightAnswers.includes(this.decodeHTML(e.target.innerHTML));
+    // const answerChoosed = this.props.rightAnswers.includes(this.decodeHTML(e.target.innerHTML));
+    const answerChoosed = this.props.rightAnswers.includes(e.target.dataset.answer);
+    console.log(answerChoosed)
     const timer = setTimeout(() => {
       if (answerChoosed) {
         this.props.unchooseAnswer(e);
@@ -34,6 +36,7 @@ class Answer extends React.Component {
         data-key={index}
         onClick={this.chooseAnswer}
         onDoubleClick={this.removeAnswer}
+        data-answer={answer}
       >
         {TextUtilit.handleText(answer)}
       </li>
