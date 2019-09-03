@@ -9,15 +9,16 @@
   background-color: #2eb8f2;
   border: 0;
   border-radius: 10px;
-  margin-left: 15px;
+  margin-right: 15px;
   cursor: pointer;
   font-size: 14px;
   font-weight: normal;
+  margin-bottom: 10px;
   &--popup {
     background-color: #666;
   }
   &--add {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
   &--primary {
     margin-bottom: 0px;

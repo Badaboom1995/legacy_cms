@@ -4,6 +4,7 @@ import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Structure from 'helpers/Structure';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
+import Button from 'components/Button/Button';
 
 import { addOption } from 'actions/tasks';
 import { getChapters } from 'actions/general';
