@@ -16,26 +16,28 @@ class Answers extends React.Component {
   };
   chooseAnswer = e => {
     e.persist();
+    // const righAnswer = this.decodeHTML(e.target.innerHTML);
+    const righAnswer = e.target.dataset.answer;
     if (this.props.multipleChoise) {
       this.setState(state => ({
-        rightAnswers: [...state.rightAnswers, this.decodeHTML(e.target.innerHTML)],
+        rightAnswers: [...state.rightAnswers, righAnswer],
       }));
-      this.props.dispatch(addRightAnswers(this.decodeHTML(e.target.innerHTML)));
+      this.props.dispatch(addRightAnswers(righAnswer));
     } else {
       this.setState(state => ({
-        rightAnswers: [this.decodeHTML(e.target.innerHTML)],
+        rightAnswers: [righAnswer],
       }));
-      this.props.dispatch(addRightAnswer(this.decodeHTML(e.target.innerHTML)));
+      this.props.dispatch(addRightAnswer(righAnswer));
     }
     console.log(this.props.general);
   };
 
   unchooseAnswer = e => {
     const rightAnswers = this.state.rightAnswers.filter(answer => {
-      return answer != this.decodeHTML(e.target.innerHTML);
+      return answer != e.target.dataset.answer;
     });
     this.setState(() => ({ rightAnswers }));
-    this.props.dispatch(removeRightAnswer(this.decodeHTML(e.target.innerHTML)));
+    this.props.dispatch(removeRightAnswer(e.target.dataset.answer));
     console.log(this.props.general);
   };
 
