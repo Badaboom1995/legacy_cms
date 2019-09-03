@@ -8,11 +8,12 @@
   z-index: 100;
   &--hidden {
     z-index: 1;
-    display: inline-block;
+    display: block;
     width: auto;
     height: auto;
     position: relative;
     background-color: transparent;
+    margin-bottom: 15px;
   }
   &__wrapper {
     position: absolute;

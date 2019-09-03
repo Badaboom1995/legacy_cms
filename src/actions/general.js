@@ -43,9 +43,15 @@ export const removeGeneration = index => ({
   index,
 });
 export const changeOption = (name, value) => ({
-  type: 'CHANGE_OPTION',
+  type: 'ADD_GENERAL_OPTION',
   name,
   value,
+});
+export const getChapters = () => ({
+  type: 'GET_CHAPTERS',
+});
+export const getTopics = () => ({
+  type: 'GET_TOPICS',
 });
 export const clearState = () => ({
   type: 'CLEAR_STATE',

@@ -13,9 +13,6 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: normal;
-  &--hidden {
-    display: none;
-  }
   &--popup {
     background-color: #666;
   }
@@ -25,5 +22,24 @@
   &--primary {
     margin-bottom: 0px;
     margin-left: 0;
+  }
+  &--select {
+    margin-left: 0;
+    padding-right: 30px;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      right: 9px;
+      top: 13px;
+      background-image: url('../../images/down-arrow.svg');
+      width: 15px;
+      height: 15px;
+      background-size: contain;
+    }
+  }
+  &--select-element {
+    margin-left: 0;
+    background-color: #2eb8f2;
   }
 }

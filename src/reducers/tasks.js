@@ -1,5 +1,5 @@
 const tasksReducerDefaultState = {
-  tasksList: [],
+  taskList: [],
   loading: false,
 };
 

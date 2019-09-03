@@ -113,6 +113,7 @@ export default class ChecksService {
           check_mode_id: type.id,
           chapter_id: chapter,
           topic_id: topic,
+          time_limit,
           base: true,
         },
       }),

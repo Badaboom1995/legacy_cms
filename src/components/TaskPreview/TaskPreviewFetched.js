@@ -10,24 +10,27 @@ class TaskPreviewFetched extends React.Component {
   componentDidMount = () => {};
   getGenerationsArray = () => {
     const generations = this.props.generations.map(item => {
-      const answersKey = Object.keys(item.data);
-      const answersObj = item.data[answersKey[0]];
-      const answers = Object.keys(answersObj).map(item => {
-        return answersObj[item].name;
-      });
-      let rightAnswers = [];
-      for (let prop in answersObj) {
-        if (answersObj[prop].right) {
-          rightAnswers = [...rightAnswers, answersObj[prop].name];
-        }
+      const answersObject = item.data.variants;
+      let answers = [];
+      for (const key in answersObject) {
+        answers = [...answers, answersObject[key]];
       }
+      let answersNames = answers.map(item => item.name);
+      let rightAnswers = answers.reduce((accum, item) => {
+        if (item.right) {
+          return [...accum, item.name];
+        } else {
+          return accum;
+        }
+      }, []);
       return {
         text: item.name,
         kind: item.kind,
-        answers,
+        answers: answersNames,
         rightAnswers,
       };
     });
+
     return generations;
   };
   getTaskObject = () => {

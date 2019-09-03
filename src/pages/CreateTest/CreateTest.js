@@ -7,10 +7,9 @@ import TextInput from 'components/TextInput/TextInput';
 import TasksList from 'components/TasksList/TasksList';
 import Select from 'components/Select/Select';
 import { getTasks } from 'actions/tasks';
-import { addTaskToTest, addOption } from 'actions/checks';
+import { addTaskToTest, addCheckOption } from 'actions/checks';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
 import SelectElement from 'components/SelectElement/SelectElement';
-
 import './create-test.scss';
 
 class CreateTest extends React.Component {
@@ -80,32 +79,30 @@ class CreateTest extends React.Component {
   };
   getTopics = () => {
     const Request = new Structure();
-    console.log('get topics');
     return Request.getTopics().then(response => {
-      console.log(response);
       this.props.dispatch(addOption('topics', response));
       const topicNames = response.map(item => item.name);
       return topicNames;
     });
   };
   getChapterId = () => {
-    const chapter = this.props.checks.chapters.filter(item => {
+    const chapter = this.props.general.chapters.filter(item => {
       return item.name === this.props.tasks.chapter;
     });
-    return chapter[0].id;
+    return chapter[0] && chapter[0].id;
   };
   getTopicId = () => {
-    const topic = this.props.checks.topics.filter(item => {
+    const topic = this.props.general.topics.filter(item => {
       return item.name === this.props.tasks.topic;
     });
-    return topic[0].id;
+    return topic[0] && topic[0].id;
   };
 
   createCheck = () => {
     const { test_name, subject, grade, difficulty, type, time_limit } = this.props.checks;
     const Request = new Checks();
     Request.createCheck(
-      test_name,
+      test_name.trim(),
       subject.id,
       grade,
       difficulty,
@@ -114,7 +111,7 @@ class CreateTest extends React.Component {
       this.getTopicId(),
       parseInt(time_limit),
     ).then(res => {
-      this.props.dispatch(addOption('id', res.id));
+      this.props.dispatch(addCheckOption('id', res.id));
       this.setState(() => ({
         check_id: res.id,
         check: res,
@@ -122,7 +119,7 @@ class CreateTest extends React.Component {
     });
   };
   onChange = (value, name) => {
-    this.props.dispatch(addOption(name, value));
+    this.props.dispatch(addCheckOption(name, value));
   };
   toggleTask = id => {
     if (this.state.choosedTasksIds.includes(id)) {
@@ -158,7 +155,6 @@ class CreateTest extends React.Component {
       <div className="content">
         <div className="content__main">
           <p className="content__title">Конструктор теста</p>
-
           <TasksList tasks={this.props.tasks.taskList} />
         </div>
         <div className="content__secondary">
@@ -208,9 +204,19 @@ class CreateTest extends React.Component {
             }}
             label="Тип"
           />
-          <SelectElement type="topic" name="Раздел" getElementsAsync={this.getTopics} />
-          <SelectElement type="chapter" name="Тема" getElementsAsync={this.getChapters} />
-          <button onClick={this.createCheck} className="button">
+          <SelectElement
+            reduxStore="checks"
+            type="topic"
+            name="Раздел"
+            elements={this.props.general.topicsNames}
+          />
+          <SelectElement
+            reduxStore="checks"
+            type="chapter"
+            name="Тема"
+            elements={this.props.general.chaptersNames}
+          />
+          <button onClick={this.createCheck} className="button button--select-element">
             Создать тест
           </button>
           {this.state.check.name && <h3 className="create-test__title">{this.state.check.name}</h3>}
