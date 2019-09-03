@@ -87,13 +87,13 @@ class CreateTest extends React.Component {
   };
   getChapterId = () => {
     const chapter = this.props.general.chapters.filter(item => {
-      return item.name === this.props.tasks.chapter;
+      return item.name === this.props.checks.chapter;
     });
     return chapter[0] && chapter[0].id;
   };
   getTopicId = () => {
     const topic = this.props.general.topics.filter(item => {
-      return item.name === this.props.tasks.topic;
+      return item.name === this.props.checks.topic;
     });
     return topic[0] && topic[0].id;
   };
