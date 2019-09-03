@@ -3,6 +3,7 @@ const generalReducerDefaultState = {
   answers: [],
   rightAnswers: [],
   generations: [],
+  learning_levels: [],
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -68,6 +69,16 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         loading: true,
       };
+    case 'GET_SUBJECTS':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'GET_LEARNING_LEVELS':
+      return {
+        ...state,
+        loading: true,
+      };
     case 'CHAPTERS_RECEIVED':
       return {
         ...state,
@@ -80,6 +91,16 @@ export default (state = generalReducerDefaultState, action) => {
         topics: action.response,
         topicsNames: action.topicsNames,
       };
+    case 'SUBJECTS_RECEIVED':
+      return {
+        ...state,
+        subjects: action.response,
+      };
+    case 'LEARNING_LEVELS_RECEIVED':
+      return {
+        ...state,
+        learning_levels: action.grades,
+      };
     case 'SAVE_GENERATION':
       return {
         ...state,
@@ -89,7 +110,6 @@ export default (state = generalReducerDefaultState, action) => {
       return {
         ...state,
         generations: state.generations.filter((item, index) => {
-          console.log(index, ':', action.index);
           return index != action.index;
         }),
       };

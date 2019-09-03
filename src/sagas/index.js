@@ -31,6 +31,20 @@ function* getTopics() {
   yield put({ type: 'TOPICS_RECEIVED', response, topicsNames });
 }
 
+function* getSubjects() {
+  const Request = new Structure();
+  const response = yield Request.getSubjects();
+  yield put({ type: 'SUBJECTS_RECEIVED', response });
+}
+function* getLearningLevels() {
+  const Request = new Structure();
+  const response = yield Request.getLearningLevels();
+  const grades = response.filter(item => {
+    return item.id < 49 && item.id != 6;
+  });
+  yield put({ type: 'LEARNING_LEVELS_RECEIVED', grades });
+}
+
 function* deleteChecks(action) {
   const Request = new Checks();
   yield Request.deleteCheck(action.id);
@@ -60,6 +74,12 @@ function* getChaptersWatcher() {
 function* getTopicsWatcher() {
   yield takeLatest('GET_TOPICS', getTopics);
 }
+function* getSubjectsWatcher() {
+  yield takeLatest('GET_TOPICS', getSubjects);
+}
+function* getLearningLevelsWatcher() {
+  yield takeLatest('GET_LEARNING_LEVELS', getLearningLevels);
+}
 function* deleteCheckWatcher() {
   yield takeLatest('DELETE_CHECK', deleteChecks);
 }
@@ -75,5 +95,7 @@ export default function* rootSaga() {
     deleteCheckWatcher(),
     getChaptersWatcher(),
     getTopicsWatcher(),
+    getSubjectsWatcher(),
+    getLearningLevelsWatcher(),
   ]);
 }
