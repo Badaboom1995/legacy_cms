@@ -25,7 +25,6 @@ class CreateTest extends React.Component {
   };
 
   componentDidMount() {
-    this.getTasks();
     this.props.dispatch(getTasks());
   }
 
@@ -42,16 +41,7 @@ class CreateTest extends React.Component {
       this.setState(state => ({ popupVisible: state.popupVisible ? false : true }));
     }
   };
-  getTasks = () => {
-    const Request = new Tasks();
-    Request.getTasks().then(response => {
-      this.setState(() => ({ tasks: response }));
-    });
-  };
-  deleteTask = () => {
-    const Request = new Tasks();
-    Request.deleteTask();
-  };
+
   onCustomChange = (value, name, list) => {
     console.log(list, value);
     const Obj = { name: value, id: list[value] };
@@ -87,15 +77,21 @@ class CreateTest extends React.Component {
   };
   getChapterId = () => {
     const chapter = this.props.general.chapters.filter(item => {
-      return item.name === this.props.tasks.chapter;
+      return item.name === this.props.checks.chapter;
     });
     return chapter[0] && chapter[0].id;
   };
   getTopicId = () => {
     const topic = this.props.general.topics.filter(item => {
-      return item.name === this.props.tasks.topic;
+      return item.name === this.props.checks.topic;
     });
     return topic[0] && topic[0].id;
+  };
+  getGradeId = () => {
+    const targetGrade = this.props.general.learning_levels.filter(grade => {
+      return grade.value == this.props.checks.grade;
+    });
+    return targetGrade[0].id;
   };
 
   createCheck = () => {
@@ -104,7 +100,7 @@ class CreateTest extends React.Component {
     Request.createCheck(
       test_name.trim(),
       subject.id,
-      grade,
+      this.getGradeId(),
       difficulty,
       type,
       this.getChapterId(),
@@ -173,7 +169,7 @@ class CreateTest extends React.Component {
           <Select
             name="grade"
             modificators="select--in-row"
-            options={this.grade}
+            options={this.props.learning_levels}
             onChange={this.onChange}
             label="Класс"
           />
@@ -242,6 +238,7 @@ const mapStateToProps = state => ({
   general: state.general,
   tasks: state.tasks,
   checks: state.checks,
+  learning_levels: state.general.learning_levels.map(item => item.value),
 });
 
 export default connect(mapStateToProps)(CreateTest);

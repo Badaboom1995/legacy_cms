@@ -6,7 +6,7 @@ import AddGenerationData from 'components/AddGenerationData/AddGenerationData';
 import FinishAddingTask from 'components/FinishAddingTask/FinishAddingTask';
 
 import { addOption, clearTasks } from 'actions/tasks';
-import { clearGenerations, getChapters, getTopics } from 'actions/general';
+import { clearGenerations } from 'actions/general';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
@@ -18,8 +18,6 @@ class Home extends React.Component {
   };
   componentDidMount() {
     this.checkTask();
-    this.props.dispatch(getChapters());
-    this.props.dispatch(getTopics());
   }
   onChange = (value, name) => {
     this.setState(() => ({ [name]: value }));
@@ -34,7 +32,7 @@ class Home extends React.Component {
       subject_id: subject.id,
       name: name.trim(),
       subject: subject.id.toString(),
-      learning_level_id: grade,
+      learning_level_id: this.getGradeId(),
       difficulty: difficulty,
       chapter_id: chapterObj.id,
       topic_id: chapterObj.topic_id,
@@ -78,7 +76,12 @@ class Home extends React.Component {
     }
     return genData;
   };
-
+  getGradeId = () => {
+    const targetGrade = this.props.general.learning_levels.filter(grade => {
+      return grade.value == this.props.tasks.grade;
+    });
+    return targetGrade[0].id;
+  };
   createTask = () => {
     return new Promise((resolve, reject) => {
       const Request = new Tasks();

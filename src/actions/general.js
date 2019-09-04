@@ -53,6 +53,12 @@ export const getChapters = () => ({
 export const getTopics = () => ({
   type: 'GET_TOPICS',
 });
+export const getSubjects = () => ({
+  type: 'GET_SUBJECTS',
+});
+export const getLearningLevels = () => ({
+  type: 'GET_LEARNING_LEVELS',
+});
 export const clearState = () => ({
   type: 'CLEAR_STATE',
 });

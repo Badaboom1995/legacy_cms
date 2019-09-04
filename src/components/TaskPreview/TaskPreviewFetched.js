@@ -38,7 +38,7 @@ class TaskPreviewFetched extends React.Component {
     return {
       chapter: chapter_id,
       difficulty,
-      grade: learning_level.value,
+      grade: learning_level && learning_level.value,
       subject: this.subjects[subject],
       name,
       id,

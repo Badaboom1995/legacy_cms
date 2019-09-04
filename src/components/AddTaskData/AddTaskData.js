@@ -4,6 +4,7 @@ import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Structure from 'helpers/Structure';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
+import Button from 'components/Button/Button';
 
 import { addOption } from 'actions/tasks';
 import { getChapters } from 'actions/general';
@@ -69,7 +70,7 @@ class AddTaskInfo extends React.Component {
           <Select
             name="grade"
             modificators="select--in-row"
-            options={this.grade}
+            options={this.props.learning_levels}
             onChange={this.onChange}
             label="Класс"
           />
@@ -93,6 +94,7 @@ class AddTaskInfo extends React.Component {
 const mapStateToProps = state => ({
   tasks: state.tasks,
   general: state.general,
+  learning_levels: state.general.learning_levels.map(item => item.value),
 });
 
 export default connect(mapStateToProps)(AddTaskInfo);

@@ -27,7 +27,7 @@ class AddTaskInfo extends React.Component {
     }
   };
   filterSearchData = filter => {
-    const filteredData = this.state.elements.filter(item => {
+    const filteredData = this.props.elements.filter(item => {
       return item.includes(filter);
     });
     this.setState(() => ({ filteredElements: filteredData }));
