@@ -3,21 +3,29 @@ import ReactHtmlParser from 'react-html-parser';
 import { InlineMath, BlockMath } from 'react-katex';
 
 class TextUtilit {
-  RegExps = {
-    markdown: /%m\{(.+?)\}%/g,
-    latex: /%l\{(.+?)\}%/g,
-    b2t: /%b2t\{((?:.)*?(%\{.+?\})+(?:.)*?)\}%/g,
-    bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
-    italic: /(?:\*|_)(.+)(?:\*|_)/g,
-    inputs: /%\{([^|]+?)\}/g,
-    dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
-    dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
+  static get RegExps() {
+    return {
+      markdown: /%m\{(.+?)\}%/g,
+      latex: /%l\{(.+?)\}%/g,
+      b2t: /%b2t\{((?:.)*?(%\{.+?\})+(?:.)*?)\}%/g,
+      bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
+      italic: /(?:\*|_)(.+)(?:\*|_)/g,
+      inputs: /%\{([^|]+?)\}/g,
+      dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
+      dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
+      numeric: /^[0-9.,+−]+$/g,
+      notNumeric: /[^0-9.,+−]/g,
+      text: /[^0-9]/g,
+      notText: /^[0-9]+$/g,
+      decimal: /\d+(\.|,)(\d+)?/,
+    }
   };
 
+  static get Kinds() {
+    return ['inputs', 'dropdown'];
+  }
 
-  Kinds = ['inputs', 'dropdown'];
-
-  handleText(text) {
+  static handleText(text) {
     const { markdown, latex, b2t } = this.RegExps;
     let result = text;
     let needParse = false;
@@ -40,7 +48,7 @@ class TextUtilit {
     return result;
   }
 
-  createB2tText(text) {
+  static createB2tText(text) {
     const { b2t } = this.RegExps;
     let result = text;
     result = result.replace(b2t, (b2tPlace, b2texp) => {
@@ -57,7 +65,7 @@ class TextUtilit {
     return result;
   }
 
-  createMarkdownText(text) {
+  static createMarkdownText(text) {
     const { markdown, bold, italic } = this.RegExps;
 
     let handledText = text.replace(markdown, '$1');
@@ -72,7 +80,7 @@ class TextUtilit {
     return handledText;
   }
 
-  createLatexText(text, needParse = false) {
+  static createLatexText(text, needParse = false) {
     const { latex } = this.RegExps;
     const content = [];
     let prevExp;
@@ -100,7 +108,7 @@ class TextUtilit {
     return content;
   }
 
-  styleText(text) {
+  static styleText(text) {
     const { bold, italic } = this.RegExps;
 
     let handledText = text;
@@ -114,6 +122,17 @@ class TextUtilit {
     const result = (handledText === text) ? text : ReactHtmlParser(handledText);
     return result;
   }
+
+  static handleDecimal(text) {
+    const { numeric, decimal } = this.RegExps;
+    let result = text;
+    if (numeric.test(text) && decimal.test(text)) {
+      result = text
+        .replace('.', ',')
+        .replace(/(,.*)(,|\.)/g, '$1');
+    }
+    return result;
+  }
 }
 
-export default new TextUtilit();
+export default TextUtilit;
