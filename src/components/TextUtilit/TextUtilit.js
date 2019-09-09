@@ -13,11 +13,11 @@ class TextUtilit {
       inputs: /%\{([^|]+?)\}/g,
       dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
       dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
-      numeric: /^[0-9.,+−]+$/g,
+      numericOnly: /^[0-9.,+−]+$/g,
       notNumeric: /[^0-9.,+−]/g,
       text: /[^0-9]/g,
-      notText: /^[0-9]+$/g,
-      decimal: /\d+(\.|,)(\d+)?/,
+      number: /(−?\d+(\.|,)?(\d+)?)/g,
+      rawNumber: /(?<!%(?:b2t|l)\{)(−?\d+(\.|,)?(\d+)?)(?!\}%)/g,
     }
   };
 
@@ -26,9 +26,13 @@ class TextUtilit {
   }
 
   static handleText(text) {
-    const { markdown, latex, b2t } = this.RegExps;
+    const { markdown, latex, b2t, rawNumber } = this.RegExps;
     let result = text;
     let needParse = false;
+
+    if (rawNumber.test(text)) {
+      result = this.handleSymbolsToLatex(result);
+    }
 
     if (b2t.test(text)) {
       result = this.createB2tText(result);
@@ -83,27 +87,34 @@ class TextUtilit {
   static createLatexText(text, needParse = false) {
     const { latex } = this.RegExps;
     const content = [];
-    let prevExp;
-    const lastMatch = text.match(latex).pop();
-    text.replace(new RegExp(latex), (str, latexExp) => {
-      const stringParts = text.split(str);
-      if (prevExp) {
-        const subPart = stringParts[0].split(prevExp)[1];
-        stringParts[0] = subPart;
+    let prevOffset = 0;
+    // const lastMatch = text.match(latex).pop();
+    text.replace(latex, (str, latexExp, offset) => {
+      // console.log(str, latexExp, offset, targetStr)
+      // const stringParts = text.split(str);
+      // if (prevOffset) {
+      //   const subPart = stringParts[0].split(prevExp)[1];
+      //   stringParts[0] = subPart;
+      // }
+
+      // let [beforeText, afterText] = stringParts;
+      let beforeText = text.substring(prevOffset, offset);
+      let afterText = text.substring(offset + str.length);
+      const isLast = (afterText.search(latex) === -1);
+      if (needParse) {
+        beforeText = ReactHtmlParser(beforeText);
+        afterText = ReactHtmlParser(afterText);
       }
 
-      const [beforeText, afterText] = stringParts;
       content.push(
-        <React.Fragment key={latexExp}>
-          {needParse ? ReactHtmlParser(beforeText) : beforeText}
+        <React.Fragment key={latexExp + offset}>
+          {beforeText}
           <InlineMath>{latexExp}</InlineMath>
-          {(str === lastMatch)
-          ? (needParse ? ReactHtmlParser(afterText) : afterText)
-          : ''}
+          {isLast ? afterText : ''}
         </React.Fragment>,
       );
 
-      prevExp = str;
+      prevOffset = offset + str.length;
     });
     return content;
   }
@@ -123,10 +134,20 @@ class TextUtilit {
     return result;
   }
 
-  static handleDecimal(text) {
-    const { numeric, decimal } = this.RegExps;
+  static handleSymbolsToLatex(text) {
+    const { rawNumber } = this.RegExps;
     let result = text;
-    if (numeric.test(text) && decimal.test(text)) {
+    if (rawNumber.test(text)) {
+      result = text.replace(rawNumber, '%l{$1}%');
+    }
+    console.log(result)
+    return result;
+  }
+
+  static handleDecimal(text) {
+    const { numeric } = this.RegExps;
+    let result = text;
+    if (numeric.test(text)) {
       result = text
         .replace('.', ',')
         .replace(/(,.*)(,|\.)/g, '$1');
