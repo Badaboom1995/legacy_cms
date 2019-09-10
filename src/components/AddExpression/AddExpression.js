@@ -37,7 +37,6 @@ class AddExpression extends React.Component {
       expression.question = value.replace(mainRegexp, (b2tPlace, b2texp) => {
         const question = b2texp.replace(kindRegexp, (str, match) => {
           const char = String.fromCharCode(charCode);
-          console.log(char, str, TextUtilit.handleDecimal(match));
           if (kind === 'inputs') {
             const inputValue = TextUtilit.handleDecimal(match);
             rawValue = rawValue.replace(match, inputValue);

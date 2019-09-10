@@ -41,7 +41,7 @@ class TextUtilit {
     }
 
     if (markdown.test(result)) {
-      result = this.createMarkdownText(text);
+      result = this.createMarkdownText(result);
       needParse = true;
     }
 
@@ -145,7 +145,6 @@ class TextUtilit {
       result = result.replace(rawNumber, '%l{$1}%');
     }
 
-    console.log(result)
     return result;
   }
 
@@ -153,34 +152,26 @@ class TextUtilit {
     const { customExp, rawNumber } = this.RegExps;
     let result = text;
     if (text.search(customExp) !== -1) {
-      const offsets = [];
       const allExps = [];
-      console.log(text.split(customExp));
-      text.replace(customExp, (str, m, offset) => {
-        offsets.push(offset);
+      text.replace(customExp, (str) => {
         allExps.push(str);
       });
-
       const allRest = text.split(customExp).map(textPart => textPart.replace(rawNumber, '%l{$1}%'));
-      const firstArr = (offsets[0] === 0) ? allExps : allRest;
-      const secondArr = (offsets[0] === 0) ? allRest : allExps;
-      console.log(firstArr, secondArr, offsets);
-      result = firstArr.map((txt1, id) => {
-        const txt2 = secondArr.shift()
+      result = allRest.map((txt1) => {
+        const txt2 = allExps.shift();
         const res = (txt2 !== undefined) ? txt1+txt2 : txt1;
         return res;
       }).join('');
-      if (secondArr.length > 0) result += secondArr.join('');
+      if (allExps.length > 0) result += allExps.join('');
     }
 
-    console.log(result);
     return result;
   }
 
   static handleDecimal(text) {
-    const { numeric } = this.RegExps;
+    const { number } = this.RegExps;
     let result = text;
-    if (numeric.test(text)) {
+    if (number.test(text)) {
       result = text
         .replace('.', ',')
         .replace(/(,.*)(,|\.)/g, '$1');
