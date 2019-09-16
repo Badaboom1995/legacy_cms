@@ -32,13 +32,15 @@ class AddExpression extends React.Component {
         answers: {},
       };
 
+      let rawValue = value;
       let charCode = 97;
       expression.question = value.replace(mainRegexp, (b2tPlace, b2texp) => {
         const question = b2texp.replace(kindRegexp, (str, match) => {
           const char = String.fromCharCode(charCode);
-          console.log(char, str, match);
           if (kind === 'inputs') {
-            expression.answers[char] = match;
+            const inputValue = TextUtilit.handleDecimal(match);
+            rawValue = rawValue.replace(match, inputValue);
+            expression.answers[char] = TextUtilit.handleDecimal(inputValue);
           } else if (kind === 'dropdown') {
             expression.answers[char] = {
               values: [],
@@ -63,7 +65,7 @@ class AddExpression extends React.Component {
         return question;
       });
 
-      expression.value = value.replace(mainRegexp, (b2tPlace, b2texp) => {
+      expression.value = rawValue.replace(mainRegexp, (b2tPlace, b2texp) => {
         return b2texp.replace(kindRegexp, `${kind.substr(0,2)}($1)`);
       });
       this.props.dispatch(addExpression(expression));
