@@ -31,6 +31,7 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.5",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "sass-loader": "^7.1.0",
     "typescript": "3.5.2",
     "uuid": "^3.3.2"
@@ -65,7 +66,7 @@
     "fs-extra": "0.30.0",
     "html-webpack-plugin": "2.24.0",
     "http-proxy-middleware": "0.17.3",
-    "jest": "18.1.0",
+    "jest": "^24.9.0",
     "json-loader": "0.5.4",
     "object-assign": "4.1.1",
     "postcss-loader": "1.2.2",

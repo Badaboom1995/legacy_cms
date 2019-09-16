@@ -21,7 +21,6 @@ export default class ChecksService {
     }
 
     const data = await this.response.json();
-    console.log(data);
     return data;
   }
   async getSubjects() {

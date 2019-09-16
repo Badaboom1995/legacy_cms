@@ -37,6 +37,11 @@
     padding: 20px;
     background-color: #fff;
   }
+  &__row {
+    width: 100%;
+    display: flex;
+    align-items: bottom;
+  }
   &__title {
     font-weight: normal;
     display: block;

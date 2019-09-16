@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
 import { addAnswer } from 'actions/general';
+import AddPicture from 'components/AddPicture/AddPicture';
 import './add-answer.scss';
 
 class AddAnswer extends React.Component {
@@ -32,6 +33,7 @@ class AddAnswer extends React.Component {
         <button className="button button--add" onClick={this.addAnswer}>
           Добавить ответ
         </button>
+        <AddPicture multiple />
       </div>
     );
   }
@@ -39,6 +41,7 @@ class AddAnswer extends React.Component {
 
 const mapStateToProps = state => ({
   general: state.general,
+  imagesAnswers: state.images.imagesAnswers,
 });
 
 export default connect(mapStateToProps)(AddAnswer);

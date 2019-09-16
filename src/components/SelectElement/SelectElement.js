@@ -86,7 +86,6 @@ class AddTaskInfo extends React.Component {
     );
   }
 }
-
 const mapStateToProps = state => ({
   tasks: state.tasks,
   checks: state.checks,

@@ -6,6 +6,7 @@ import Answers from 'components/Answers/Answers';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
 import ExpressionsList from 'components/ExpressionsList/ExpressionsList';
 import AddExpression from 'components/AddExpression/AddExpression';
+import AddPicture from 'components/AddPicture/AddPicture';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
 import Button from '@material-ui/core/Button';
@@ -42,6 +43,10 @@ class AddTaskInfo extends React.Component {
       component: <Answers multipleChoise />,
     },
   ];
+
+  state = {
+    images: [],
+  };
 
   getOptions = () => {
     const { mechanicOptions } = this;
@@ -98,12 +103,16 @@ class AddTaskInfo extends React.Component {
       <div className="content__wrap">
         <div className="content__fragment">
           <TextInput name="text" onChange={this.onChange} label="Текст задания" mathMode />
-          <Select
-            name="columns"
-            options={['1', '2']}
-            onChange={this.onChange}
-            label="Колонки(optional)"
-          />
+          <div className="content__row">
+            <Select
+              name="columns"
+              modificators="select--in-row"
+              options={['1', '2']}
+              onChange={this.onChange}
+              label="Колонки(optional)"
+            />
+            <AddPicture />
+          </div>
           <Select
             name="kind"
             modificators="select--in-row"

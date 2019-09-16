@@ -220,6 +220,8 @@ class CreateTest extends React.Component {
             {this.props.checks.tasks.map((item, index) => {
               return (
                 <TaskPreview
+                  noAddButton
+                  noDeleteButton
                   key={index}
                   task={item.task}
                   generations={item.generations}

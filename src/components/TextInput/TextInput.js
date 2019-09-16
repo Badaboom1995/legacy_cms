@@ -48,12 +48,11 @@ class TextInput extends React.Component {
             onClick={this.switchMode}
           ></button>
         )}
-        {(this.props.mathMode && this.state.mathMode)
-          ? <div className="math">
-              {TextUtilit.handleText(this.state.value)}
-            </div>
-          : ''
-        }
+        {this.props.mathMode && this.state.mathMode ? (
+          <div className="math">{TextUtilit.handleText(this.state.value)}</div>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

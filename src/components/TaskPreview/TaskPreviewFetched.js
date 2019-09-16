@@ -45,9 +45,12 @@ class TaskPreviewFetched extends React.Component {
     };
   };
   render() {
+    const { noDeleteButton, noAddButton } = this.props;
     return (
       <React.Fragment>
         <TaskPreviewContainer
+          noDeleteButton={noDeleteButton}
+          noAddButton={noAddButton}
           generationsHidden
           className={this.props.className}
           task={this.getTaskObject()}

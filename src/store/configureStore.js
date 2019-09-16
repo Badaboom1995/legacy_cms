@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 import generalReducer from '../reducers/general';
 import tasksReducer from '../reducers/tasks';
 import checksReducer from '../reducers/checks';
+import imagesReducer from '../reducers/images';
 import { logger } from 'redux-logger';
 import rootSaga from 'sagas';
 
@@ -15,6 +16,7 @@ export default () => {
       general: generalReducer,
       tasks: tasksReducer,
       checks: checksReducer,
+      images: imagesReducer,
     }),
     applyMiddleware(sagaMiddleware, logger),
   );

@@ -7,7 +7,6 @@ import CreateTest from 'pages/CreateTest/CreateTest';
 import TestsList from 'pages/TestsList/TestsList';
 import NotFoundPage from '../pages/NotFoundPage';
 import { getChapters, getTopics, getSubjects, getLearningLevels } from 'actions/general';
-// import Auth from '../HOC/Auth';
 
 export const history = createBrowserHistory();
 

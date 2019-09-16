@@ -16,26 +16,28 @@ class TaskPreviewContainer extends React.Component {
     }));
   };
   render() {
-    const { generationsHidden } = this.props;
+    const { generationsHidden, noDeleteButton, noAddButton } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
           <p className="task-preview__title">{TextUtilit.handleText(name) || 'Название'}</p>
-          <p className="task-preview__subtitle">{chapter || 'Тема'}</p>
+          <p className="task-preview__subtitle">{chapter}</p>
           <span className="task-preview__param">{difficulty || 'Cложность'}</span>
           <span className="task-preview__param">{grade ? `${grade} класс` : 'Класс'}</span>
           <span className="task-preview__param">{(subject && subject.name) || 'Предмет'}</span>
-          <button
-            onClick={() => {
-              this.props.deleteTask(id);
-            }}
-          >
-            Удалить задание
-          </button>
+          {!noDeleteButton && (
+            <button
+              onClick={() => {
+                this.props.deleteTask(id);
+              }}
+            >
+              Удалить задание
+            </button>
+          )}
           {generationsHidden && <button onClick={this.toggleGens}>Показать генерации</button>}
-          {generationsHidden && (
+          {!noAddButton && (
             <button
               onClick={() => {
                 this.props.dispatch(
