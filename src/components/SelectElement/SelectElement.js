@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TextInput from 'components/TextInput/TextInput';
-import { addOption } from 'actions/tasks';
-import { addCheckOption } from 'actions/checks';
 import Button from 'components/Button/Button';
 import './search-popup.scss';
 
@@ -13,12 +11,7 @@ class AddTaskInfo extends React.Component {
     filteredElements: [],
   };
   chooseElement = (name, value, e) => {
-    if (this.props.reduxStore === 'tasks') {
-      this.props.dispatch(addOption(name, value));
-    } else {
-      this.props.dispatch(addCheckOption(name, value));
-    }
-
+    this.props.chooseElement(name, value);
     this.togglePopupVisibility(e);
   };
   togglePopupVisibility = e => {

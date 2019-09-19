@@ -1,5 +1,6 @@
 export const SELECT_CHECK = 'checks/SELECT_CHECK';
 export const UPDATE_SELECTED_CHECK = 'checks/UPDATE_SELECTED_CHECK';
+export const SAVE_SELECTED_CHECK = 'checks/SAVE_SELECTED_CHECK';
 
 export const createCheck = check => ({
   type: 'CREATE_CHECK',
@@ -24,6 +25,11 @@ export const selectCheck = id => ({
 export const updateSelectedCheck = updatedCheck => ({
   type: UPDATE_SELECTED_CHECK,
   updatedCheck,
+});
+export const saveSelectedCheck = (id, check) => ({
+  type: SAVE_SELECTED_CHECK,
+  id,
+  check,
 });
 export const deleteChecks = id => ({
   type: 'DELETE_CHECK',

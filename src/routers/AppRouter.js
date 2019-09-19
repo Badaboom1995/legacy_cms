@@ -6,7 +6,14 @@ import Home from '../pages/Home/Home';
 import CreateTest from 'pages/CreateTest/CreateTest';
 import TestsList from 'pages/TestsList/TestsList';
 import NotFoundPage from '../pages/NotFoundPage';
-import { getChapters, getTopics, getSubjects, getLearningLevels } from 'actions/general';
+import {
+  getChapters,
+  getTopics,
+  getSubjects,
+  getLearningLevels,
+  getScales,
+  getCheckModes,
+} from 'actions/general';
 
 export const history = createBrowserHistory();
 
@@ -17,6 +24,8 @@ const AppRouter = props => {
       props.dispatch(getTopics()),
       props.dispatch(getSubjects()),
       props.dispatch(getLearningLevels()),
+      props.dispatch(getScales()),
+      props.dispatch(getCheckModes()),
     ]);
   });
   return (

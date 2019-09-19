@@ -1,4 +1,4 @@
-import { SELECT_CHECK, UPDATE_SELECTED_CHECK } from 'actions/checks';
+import { SELECT_CHECK, UPDATE_SELECTED_CHECK, SAVE_SELECTED_CHECK } from 'actions/checks';
 import { createSelector } from 'reselect';
 
 const generalReducerDefaultState = {
@@ -10,7 +10,7 @@ const generalReducerDefaultState = {
   tasks: [],
   checks_list: [],
   loading: false,
-  selectedCheck: {},
+  selectedCheck: '',
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -55,6 +55,18 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         selectedCheck: action.updatedCheck,
       };
+    case SAVE_SELECTED_CHECK:
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'SELECTED_CHECK_SAVED':
+      return {
+        ...state,
+        checks_list: state.checks_list.map(item =>
+          item.id == action.response.id ? action.response : item,
+        ),
+      };
     case 'DELETE_CHECK':
       return {
         ...state,
@@ -63,15 +75,4 @@ export default (state = generalReducerDefaultState, action) => {
     default:
       return state;
   }
-};
-
-export const testSelector = state => {
-  const checksSelector = state => state.checks.checks_list;
-
-  const checkSmartSelector = createSelector(
-    checksSelector,
-    items => items.map(item => item.name),
-  );
-
-  return checkSmartSelector;
 };

@@ -1,4 +1,5 @@
 import { put, takeLatest, all, select } from 'redux-saga/effects';
+import { SAVE_SELECTED_CHECK } from 'actions/checks';
 import Tasks from 'helpers/Tasks';
 import Checks from 'helpers/Checks';
 import Structure from 'helpers/Structure';
@@ -44,6 +45,25 @@ function* getLearningLevels() {
   });
   yield put({ type: 'LEARNING_LEVELS_RECEIVED', grades });
 }
+function* getScales() {
+  const Request = new Structure();
+  const response = yield Request.getScales();
+  const scales = response.filter(item => {
+    return item.id < 3;
+  });
+  yield put({ type: 'SCALES_RECEIVED', scales });
+}
+function* getCheckModes() {
+  const Request = new Structure();
+  const response = yield Request.getCheckModes();
+  const check_modes = response.filter(item => item.id < 3);
+  yield put({ type: 'CHECK_MODES_RECEIVED', check_modes });
+}
+function* saveSelectedCheck(action) {
+  const Request = new Checks();
+  const response = yield Request.updateCheck(action.id, action.check);
+  yield put({ type: 'SELECTED_CHECK_SAVED', response });
+}
 
 function* deleteChecks(action) {
   const Request = new Checks();
@@ -80,6 +100,15 @@ function* getSubjectsWatcher() {
 function* getLearningLevelsWatcher() {
   yield takeLatest('GET_LEARNING_LEVELS', getLearningLevels);
 }
+function* getScalesWatcher() {
+  yield takeLatest('GET_SCALES', getScales);
+}
+function* getCheckModesWatcher() {
+  yield takeLatest('GET_CHECK_MODES', getCheckModes);
+}
+function* saveSelectedCheckWatcher() {
+  yield takeLatest(SAVE_SELECTED_CHECK, saveSelectedCheck);
+}
 function* deleteCheckWatcher() {
   yield takeLatest('DELETE_CHECK', deleteChecks);
 }
@@ -97,5 +126,8 @@ export default function* rootSaga() {
     getTopicsWatcher(),
     getSubjectsWatcher(),
     getLearningLevelsWatcher(),
+    getScalesWatcher(),
+    getCheckModesWatcher(),
+    saveSelectedCheckWatcher(),
   ]);
 }

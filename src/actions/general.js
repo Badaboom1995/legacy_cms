@@ -59,6 +59,12 @@ export const getSubjects = () => ({
 export const getLearningLevels = () => ({
   type: 'GET_LEARNING_LEVELS',
 });
+export const getScales = () => ({
+  type: 'GET_SCALES',
+});
+export const getCheckModes = () => ({
+  type: 'GET_CHECK_MODES',
+});
 export const clearState = () => ({
   type: 'CLEAR_STATE',
 });

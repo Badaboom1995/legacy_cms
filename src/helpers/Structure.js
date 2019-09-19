@@ -32,7 +32,13 @@ export default class ChecksService {
   async getChapters() {
     return this.request('GET', 'chapters');
   }
+  async getScales() {
+    return this.request('GET', 'check_scales');
+  }
   async getLearningLevels() {
     return this.request('GET', 'learning_levels');
+  }
+  async getCheckModes() {
+    return this.request('GET', 'check_modes');
   }
 }

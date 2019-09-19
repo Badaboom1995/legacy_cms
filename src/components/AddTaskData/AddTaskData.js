@@ -79,6 +79,9 @@ class AddTaskInfo extends React.Component {
             type="chapter"
             elements={this.props.general.chaptersNames}
             reduxStore="tasks"
+            chooseElement={(name, value) => {
+              this.props.dispatch(addOption(name, value));
+            }}
           />
         </div>
         <TaskPreview

@@ -1,9 +1,12 @@
+import { createSelector } from 'reselect';
+
 const generalReducerDefaultState = {
   expressions: [],
   answers: [],
   rightAnswers: [],
   generations: [],
   learning_levels: [],
+  subjects: [],
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -91,6 +94,16 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         loading: true,
       };
+    case 'GET_SCALES':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'GET_CHECK_MODE':
+      return {
+        ...state,
+        loading: true,
+      };
     case 'CHAPTERS_RECEIVED':
       return {
         ...state,
@@ -112,6 +125,16 @@ export default (state = generalReducerDefaultState, action) => {
       return {
         ...state,
         learning_levels: action.grades,
+      };
+    case 'SCALES_RECEIVED':
+      return {
+        ...state,
+        scales: action.scales,
+      };
+    case 'CHECK_MODES_RECEIVED':
+      return {
+        ...state,
+        checkModes: action.check_modes,
       };
     case 'SAVE_GENERATION':
       return {
@@ -141,3 +164,44 @@ export default (state = generalReducerDefaultState, action) => {
       return state;
   }
 };
+
+export const levelsNamesSelector = createSelector(
+  state => state.general.learning_levels,
+  items => items.map(item => item.value),
+);
+
+export const levelsSelector = createSelector(
+  state => state.general.learning_levels,
+  item => item,
+);
+
+export const subjectsSelector = createSelector(
+  state => state.general.subjects,
+  item => item,
+);
+
+export const subjectsNamesSelector = createSelector(
+  state => state.general.subjects,
+  items => items.map(item => item.name),
+);
+
+export const scalesSelector = createSelector(
+  state => state.general.scales,
+  items => items,
+);
+export const scalesNamesSelector = createSelector(
+  state => state.general.scales,
+  items => {
+    return items ? items.map(item => item.name) : [];
+  },
+);
+export const checkModesSelector = createSelector(
+  state => state.general.checkModes,
+  items => items,
+);
+export const checkModesNamesSelector = createSelector(
+  state => state.general.checkModes,
+  items => {
+    return items ? items.map(item => item.name) : [];
+  },
+);

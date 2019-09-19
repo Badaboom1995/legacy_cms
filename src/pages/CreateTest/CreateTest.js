@@ -205,12 +205,18 @@ class CreateTest extends React.Component {
             type="topic"
             name="Раздел"
             elements={this.props.general.topicsNames}
+            chooseElement={(name, value) => {
+              this.props.dispatch(addCheckOption(name, value));
+            }}
           />
           <SelectElement
             reduxStore="checks"
             type="chapter"
             name="Тема"
             elements={this.props.general.chaptersNames}
+            chooseElement={(name, value) => {
+              this.props.dispatch(addCheckOption(name, value));
+            }}
           />
           <button onClick={this.createCheck} className="button button--select-element">
             Создать тест

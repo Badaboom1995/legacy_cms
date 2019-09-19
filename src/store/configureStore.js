@@ -7,6 +7,7 @@ import checksReducer from '../reducers/checks';
 import imagesReducer from '../reducers/images';
 import { logger } from 'redux-logger';
 import rootSaga from 'sagas';
+import thunk from 'redux-thunk';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -18,7 +19,7 @@ export default () => {
       checks: checksReducer,
       images: imagesReducer,
     }),
-    applyMiddleware(sagaMiddleware, logger),
+    applyMiddleware(sagaMiddleware, logger, thunk),
   );
 
   sagaMiddleware.run(rootSaga);
