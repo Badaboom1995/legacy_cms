@@ -34,8 +34,6 @@ class TestsList extends React.Component {
     this.props.dispatch(selectCheck(id));
   };
   updateCheck = (id, changes) => {
-    console.log('id:', id);
-    console.log('check:', changes);
     this.props.dispatch(saveSelectedCheck(id, changes));
   };
   onCheckChange = (value, name) => {
