@@ -190,14 +190,16 @@ class TestsList extends React.Component {
               );
             })}
           </div>
-          <Button
-            className="button--upload button--full-width"
-            onClick={() => {
-              this.updateCheck(selectedCheck.id, selectedCheck);
-            }}
-          >
-            Save
-          </Button>
+          <div className="content__secondary-submit">
+            <Button
+              className="button--upload button--full-width"
+              onClick={() => {
+                this.updateCheck(selectedCheck.id, selectedCheck);
+              }}
+            >
+              Save
+            </Button>
+          </div>
         </div>
       </div>
     );

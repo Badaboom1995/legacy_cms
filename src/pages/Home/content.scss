@@ -45,6 +45,16 @@
       }
     }
   }
+  &__secondary-submit {
+    position: fixed;
+    width: 30%;
+    right: 0;
+    bottom: -14px;
+    box-shadow: 1px 0px 2px rgba(0, 0, 0, 0.24);
+    padding: 0px 15px;
+    background-color: #f4f6f9;
+    padding-top: 15px;
+  }
   &__wrapper {
     display: flex;
   }
