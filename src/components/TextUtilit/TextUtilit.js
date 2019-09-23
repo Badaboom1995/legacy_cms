@@ -15,11 +15,11 @@ class TextUtilit {
       inputs: /%\{([^|]+?)\}/g,
       dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
       dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
-      numericOnly: /^[0-9.,+−]+$/g,
+      numericOnly: /^[0-9.,+−-]+$/g,
       notNumeric: /[^0-9.,+−]/g,
       text: /[^0-9]/g,
-      number: /(−?\d+(\.|,)?(\d+)?)/g,
-      rawNumber: /(−?\d+(?:\.|,)?(?:\d+)?)/g,
+      number: /((−|-)?\d+(\.|,)?(\d+)?)/g,
+      rawNumber: /((?:−|-)?\d+(?:\.|,)?(?:\d+)?)/g,
     }
   };
 
@@ -168,12 +168,13 @@ class TextUtilit {
     return result;
   }
 
-  static handleDecimal(text) {
-    const { number } = this.RegExps;
+  static handleNumber(text) {
+    const { numericOnly } = this.RegExps;
     let result = text;
-    if (number.test(text)) {
+    if (text.search(numericOnly) !== -1) {
       result = text
         .replace('.', ',')
+        .replace('-', '−')
         .replace(/(,.*)(,|\.)/g, '$1');
     }
     return result;
