@@ -48,7 +48,6 @@ class AddExpression extends React.Component {
             };
 
             str.replace(RegExps.dropdownInner, (raw, variant) => {
-              console.log(raw, variant);
               let ddValue = variant;
               if (variant.slice(-1) === '*') {
                 ddValue = variant.slice(0, -1);
@@ -67,7 +66,7 @@ class AddExpression extends React.Component {
 
       expression.value = rawValue.replace(mainRegexp, (b2tPlace, b2texp) => {
         return b2texp.replace(kindRegexp, `${kind.substr(0,2)}($1)`);
-      }).replace('−', '-');  // - Katex от минуса падает :/
+      }).replace(/−/g, '-');  // - Katex от минуса падает :/
       this.props.dispatch(addExpression(expression));
       console.log(expression);
     } else if (isUnique) {
