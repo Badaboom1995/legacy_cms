@@ -34,7 +34,7 @@ class Home extends React.Component {
       subject: subject.id.toString(),
       learning_level_id: this.getGradeId(),
       difficulty: difficulty,
-      chapter_id: chapterObj.id,
+      chapter_id: chapterObj ? chapterObj.id : '',
       topic_id: chapterObj.topic_id,
       not_for_teacher: true,
     };

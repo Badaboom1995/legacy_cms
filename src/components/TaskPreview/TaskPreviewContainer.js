@@ -1,5 +1,4 @@
 import React from 'react';
-import { removeGeneration } from 'actions/general';
 import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';

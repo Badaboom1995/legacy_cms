@@ -18,12 +18,15 @@ class EditableElement extends React.Component {
     return (
       <React.Fragment>
         {this.state.editing ? (
-          <input
-            className="editableElement__input"
-            type="text"
-            value={this.props.children}
-            onChange={this.editingOff}
-          />
+          <div className="editable-element">
+            <input
+              className="editableElement__input"
+              type="text"
+              value={this.props.children}
+              onChange={this.editingOff}
+            />{' '}
+            <button onClick={this.editingOff}>submit</button>
+          </div>
         ) : (
           <span onClick={this.editingOn} className={className}>
             {this.props.children}
