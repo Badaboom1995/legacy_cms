@@ -174,7 +174,7 @@ class TextUtilit {
     if (text.search(numericOnly) !== -1) {
       result = text
         .replace('.', ',')
-        .replace('-', '−')
+        .replace(/-/g, '−')
         .replace(/(,.*)(,|\.)/g, '$1');
     }
     return result;
