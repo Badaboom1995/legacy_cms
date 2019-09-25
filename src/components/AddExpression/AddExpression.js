@@ -25,7 +25,7 @@ class AddExpression extends React.Component {
     const kindRegexp = RegExps[kind];
     const isValid = mainRegexp.test(value) && kindRegexp.test(value);
     const isUnique = this.props.general.expressions.every(exp => exp.value !== value);
-    console.log(isValid, isUnique, value)
+
     if (isValid && isUnique) {
       const expression = {
         question: '',
@@ -38,9 +38,9 @@ class AddExpression extends React.Component {
         const question = b2texp.replace(kindRegexp, (str, match) => {
           const char = String.fromCharCode(charCode);
           if (kind === 'inputs') {
-            const inputValue = TextUtilit.handleDecimal(match);
+            const inputValue = TextUtilit.handleNumber(match);
             rawValue = rawValue.replace(match, inputValue);
-            expression.answers[char] = TextUtilit.handleDecimal(inputValue);
+            expression.answers[char] = TextUtilit.handleNumber(inputValue);
           } else if (kind === 'dropdown') {
             expression.answers[char] = {
               values: [],
@@ -48,7 +48,6 @@ class AddExpression extends React.Component {
             };
 
             str.replace(RegExps.dropdownInner, (raw, variant) => {
-              console.log(raw, variant);
               let ddValue = variant;
               if (variant.slice(-1) === '*') {
                 ddValue = variant.slice(0, -1);
@@ -67,7 +66,7 @@ class AddExpression extends React.Component {
 
       expression.value = rawValue.replace(mainRegexp, (b2tPlace, b2texp) => {
         return b2texp.replace(kindRegexp, `${kind.substr(0,2)}($1)`);
-      });
+      }).replace(/−/g, '-');  // - Katex от минуса падает :/
       this.props.dispatch(addExpression(expression));
       console.log(expression);
     } else if (isUnique) {
