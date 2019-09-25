@@ -14,12 +14,14 @@
     }
   }
   &__title {
+    display: block;
     font-weight: normal;
     font-size: 24px;
     margin: 0;
     margin-bottom: 5px;
   }
   &__subtitle {
+    display: block;
     font-size: 14px;
     color: #8c8c8c;
     margin: 0;

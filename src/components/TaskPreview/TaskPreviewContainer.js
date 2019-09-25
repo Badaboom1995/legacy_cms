@@ -5,6 +5,7 @@ import './task-preview.scss';
 import PropTypes from 'prop-types';
 import { addTaskToTest } from 'actions/checks';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
+import EditableElement from 'components/EditableElement/EditableElement';
 
 class TaskPreviewContainer extends React.Component {
   state = {
@@ -22,11 +23,19 @@ class TaskPreviewContainer extends React.Component {
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
-          <p className="task-preview__title">{TextUtilit.handleText(name) || 'Название'}</p>
-          <p className="task-preview__subtitle">{chapter}</p>
-          <span className="task-preview__param">{difficulty || 'Cложность'}</span>
-          <span className="task-preview__param">{grade ? `${grade} класс` : 'Класс'}</span>
-          <span className="task-preview__param">{(subject && subject.name) || 'Предмет'}</span>
+          <EditableElement className="task-preview__title">
+            {TextUtilit.handleText(name) || 'Название'}
+          </EditableElement>
+          <EditableElement className="task-preview__subtitle">{chapter}</EditableElement>
+          <EditableElement className="task-preview__param">
+            {difficulty || 'Cложность'}
+          </EditableElement>
+          <EditableElement className="task-preview__param">
+            {grade ? `${grade} класс` : 'Класс'}
+          </EditableElement>
+          <EditableElement className="task-preview__param">
+            {(subject && subject.name) || 'Предмет'}
+          </EditableElement>
           {!noDeleteButton && (
             <button
               onClick={() => {

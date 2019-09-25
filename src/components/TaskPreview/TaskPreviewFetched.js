@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { removeGeneration } from 'actions/general';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
 import TaskPreviewContainer from './TaskPreviewContainer';
 
 class TaskPreviewFetched extends React.Component {
   subjects = { 1: { name: 'Математика' }, 2: { name: 'Русский' } };
-  componentDidMount = () => {};
   getGenerationsArray = () => {
     const generations = this.props.generations.map(item => {
       const answersObject = item.data.variants;
@@ -51,6 +49,7 @@ class TaskPreviewFetched extends React.Component {
         <TaskPreviewContainer
           noDeleteButton={noDeleteButton}
           noAddButton={noAddButton}
+          updateTask={'updateTask'}
           generationsHidden
           className={this.props.className}
           task={this.getTaskObject()}

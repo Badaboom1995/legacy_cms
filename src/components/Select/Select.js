@@ -10,7 +10,7 @@ export default class Select extends React.Component {
 
   onChange = e => {
     e.persist();
-    this.props.onChange(e.target.innerHTML, this.props.name);
+    this.props.onChange(e.target.innerHTML, this.props.name, this.props.toFunction);
     this.setState(() => ({
       value: e.target.innerHTML,
       listOpened: false,

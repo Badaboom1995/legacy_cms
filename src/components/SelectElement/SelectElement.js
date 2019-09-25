@@ -11,7 +11,7 @@ class AddTaskInfo extends React.Component {
     filteredElements: [],
   };
   chooseElement = (name, value, e) => {
-    this.props.chooseElement(name, value);
+    this.props.chooseElement(name, value, this.props.toFunction);
     this.togglePopupVisibility(e);
   };
   togglePopupVisibility = e => {

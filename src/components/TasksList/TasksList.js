@@ -20,15 +20,17 @@ class TaskPreview extends React.Component {
     return (
       <div>
         {this.props.tasks &&
-          filteredTasks.map((item, index) => (
-            <TasksPreviewFetched
-              generationsHidden
-              key={index}
-              task={item}
-              generations={item.check_generations}
-              deleteTask={this.deleteTask}
-            />
-          ))}
+          filteredTasks
+            .reverse()
+            .map((item, index) => (
+              <TasksPreviewFetched
+                generationsHidden
+                key={index}
+                task={item}
+                generations={item.check_generations}
+                deleteTask={this.deleteTask}
+              />
+            ))}
       </div>
     );
   }

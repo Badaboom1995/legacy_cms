@@ -7,7 +7,7 @@ import Button from 'components/Button/Button';
 import { deleteChecks, getChecks, selectCheck, updateSelectedCheck } from 'actions/checks';
 import TaskPreviewFetched from 'components/TaskPreview/TaskPreviewFetched';
 import SelectElement from 'components/SelectElement/SelectElement';
-import Checks from 'helpers/Checks';
+import Tasks from 'helpers/Tasks';
 import { addCheckOption, saveSelectedCheck } from 'actions/checks';
 import SuccessAnimation from 'components/SuccessAnimation/SuccessAnimation';
 import {
@@ -41,21 +41,12 @@ class TestsList extends React.Component {
     updatedCheck[name] = value;
     this.props.dispatch(updateSelectedCheck(updatedCheck));
   };
-  onGradeChange = (value, name) => {
-    const subjectObj = this.props.learning_levels.find(item => item.value == value);
-    this.onCheckChange(subjectObj.id, name);
-  };
-  onSubjectChange = (value, name) => {
-    const gradeObj = this.props.subjects.find(item => item.name == value);
-    this.onCheckChange(gradeObj.id, name);
-  };
-  onScaleChange = (value, name) => {
-    const scaleObj = this.props.scales.find(item => item.name == value);
-    this.onCheckChange(scaleObj.id, name);
-  };
-  onCheckModeChange = (value, name) => {
-    const checkModeObj = this.props.checkModes.find(item => item.name == value);
-    this.onCheckChange(checkModeObj.id, name);
+  onChange = (value, name, toFunction) => {
+    const Obj = this.props[toFunction.searchIn].find(item => item[toFunction.propName] == value);
+    this.onCheckChange(Obj.id, name);
+    if (toFunction.dispatch) {
+      this.props.dispatch(toFunction.dispatch(name, value));
+    }
   };
   onTopicChange = (name, value) => {
     const topicObj = this.props.topics.find(item => item.name == value);
@@ -72,6 +63,10 @@ class TestsList extends React.Component {
     const updatedTasks = updatedCheck.check_jobs.filter(item => item.id != id);
     updatedCheck.check_jobs = updatedTasks;
     this.onCheckChange(updatedTasks, 'check_jobs');
+  };
+  updateTask = () => {
+    const Request = new Tasks();
+    Request.updateCheckJob();
   };
   render() {
     const { checks_list } = this.props.checks;
@@ -131,7 +126,8 @@ class TestsList extends React.Component {
             name="learning_level_id"
             modificators="select--in-row"
             options={this.props.learning_levels_names}
-            onChange={this.onGradeChange}
+            onChange={this.onChange}
+            toFunction={{ searchIn: 'learning_levels', propName: 'value' }}
             label="Класс"
             value={getGradeValueById(selectedCheck.learning_level_id, learning_levels)}
           />
@@ -139,7 +135,8 @@ class TestsList extends React.Component {
             name="subject"
             modificators="select--in-row"
             options={subjectsNames}
-            onChange={this.onSubjectChange}
+            onChange={this.onChange}
+            toFunction={{ searchIn: 'subjects', propName: 'name' }}
             label="Предмет"
             value={getSubjectValueById(selectedCheck.subject, subjects)}
           />
@@ -147,7 +144,8 @@ class TestsList extends React.Component {
             name="check_scale_id"
             modificators="select--in-row"
             options={scalesNames}
-            onChange={this.onScaleChange}
+            onChange={this.onChange}
+            toFunction={{ searchIn: 'scales', propName: 'name' }}
             label="Сложность"
             value={getNameById(selectedCheck.check_scale_id, scales)}
           />
@@ -155,7 +153,8 @@ class TestsList extends React.Component {
             name="check_mode_id"
             modificators="select--in-row"
             options={checkModesNames}
-            onChange={this.onCheckModeChange}
+            onChange={this.onChange}
+            toFunction={{ searchIn: 'checkModes', propName: 'name' }}
             label="Тип"
             value={getNameById(selectedCheck.check_mode_id, checkModes)}
           />
@@ -173,6 +172,7 @@ class TestsList extends React.Component {
             elements={this.props.general.chaptersNames}
             chooseElement={this.onChapterChange}
           />
+          {/* <button onClick={this.updateTask}>update</button> */}
           {/* <SuccessAnimation /> */}
           <div className="create-test create-test--preview tests-list__generations">
             {this.props.selectedCheckTasks.map((item, index) => {

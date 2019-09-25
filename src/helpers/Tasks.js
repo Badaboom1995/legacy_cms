@@ -146,6 +146,50 @@ export default class ChecksService {
     console.log(data);
     return data;
   }
+  async getTask(id, test_id) {
+    const path = `teachers/checks/${test_id}/check_jobs/${id}`;
+    this.response = await fetch(`${base_url}${path}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Uchi-User-Type': 'Teacher',
+        'Uchi-User-Id': 12,
+        crossDomain: true,
+      },
+    });
+
+    if (!this.response.ok) {
+      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    }
+
+    const data = await this.response.json();
+    console.log(data);
+    return data;
+  }
+  async updateCheckJob(id, changes) {
+    const path = `teachers/check_job/${11}`;
+    const response = await fetch(`${base_url}${path}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+        'Uchi-User-Type': 'Teacher',
+        'Uchi-User-Id': 12,
+        crossDomain: true,
+      },
+      body: JSON.stringify({
+        check_job: { name: 'Сколько будет 2+2 ?' },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`RequestService createCheckJob failed, HTTP status ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
   async getTasks() {
     return this.request('GET', 'teachers/check_jobs?filters[base]=true');
   }
