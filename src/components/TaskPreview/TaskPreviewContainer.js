@@ -4,7 +4,8 @@ import './task-preview.scss';
 import PropTypes from 'prop-types';
 import { addTaskToTest } from 'actions/checks';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
-import EditableElement from 'components/EditableElement/EditableElement';
+import EditableWithInput from 'components/EditableField/EditableWithInput';
+import EditableWithSelect from 'components/EditableField/EditableWithSelect';
 
 class TaskPreviewContainer extends React.Component {
   state = {
@@ -22,19 +23,57 @@ class TaskPreviewContainer extends React.Component {
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
-          <EditableElement className="task-preview__title">
+          <EditableWithInput
+            task={this.props.task}
+            paramName="name"
+            className="task-preview__title"
+          >
             {TextUtilit.handleText(name) || 'Название'}
-          </EditableElement>
-          <EditableElement className="task-preview__subtitle">{chapter}</EditableElement>
-          <EditableElement className="task-preview__param">
+          </EditableWithInput>
+          <EditableWithSelect
+            task={this.props.task}
+            options={[]}
+            parseFunction={() => {}}
+            propName="chapter_id"
+            className="task-preview__subtitle"
+          >
+            {chapter}
+          </EditableWithSelect>
+          {console.log(this.props.general.scales)}
+          <EditableWithSelect
+            task={this.props.task}
+            label="Сложность"
+            options={this.props.general.scales}
+            getNames={array => array.map(item => item.name)}
+            getId={(array, value) => array.find(item => item.name == value)}
+            paramName="difficulty"
+            className="task-preview__param"
+          >
             {difficulty || 'Cложность'}
-          </EditableElement>
-          <EditableElement className="task-preview__param">
+          </EditableWithSelect>
+          {console.log(this.props.task)}
+          <EditableWithSelect
+            task={this.props.task}
+            label="Класс"
+            options={this.props.general.learning_levels}
+            getNames={array => array.map(item => item.name)}
+            getId={(array, value) => array.find(item => item.name == value)}
+            paramName="learning_level_id"
+            className="task-preview__param"
+          >
             {grade ? `${grade} класс` : 'Класс'}
-          </EditableElement>
-          <EditableElement className="task-preview__param">
+          </EditableWithSelect>
+          <EditableWithSelect
+            task={this.props.task}
+            label="Предмет"
+            options={this.props.general.subjects}
+            getNames={array => array.map(item => item.name)}
+            getId={(array, value) => array.find(item => item.name == value)}
+            paramName="subject"
+            className="task-preview__param"
+          >
             {(subject && subject.name) || 'Предмет'}
-          </EditableElement>
+          </EditableWithSelect>
           {!noDeleteButton && (
             <button
               onClick={() => {
@@ -102,4 +141,9 @@ TaskPreviewContainer.propTypes = {
   tasks: PropTypes.object,
 };
 
-export default connect()(TaskPreviewContainer);
+const mapStateToProps = state => ({
+  general: state.general,
+  checks: state.checks,
+});
+
+export default connect(mapStateToProps)(TaskPreviewContainer);

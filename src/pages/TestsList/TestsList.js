@@ -121,6 +121,7 @@ class TestsList extends React.Component {
             className="text-input--pretending"
             value={selectedCheckName}
           />
+          <button onClick={this.updateTask}>click</button>
           <TextInput name="time_limit" onChange={this.onCheckChange} value={time_limit} />
           <Select
             name="learning_level_id"

@@ -1,17 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './editable-element.scss';
-import PropTypes from 'prop-types';
+import Tasks from 'helpers/Tasks';
 
-class EditableElement extends React.Component {
+class EditableWithInput extends React.Component {
   state = {
     editing: false,
+    value: '',
   };
   editingOn = () => {
-    this.setState(() => ({ editing: true }));
+    this.setState(
+      () => ({ editing: true }),
+      () => {
+        this.text.focus();
+      },
+    );
   };
   editingOff = () => {
     this.setState(() => ({ editing: false }));
+    const Request = new Tasks();
+    Request.updateCheckJob(this.props.task.id, { [this.props.paramName]: this.state.value });
+  };
+  onValueChange = () => {
+    this.setState(() => ({ value: this.text.value }));
   };
   render() {
     const { className } = this.props;
@@ -22,8 +33,9 @@ class EditableElement extends React.Component {
             <input
               className="editableElement__input"
               type="text"
-              value={this.props.children}
-              onChange={this.editingOff}
+              value={this.state.value || this.props.children}
+              ref={text => (this.text = text)}
+              onChange={this.onValueChange}
             />{' '}
             <button onClick={this.editingOff}>submit</button>
           </div>
@@ -37,10 +49,4 @@ class EditableElement extends React.Component {
   }
 }
 
-EditableElement.propTypes = {
-  generationsHidden: PropTypes.bool,
-  tasks: PropTypes.object,
-  generations: PropTypes.array,
-};
-
-export default connect()(EditableElement);
+export default connect()(EditableWithInput);

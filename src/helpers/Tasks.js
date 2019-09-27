@@ -167,7 +167,7 @@ export default class ChecksService {
     return data;
   }
   async updateCheckJob(id, changes) {
-    const path = `teachers/check_job/${11}`;
+    const path = `teachers/check_jobs/${id}`;
     const response = await fetch(`${base_url}${path}`, {
       method: 'PUT',
       headers: {
@@ -178,7 +178,7 @@ export default class ChecksService {
         crossDomain: true,
       },
       body: JSON.stringify({
-        check_job: { name: 'Сколько будет 2+2 ?' },
+        check_job: changes,
       }),
     });
 
