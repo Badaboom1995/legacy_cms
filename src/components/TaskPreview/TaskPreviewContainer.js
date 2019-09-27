@@ -42,7 +42,6 @@ class TaskPreviewContainer extends React.Component {
           {console.log(this.props.general.scales)}
           <EditableWithSelect
             task={this.props.task}
-            label="Сложность"
             options={this.props.general.scales}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
@@ -54,7 +53,6 @@ class TaskPreviewContainer extends React.Component {
           {console.log(this.props.task)}
           <EditableWithSelect
             task={this.props.task}
-            label="Класс"
             options={this.props.general.learning_levels}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
@@ -65,7 +63,6 @@ class TaskPreviewContainer extends React.Component {
           </EditableWithSelect>
           <EditableWithSelect
             task={this.props.task}
-            label="Предмет"
             options={this.props.general.subjects}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}

@@ -29,11 +29,13 @@
   }
 
   &__param {
+    display: inline-block;
     padding: 5px 10px;
     background-color: #263d42;
     color: #fff;
     margin-right: 10px;
     border-radius: 10px;
+    margin-bottom: 10px;
   }
   &__generations {
     padding: 30px;
