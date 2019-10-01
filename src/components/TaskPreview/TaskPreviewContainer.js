@@ -6,6 +6,7 @@ import { addTaskToTest } from 'actions/checks';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
+import Tasks from 'helpers/Tasks';
 
 class TaskPreviewContainer extends React.Component {
   state = {
@@ -20,6 +21,7 @@ class TaskPreviewContainer extends React.Component {
     const { generationsHidden, noDeleteButton, noAddButton } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
+    const Request = new Tasks();
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
@@ -27,6 +29,7 @@ class TaskPreviewContainer extends React.Component {
             task={this.props.task}
             param_name="name"
             className="task-preview__title"
+            handleFunction={Request.updateCheckJob}
           >
             {TextUtilit.handleText(name) || 'Название'}
           </EditableWithInput>
@@ -97,7 +100,14 @@ class TaskPreviewContainer extends React.Component {
               const answers = generation.answers || generation.expressions || [];
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
-                  <h3 className="task-preview__title">{TextUtilit.handleText(generation.text)}</h3>
+                  <EditableWithInput
+                    task={this.props.task}
+                    param_name="name"
+                    className="task-preview__title"
+                    handleFunction={Request.updateGeneration}
+                  >
+                    {TextUtilit.handleText(generation.text)}
+                  </EditableWithInput>
                   <span className="task-preview__subtitle">{generation.kind}</span>
                   <ul className="task-preview__generations">
                     {answers.map((answer, index) => {

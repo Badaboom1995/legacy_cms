@@ -191,8 +191,8 @@ export default class ChecksService {
     console.log(data);
     return data;
   }
-  async updateGeneration() {
-    const path = `teachers/check_generations/${5}`;
+  async updateGeneration(id, changes) {
+    const path = `teachers/check_generations/${id}`;
     const response = await fetch(`${base_url}${path}`, {
       method: 'PUT',
       headers: {
@@ -203,7 +203,7 @@ export default class ChecksService {
         crossDomain: true,
       },
       body: JSON.stringify({
-        check_generation: { name: 'TESET_GENERATON' },
+        check_generation: changes,
       }),
     });
 

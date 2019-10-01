@@ -15,10 +15,9 @@ class EditableWithSelect extends React.Component {
   editingOff = () => {
     this.setState(() => ({ editing: false }));
     const Request = new Tasks();
-    // Request.updateCheckJob(this.props.task.id, {
-    //   [this.props.param_name]: this.props.getId(this.props.options, this.state.value).id,
-    // });
-    Request.updateGeneration();
+    Request.updateCheckJob(this.props.task.id, {
+      [this.props.param_name]: this.props.getId(this.props.options, this.state.value).id,
+    });
   };
   onValueChange = value => {
     this.setState(() => ({ value: value }));

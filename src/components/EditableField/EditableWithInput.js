@@ -18,14 +18,14 @@ class EditableWithInput extends React.Component {
   };
   editingOff = () => {
     this.setState(() => ({ editing: false }));
-    const Request = new Tasks();
-    Request.updateCheckJob(this.props.task.id, { [this.props.param_name]: this.state.value });
+    this.props.handleFunction(this.props.task.id, { [this.props.param_name]: this.state.value });
   };
   onValueChange = () => {
     this.setState(() => ({ value: this.text.value }));
   };
   render() {
     const { className } = this.props;
+    console.log(this.props.children);
     return (
       <React.Fragment>
         {this.state.editing ? (
