@@ -15,10 +15,10 @@ class EditableWithSelect extends React.Component {
   editingOff = () => {
     this.setState(() => ({ editing: false }));
     const Request = new Tasks();
-    // console.log(this.props.getId(this.props.options, this.state.value).id);
-    Request.updateCheckJob(this.props.task.id, {
-      [this.props.paramName]: this.props.getId(this.props.options, this.state.value).id,
-    });
+    // Request.updateCheckJob(this.props.task.id, {
+    //   [this.props.param_name]: this.props.getId(this.props.options, this.state.value).id,
+    // });
+    Request.updateGeneration();
   };
   onValueChange = value => {
     this.setState(() => ({ value: value }));
@@ -42,7 +42,7 @@ class EditableWithSelect extends React.Component {
           </div>
         ) : (
           <span onClick={this.editingOn} className={className}>
-            {this.props.children}
+            {this.state.value || this.props.children}
           </span>
         )}
       </React.Fragment>

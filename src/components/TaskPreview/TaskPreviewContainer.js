@@ -25,38 +25,35 @@ class TaskPreviewContainer extends React.Component {
         <div className="task-preview__main">
           <EditableWithInput
             task={this.props.task}
-            paramName="name"
+            param_name="name"
             className="task-preview__title"
           >
             {TextUtilit.handleText(name) || 'Название'}
           </EditableWithInput>
-          <EditableWithSelect
+          <div
             task={this.props.task}
             options={[]}
-            parseFunction={() => {}}
-            propName="chapter_id"
+            param_name="chapter_id"
             className="task-preview__subtitle"
           >
             {chapter}
-          </EditableWithSelect>
-          {console.log(this.props.general.scales)}
+          </div>
           <EditableWithSelect
             task={this.props.task}
             options={this.props.general.scales}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
-            paramName="difficulty"
+            param_name="difficulty"
             className="task-preview__param"
           >
             {difficulty || 'Cложность'}
           </EditableWithSelect>
-          {console.log(this.props.task)}
           <EditableWithSelect
             task={this.props.task}
             options={this.props.general.learning_levels}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
-            paramName="learning_level_id"
+            param_name="learning_level_id"
             className="task-preview__param"
           >
             {grade ? `${grade} класс` : 'Класс'}
@@ -66,7 +63,7 @@ class TaskPreviewContainer extends React.Component {
             options={this.props.general.subjects}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
-            paramName="subject"
+            param_name="subject"
             className="task-preview__param"
           >
             {(subject && subject.name) || 'Предмет'}

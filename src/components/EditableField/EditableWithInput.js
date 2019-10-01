@@ -19,7 +19,7 @@ class EditableWithInput extends React.Component {
   editingOff = () => {
     this.setState(() => ({ editing: false }));
     const Request = new Tasks();
-    Request.updateCheckJob(this.props.task.id, { [this.props.paramName]: this.state.value });
+    Request.updateCheckJob(this.props.task.id, { [this.props.param_name]: this.state.value });
   };
   onValueChange = () => {
     this.setState(() => ({ value: this.text.value }));
@@ -41,7 +41,7 @@ class EditableWithInput extends React.Component {
           </div>
         ) : (
           <span onClick={this.editingOn} className={className}>
-            {this.props.children}
+            {this.state.value || this.props.children}
           </span>
         )}
       </React.Fragment>

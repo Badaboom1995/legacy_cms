@@ -168,6 +168,7 @@ export default class ChecksService {
   }
   async updateCheckJob(id, changes) {
     const path = `teachers/check_jobs/${id}`;
+    console.log(changes);
     const response = await fetch(`${base_url}${path}`, {
       method: 'PUT',
       headers: {
@@ -179,6 +180,30 @@ export default class ChecksService {
       },
       body: JSON.stringify({
         check_job: changes,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`RequestService createCheckJob failed, HTTP status ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+  async updateGeneration() {
+    const path = `teachers/check_generations/${5}`;
+    const response = await fetch(`${base_url}${path}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+        'Uchi-User-Type': 'Teacher',
+        'Uchi-User-Id': 12,
+        crossDomain: true,
+      },
+      body: JSON.stringify({
+        check_generation: { name: 'TESET_GENERATON' },
       }),
     });
 
