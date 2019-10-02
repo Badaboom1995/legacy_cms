@@ -19,8 +19,16 @@ class EditableWithSelect extends React.Component {
       [this.props.param_name]: this.props.getId(this.props.options, this.state.value).id,
     });
   };
+  abortEditing = () => {
+    this.setState(() => ({ editing: false }));
+  };
   onValueChange = value => {
-    this.setState(() => ({ value: value }));
+    this.setState(
+      () => ({ value: value }),
+      () => {
+        this.editingOff();
+      },
+    );
   };
   render() {
     const { className, getNames, options } = this.props;
@@ -30,14 +38,14 @@ class EditableWithSelect extends React.Component {
           <div className="editable-element">
             <Select
               name={this.props.name}
-              modificators="select--in-row"
+              modificators="select--in-row editable-element__select"
               options={getNames(options)}
               onChange={this.onValueChange}
               label={this.props.label}
               value={this.state.value || this.props.children}
               ref={select => (this.select = select)}
             />
-            <button onClick={this.editingOff}>submit</button>
+            <button className="editable-element__close" onClick={this.abortEditing}></button>
           </div>
         ) : (
           <span onClick={this.editingOn} className={className}>
