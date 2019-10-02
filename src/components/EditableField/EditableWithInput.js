@@ -13,16 +13,6 @@ class EditableWithInput extends React.Component {
     this.setState(() => ({ editing: true }));
   };
   editingOff = () => {
-    // const value = {
-    //   data: {
-    //     variant: {
-    //       a: { name: '-4', value: '-4' },
-    //       b: { name: '-5', value: '-5' },
-    //       c: { name: '5', value: '5' },
-    //       d: { name: '-7', right: true, value: '-7' },
-    //     },
-    //   },
-    // };
     let value = '';
     if (this.props.prefix) {
       value = {
