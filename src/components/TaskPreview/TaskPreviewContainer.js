@@ -71,27 +71,29 @@ class TaskPreviewContainer extends React.Component {
           >
             {(subject && subject.name) || 'Предмет'}
           </EditableWithSelect>
-          {!noDeleteButton && (
-            <button
-              onClick={() => {
-                this.props.deleteTask(id);
-              }}
-            >
-              Удалить задание
-            </button>
-          )}
-          {generationsHidden && <button onClick={this.toggleGens}>Показать генерации</button>}
-          {!noAddButton && (
-            <button
-              onClick={() => {
-                this.props.dispatch(
-                  addTaskToTest({ task: this.props.task, generations: this.props.generations }),
-                );
-              }}
-            >
-              Добавить задание в тест
-            </button>
-          )}
+          <div>
+            {!noDeleteButton && (
+              <button
+                onClick={() => {
+                  this.props.deleteTask(id);
+                }}
+              >
+                Удалить задание
+              </button>
+            )}
+            {generationsHidden && <button onClick={this.toggleGens}>Показать генерации</button>}
+            {!noAddButton && (
+              <button
+                onClick={() => {
+                  this.props.dispatch(
+                    addTaskToTest({ task: this.props.task, generations: this.props.generations }),
+                  );
+                }}
+              >
+                Добавить задание в тест
+              </button>
+            )}
+          </div>
         </div>
 
         <div>
@@ -101,7 +103,7 @@ class TaskPreviewContainer extends React.Component {
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
                   <EditableWithInput
-                    task={this.props.task}
+                    task={generation}
                     param_name="name"
                     className="task-preview__title"
                     handleFunction={Request.updateGeneration}
@@ -119,7 +121,15 @@ class TaskPreviewContainer extends React.Component {
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
-                          {TextUtilit.handleText(generation.rightAnswers ? answer : answer.value)}
+                          <EditableWithInput
+                            task={generation}
+                            param_name="data"
+                            prefix="variants"
+                            index={index}
+                            handleFunction={Request.updateGeneration}
+                          >
+                            {TextUtilit.handleText(generation.rightAnswers ? answer : answer.value)}
+                          </EditableWithInput>
                         </li>
                       );
                     })}

@@ -1,3 +1,55 @@
 .editable-element {
   margin-bottom: 10px;
+  display: inline;
+  position: relative;
+  &--input {
+    display: flex;
+    width: 100%;
+  }
+  &__input {
+    flex-grow: 1;
+    margin-bottom: 0;
+  }
+  &__select {
+    button {
+      margin-bottom: 10px;
+    }
+  }
+  &__close {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    box-shadow: none;
+    border: none;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    width: 20px;
+    height: 20px;
+    &:hover,
+    &:focus {
+      background-color: #e4e4e4;
+      outline: none;
+      cursor: pointer;
+    }
+    &:active {
+      background-color: #c4c4c4;
+    }
+    &:before,
+    &:after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      width: 10px;
+      height: 1px;
+      top: 50%;
+      left: 50%;
+      background-color: #000;
+    }
+    &:after {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    &:before {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
 }

@@ -22,6 +22,8 @@ class TaskPreviewFetched extends React.Component {
         }
       }, []);
       return {
+        id: item.id,
+        data: item.data,
         text: item.name,
         kind: item.kind,
         answers: answersNames,
