@@ -14,24 +14,26 @@ class EditableWithInput extends React.Component {
   };
   editingOff = () => {
     let value = '';
-    if (this.props.prefix) {
+    const ALPHABET_START_CODE = 97;
+    const { prefix, task, param_name, index, handleFunction } = this.props;
+    const answerLetter = String.fromCharCode(ALPHABET_START_CODE + index);
+
+    if (prefix) {
       value = {
-        [this.props.prefix]: {
-          ...this.props.task[this.props.param_name][this.props.prefix],
-          [String.fromCharCode(this.props.index + 97)]: {
-            ...this.props.task[this.props.param_name][this.props.prefix][
-              String.fromCharCode(this.props.index + 97)
-            ],
-            value: this.state.value,
-            name: this.state.value,
+        [prefix]: {
+          ...task[param_name][prefix],
+          [answerLetter]: {
+            ...task[param_name][prefix][answerLetter],
+            value: this.state.value || this.props.children,
+            name: this.state.value || this.props.children,
           },
         },
       };
     }
-    console.log(value);
+
     this.setState(() => ({ editing: false }));
-    this.props.handleFunction(this.props.task.id, {
-      [this.props.param_name]: value || this.state.value,
+    handleFunction(task.id, {
+      [param_name]: value || this.state.value || this.props.children,
     });
   };
   onValueChange = value => {
