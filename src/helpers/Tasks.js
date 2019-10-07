@@ -106,7 +106,7 @@ export default class ChecksService {
     console.log(data);
   }
   async deleteGeneration(id) {
-    const path = `teachers/checks_generations/${id}`;
+    const path = `teachers/check_generations/${id}`;
     this.response = await fetch(`${base_url}${path}`, {
       method: 'DELETE',
       headers: {
