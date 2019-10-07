@@ -17,6 +17,10 @@ class TaskPreviewContainer extends React.Component {
       showGens: state.showGens ? false : true,
     }));
   };
+  deleteGeneration = id => {
+    const Request = new Tasks();
+    Request.deleteGeneration(id);
+  };
   render() {
     const { generationsHidden, noDeleteButton, noAddButton } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
@@ -136,7 +140,7 @@ class TaskPreviewContainer extends React.Component {
                   </ul>
                   <button
                     onClick={() => {
-                      this.props.deleteGeneration(index);
+                      this.deleteGeneration(generation.id);
                     }}
                   >
                     delete
