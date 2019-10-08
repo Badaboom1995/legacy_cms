@@ -42,7 +42,6 @@ class EditableWithInput extends React.Component {
   render() {
     const { className } = this.props;
     const value = this.state.value || this.props.children;
-    console.log(this.props.task.id);
     return (
       <React.Fragment>
         {this.state.editing ? (

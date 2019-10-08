@@ -4,6 +4,7 @@ import './task-preview.scss';
 import PropTypes from 'prop-types';
 import { removeGeneration } from 'actions/general';
 import TaskPreviewContainer from './TaskPreviewContainer';
+import TextUtilit from 'components/TextUtilit/TextUtilit';
 
 class TaskPreviewFetched extends React.Component {
   subjects = { 1: { name: 'Математика' }, 2: { name: 'Русский' } };
@@ -29,15 +30,23 @@ class TaskPreviewFetched extends React.Component {
 
     return generations;
   };
+  handleInputAnswer = (answers, question) => {
+    let editableQuestion = question;
+    for (const key in answers) {
+      editableQuestion = editableQuestion.replace(`%{${key}}`, `${answers[key]}`);
+    }
+    console.log(TextUtilit.handleText('%b2t{asdasd %{123}}'));
+    return editableQuestion;
+  };
   getInputsAnswers = item => {
     const answersObject = item.data.inputs;
     let answers = [];
     for (const key in answersObject) {
       answers = [...answers, answersObject[key]];
     }
-    let answersNames = answers.map(item => item.question);
+    let answersNames = answers.map(item => this.handleInputAnswer(item.answers, item.question));
+
     const rightAnswers = [];
-    console.log(answersNames);
     return { rightAnswers, answersNames };
   };
   getCommonAnswers = item => {
