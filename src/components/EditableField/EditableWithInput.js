@@ -17,6 +17,7 @@ class EditableWithInput extends React.Component {
     const ALPHABET_START_CODE = 97;
     const { prefix, task, param_name, index, handleFunction } = this.props;
     const answerLetter = String.fromCharCode(ALPHABET_START_CODE + index);
+    const getAnswerLetter = index => String.fromCharCode(ALPHABET_START_CODE + index);
 
     if (prefix) {
       value = {
@@ -24,6 +25,35 @@ class EditableWithInput extends React.Component {
           ...task[param_name][prefix],
           [answerLetter]: {
             ...task[param_name][prefix][answerLetter],
+            value: this.state.value || this.props.children,
+            name: this.state.value || this.props.children,
+          },
+        },
+      };
+    } else if (this.props.task.kind == 'inputs') {
+      const answers = this.state.value.match(/(?<=%\{).+?(?=\})/g) || [];
+      const processedAnswers = answers.reduce((accum, item, index) => {
+        return { ...accum, [getAnswerLetter(index)]: item };
+      }, {});
+      let question = this.state.value;
+      answers.forEach((item, index) => {
+        question = question.replace(`%{${item}}`, `%{${getAnswerLetter(index)}}`);
+      });
+      value = {
+        inputs: {
+          ...task[param_name].inputs,
+          [answerLetter]: {
+            answers: processedAnswers,
+            question: question,
+          },
+        },
+      };
+    } else if (this.props.task.kind == 'variant') {
+      value = {
+        variants: {
+          ...task[param_name].variants,
+          [answerLetter]: {
+            ...task[param_name].variants[answerLetter],
             value: this.state.value || this.props.children,
             name: this.state.value || this.props.children,
           },
