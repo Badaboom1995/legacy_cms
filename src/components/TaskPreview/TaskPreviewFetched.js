@@ -35,7 +35,6 @@ class TaskPreviewFetched extends React.Component {
     for (const key in answers) {
       editableQuestion = editableQuestion.replace(`%{${key}}`, `${answers[key]}`);
     }
-    console.log(TextUtilit.handleText('%b2t{asdasd %{123}}'));
     return editableQuestion;
   };
   getInputsAnswers = item => {

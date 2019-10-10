@@ -18,25 +18,22 @@ class EditableWithInput extends React.Component {
     const { prefix, task, param_name, index, handleFunction } = this.props;
     const answerLetter = String.fromCharCode(ALPHABET_START_CODE + index);
     const getAnswerLetter = index => String.fromCharCode(ALPHABET_START_CODE + index);
-
-    if (prefix) {
-      value = {
-        [prefix]: {
-          ...task[param_name][prefix],
-          [answerLetter]: {
-            ...task[param_name][prefix][answerLetter],
-            value: this.state.value || this.props.children,
-            name: this.state.value || this.props.children,
-          },
-        },
-      };
-    } else if (this.props.task.kind == 'inputs') {
-      const answers = this.state.value.match(/(?<=%\{).+?(?=\})/g) || [];
-      const processedAnswers = answers.reduce((accum, item, index) => {
+    if (this.props.task.kind == 'inputs') {
+      // const answers = this.state.value.match(/(?<=%\{).+?(?=\})/g) || [];
+      const answers = this.state.value.match(/%\{.*?\}/g) || [];
+      const answersWithoutBrackets = [];
+      answers.forEach(item => {
+        answersWithoutBrackets = [
+          ...answersWithoutBrackets,
+          item.replace('%{', '').replace('}', ''),
+        ];
+      });
+      console.log(answersWithoutBrackets);
+      const processedAnswers = answersWithoutBrackets.reduce((accum, item, index) => {
         return { ...accum, [getAnswerLetter(index)]: item };
       }, {});
       let question = this.state.value;
-      answers.forEach((item, index) => {
+      answersWithoutBrackets.forEach((item, index) => {
         question = question.replace(`%{${item}}`, `%{${getAnswerLetter(index)}}`);
       });
       value = {

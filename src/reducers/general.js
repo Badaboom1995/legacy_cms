@@ -148,13 +148,6 @@ export default (state = generalReducerDefaultState, action) => {
           return index != action.index;
         }),
       };
-    case 'UPDATE_GENERATION':
-      return {
-        ...state,
-        generations: state.generations.filter((item, index) => {
-          return index != action.index;
-        }),
-      };
     case 'CLEAR_STATE':
       return {
         ...state,
