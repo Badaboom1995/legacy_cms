@@ -103,7 +103,9 @@ class TaskPreviewContainer extends React.Component {
         <div>
           {showGens &&
             this.props.generations.map((generation, index) => {
-              const answers = generation.answers || generation.expressions || [];
+              console.log(generation);
+              const answers =
+                generation.answers || generation.expressions || generation.inputs || [];
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
                   <EditableWithInput
@@ -128,7 +130,6 @@ class TaskPreviewContainer extends React.Component {
                           <EditableWithInput
                             task={generation}
                             param_name="data"
-                            prefix="variants"
                             index={index}
                             handleFunction={Request.updateGeneration}
                           >
