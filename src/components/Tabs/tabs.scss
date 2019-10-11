@@ -1,0 +1,12 @@
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow: scroll;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #000;
+  &__item {
+    margin-bottom: 10px;
+  }
+}

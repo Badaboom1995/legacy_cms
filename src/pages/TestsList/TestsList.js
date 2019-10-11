@@ -9,6 +9,7 @@ import TaskPreviewFetched from 'components/TaskPreview/TaskPreviewFetched';
 import SelectElement from 'components/SelectElement/SelectElement';
 import Tasks from 'helpers/Tasks';
 import { addCheckOption, saveSelectedCheck } from 'actions/checks';
+import Tabs from 'components/Tabs/Tabs';
 import SuccessAnimation from 'components/SuccessAnimation/SuccessAnimation';
 import {
   levelsNamesSelector,
@@ -24,9 +25,16 @@ import { getNameById, getGradeValueById, getSubjectValueById } from 'helpers/get
 import './tests-list.scss';
 
 class TestsList extends React.Component {
+  state = {
+    activeSubject: '1',
+  };
+
   componentDidMount() {
     this.props.dispatch(getChecks());
   }
+  selectSubject = subjectId => {
+    this.setState(() => ({ activeSubject: subjectId }));
+  };
   deleteCheck = id => {
     this.props.dispatch(deleteChecks(id));
   };
@@ -91,26 +99,29 @@ class TestsList extends React.Component {
       <div className="content">
         <div className="tests-list">
           <p className="tests-list__title">Тесты</p>
+          <Tabs elements={this.props.general.subjects} selectSubject={this.selectSubject} />
           {checks_list.map((item, index) => {
             const { check_mode, check_scale } = item;
             return (
-              <div
-                onClick={() => this.selectTest(item.id)}
-                key={index}
-                className={`task-preview task-preview__main tests-list__test ${selectedCheckId ==
-                  item.id && 'task-preview__main--selected'}`}
-              >
-                <p className="tests-list__test-title">{item.name}</p>
-                <span className="task-preview__param">{check_mode && check_mode.name}</span>
-                <span className="task-preview__param">{check_scale && check_scale.name}</span>
-                <button
-                  onClick={() => {
-                    this.deleteCheck(item.id);
-                  }}
+              this.state.activeSubject == item.subject && (
+                <div
+                  onClick={() => this.selectTest(item.id)}
+                  key={index}
+                  className={`task-preview task-preview__main tests-list__test ${selectedCheckId ==
+                    item.id && 'task-preview__main--selected'}`}
                 >
-                  delete
-                </button>
-              </div>
+                  <p className="tests-list__test-title">{item.name}</p>
+                  <span className="task-preview__param">{check_mode && check_mode.name}</span>
+                  <span className="task-preview__param">{check_scale && check_scale.name}</span>
+                  <button
+                    onClick={() => {
+                      this.deleteCheck(item.id);
+                    }}
+                  >
+                    delete
+                  </button>
+                </div>
+              )
             );
           })}
         </div>
