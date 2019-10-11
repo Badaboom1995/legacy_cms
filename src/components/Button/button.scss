@@ -75,7 +75,10 @@
     }
   }
   &--selected {
-    background-color: #5883c6;
+    background-color: #263d42;
+    &:hover {
+      background-color: #263d42;
+    }
   }
   &--no-margin-bottom {
     margin-bottom: 0;

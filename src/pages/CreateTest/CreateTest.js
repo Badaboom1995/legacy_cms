@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Checks from 'helpers/Checks';
 import Tasks from 'helpers/Tasks';
-import Structure from 'helpers/Structure';
 import TextInput from 'components/TextInput/TextInput';
 import TasksList from 'components/TasksList/TasksList';
 import Select from 'components/Select/Select';
@@ -27,15 +26,6 @@ class CreateTest extends React.Component {
   componentDidMount() {
     this.props.dispatch(getTasks());
   }
-
-  getTopics = e => {
-    const Request = new Structure();
-    Request.getTopics().then(response => {
-      const topicNames = response.map(item => item.name);
-      this.setState(() => ({ elements: topicNames }));
-    });
-    this.togglePopupVisibility(e);
-  };
   togglePopupVisibility = e => {
     if (e.target == e.currentTarget) {
       this.setState(state => ({ popupVisible: state.popupVisible ? false : true }));
@@ -43,7 +33,6 @@ class CreateTest extends React.Component {
   };
 
   onCustomChange = (value, name, list) => {
-    console.log(list, value);
     const Obj = { name: value, id: list[value] };
     this.onChange(Obj, name);
   };
@@ -51,28 +40,11 @@ class CreateTest extends React.Component {
     return Object.keys(obj);
   };
   updateCheck = () => {
-    console.log(this.state.check);
     const Request = new Checks();
     Request.getChecks(this.check_id).then(res => {
       this.setState(() => ({
         check: res[0],
       }));
-    });
-  };
-  getChapters = () => {
-    const Request = new Structure();
-    return Request.getChapters().then(response => {
-      this.props.dispatch(addOption('chapters', response));
-      const topicNames = response.map(item => item.name);
-      return topicNames;
-    });
-  };
-  getTopics = () => {
-    const Request = new Structure();
-    return Request.getTopics().then(response => {
-      this.props.dispatch(addOption('topics', response));
-      const topicNames = response.map(item => item.name);
-      return topicNames;
     });
   };
   getChapterId = () => {
