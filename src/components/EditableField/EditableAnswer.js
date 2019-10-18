@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './editable-element.scss';
-import EditableWithInputContainer from './EditableWithInputContainer';
+import EditableWithInput from './EditableWithInput';
 
 class EditableAnswer extends React.Component {
   state = {
@@ -55,7 +55,7 @@ class EditableAnswer extends React.Component {
     return adoptedValue;
   };
   render() {
-    return <EditableWithInputContainer getAdoptedValue={this.getAdoptedValue} {...this.props} />;
+    return <EditableWithInput getAdoptedValue={this.getAdoptedValue} {...this.props} />;
   }
 }
 
