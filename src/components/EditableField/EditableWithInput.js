@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './editable-element.scss';
-import './editable-element.scss';
 import TextInput from 'components/TextInput/TextInput';
+import TextUtilit from 'components/TextUtilit/TextUtilit';
+import EditableWithInputContainer from './EditableWithInputContainer';
 
 class EditableWithInput extends React.Component {
   state = {
@@ -14,49 +15,47 @@ class EditableWithInput extends React.Component {
   };
   editingOff = () => {
     let value = '';
-    const ALPHABET_START_CODE = 97;
-    const { prefix, task, param_name, index, handleFunction } = this.props;
-    const answerLetter = String.fromCharCode(ALPHABET_START_CODE + index);
-    const getAnswerLetter = index => String.fromCharCode(ALPHABET_START_CODE + index);
-    if (this.props.task.kind == 'inputs') {
-      // const answers = this.state.value.match(/(?<=%\{).+?(?=\})/g) || [];
-      const answers = this.state.value.match(/%\{.*?\}/g) || [];
-      const answersWithoutBrackets = [];
-      answers.forEach(item => {
-        answersWithoutBrackets = [
-          ...answersWithoutBrackets,
-          item.replace('%{', '').replace('}', ''),
-        ];
-      });
-      console.log(answersWithoutBrackets);
-      const processedAnswers = answersWithoutBrackets.reduce((accum, item, index) => {
-        return { ...accum, [getAnswerLetter(index)]: item };
-      }, {});
-      let question = this.state.value;
-      answersWithoutBrackets.forEach((item, index) => {
-        question = question.replace(`%{${item}}`, `%{${getAnswerLetter(index)}}`);
-      });
-      value = {
-        inputs: {
-          ...task[param_name].inputs,
-          [answerLetter]: {
-            answers: processedAnswers,
-            question: question,
-          },
-        },
-      };
-    } else if (this.props.task.kind == 'variant') {
-      value = {
-        variants: {
-          ...task[param_name].variants,
-          [answerLetter]: {
-            ...task[param_name].variants[answerLetter],
-            value: this.state.value || this.props.children,
-            name: this.state.value || this.props.children,
-          },
-        },
-      };
-    }
+    // const ALPHABET_START_CODE = 97;
+    const { task, param_name, index, handleFunction } = this.props;
+    // const answerLetter = String.fromCharCode(ALPHABET_START_CODE + index);
+    // const getAnswerLetter = index => String.fromCharCode(ALPHABET_START_CODE + index);
+    // if (this.props.task.kind == 'inputs' && this.props.editableAnswer) {
+    //   const answers = this.state.value.match(/%\{.*?\}/g) || [];
+    //   const answersWithoutBrackets = [];
+    //   answers.forEach(item => {
+    //     answersWithoutBrackets = [
+    //       ...answersWithoutBrackets,
+    //       item.replace('%{', '').replace('}', ''),
+    //     ];
+    //   });
+    //   const processedAnswers = answersWithoutBrackets.reduce((accum, item, index) => {
+    //     return { ...accum, [getAnswerLetter(index)]: item };
+    //   }, {});
+    //   let question = this.state.value;
+    //   answersWithoutBrackets.forEach((item, index) => {
+    //     question = question.replace(`%{${item}}`, `%{${getAnswerLetter(index)}}`);
+    //   });
+    //   value = {
+    //     inputs: {
+    //       ...task[param_name].inputs,
+    //       [answerLetter]: {
+    //         answers: processedAnswers,
+    //         question: question,
+    //       },
+    //     },
+    //   };
+    // } else if (this.props.task.kind == 'variant' && this.props.editableAnswer) {
+    //   value = {
+    //     variants: {
+    //       ...task[param_name].variants,
+    //       [answerLetter]: {
+    //         ...task[param_name].variants[answerLetter],
+    //         value: this.state.value || this.props.children,
+    //         name: this.state.value || this.props.children,
+    //       },
+    //     },
+    //   };
+    // }
 
     this.setState(() => ({ editing: false }));
     handleFunction(task.id, {
@@ -67,27 +66,7 @@ class EditableWithInput extends React.Component {
     this.setState(() => ({ value: value }));
   };
   render() {
-    const { className } = this.props;
-    const value = this.state.value || this.props.children;
-    return (
-      <React.Fragment>
-        {this.state.editing ? (
-          <div className="editable-element editable-element--input">
-            <TextInput
-              className="editable-element__input"
-              name="answerToAdd"
-              value={value}
-              onChange={this.onValueChange}
-            />
-            <button onClick={this.editingOff}>submit</button>
-          </div>
-        ) : (
-          <span onClick={this.editingOn} className={className}>
-            {value}
-          </span>
-        )}
-      </React.Fragment>
-    );
+    return <EditableWithInputContainer getAdoptedValue={this.getAdoptedValue} {...this.props} />;
   }
 }
 

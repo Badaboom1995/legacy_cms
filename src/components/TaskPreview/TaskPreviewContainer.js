@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { addTaskToTest } from 'actions/checks';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
+import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
 import Tasks from 'helpers/Tasks';
 
@@ -35,7 +36,7 @@ class TaskPreviewContainer extends React.Component {
             className="task-preview__title"
             handleFunction={Request.updateCheckJob}
           >
-            {TextUtilit.handleText(name) || 'Название'}
+            {name || 'Название'}
           </EditableWithInput>
           <div
             task={this.props.task}
@@ -103,7 +104,6 @@ class TaskPreviewContainer extends React.Component {
         <div>
           {showGens &&
             this.props.generations.map((generation, index) => {
-              console.log(generation);
               const answers =
                 generation.answers || generation.expressions || generation.inputs || [];
               return (
@@ -114,7 +114,7 @@ class TaskPreviewContainer extends React.Component {
                     className="task-preview__title"
                     handleFunction={Request.updateGeneration}
                   >
-                    {TextUtilit.handleText(generation.text)}
+                    {generation.text}
                   </EditableWithInput>
                   <span className="task-preview__subtitle">{generation.kind}</span>
                   <ul className="task-preview__generations">
@@ -127,14 +127,15 @@ class TaskPreviewContainer extends React.Component {
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
-                          <EditableWithInput
+                          <EditableAnswer
                             task={generation}
                             param_name="data"
+                            editableAnswer
                             index={index}
                             handleFunction={Request.updateGeneration}
                           >
-                            {TextUtilit.handleText(generation.rightAnswers ? answer : answer.value)}
-                          </EditableWithInput>
+                            {generation.rightAnswers ? answer : answer.value}
+                          </EditableAnswer>
                         </li>
                       );
                     })}
