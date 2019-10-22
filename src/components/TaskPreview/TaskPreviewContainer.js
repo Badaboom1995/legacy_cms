@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { addTaskToTest } from 'actions/checks';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
+import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
 import Tasks from 'helpers/Tasks';
 
@@ -17,9 +18,13 @@ class TaskPreviewContainer extends React.Component {
       showGens: state.showGens ? false : true,
     }));
   };
-  deleteGeneration = id => {
-    const Request = new Tasks();
-    Request.deleteGeneration(id);
+  deleteGeneration = (id, index) => {
+    if (id) {
+      const Request = new Tasks();
+      Request.deleteGeneration(id);
+    } else {
+      this.props.deleteGeneration(index);
+    }
   };
   render() {
     const { generationsHidden, noDeleteButton, noAddButton } = this.props;
@@ -31,26 +36,19 @@ class TaskPreviewContainer extends React.Component {
         <div className="task-preview__main">
           <EditableWithInput
             task={this.props.task}
-            param_name="name"
+            paramName="name"
             className="task-preview__title"
             handleFunction={Request.updateCheckJob}
           >
-            {TextUtilit.handleText(name) || 'Название'}
+            {name || 'Название'}
           </EditableWithInput>
-          <div
-            task={this.props.task}
-            options={[]}
-            param_name="chapter_id"
-            className="task-preview__subtitle"
-          >
-            {chapter}
-          </div>
+          <div className="task-preview__subtitle">{chapter}</div>
           <EditableWithSelect
             task={this.props.task}
-            options={this.props.general.scales}
+            options={this.props.general.difficulty}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
-            param_name="difficulty"
+            paramName="difficulty"
             className="task-preview__param"
           >
             {difficulty || 'Cложность'}
@@ -60,7 +58,7 @@ class TaskPreviewContainer extends React.Component {
             options={this.props.general.learning_levels}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
-            param_name="learning_level_id"
+            paramName="learning_level_id"
             className="task-preview__param"
           >
             {grade ? `${grade} класс` : 'Класс'}
@@ -70,7 +68,7 @@ class TaskPreviewContainer extends React.Component {
             options={this.props.general.subjects}
             getNames={array => array.map(item => item.name)}
             getId={(array, value) => array.find(item => item.name == value)}
-            param_name="subject"
+            paramName="subject"
             className="task-preview__param"
           >
             {(subject && subject.name) || 'Предмет'}
@@ -103,18 +101,17 @@ class TaskPreviewContainer extends React.Component {
         <div>
           {showGens &&
             this.props.generations.map((generation, index) => {
-              console.log(generation);
               const answers =
                 generation.answers || generation.expressions || generation.inputs || [];
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
                   <EditableWithInput
                     task={generation}
-                    param_name="name"
+                    paramName="name"
                     className="task-preview__title"
                     handleFunction={Request.updateGeneration}
                   >
-                    {TextUtilit.handleText(generation.text)}
+                    {generation.text}
                   </EditableWithInput>
                   <span className="task-preview__subtitle">{generation.kind}</span>
                   <ul className="task-preview__generations">
@@ -127,21 +124,22 @@ class TaskPreviewContainer extends React.Component {
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
-                          <EditableWithInput
+                          <EditableAnswer
                             task={generation}
-                            param_name="data"
+                            paramName="data"
+                            editableAnswer
                             index={index}
                             handleFunction={Request.updateGeneration}
                           >
-                            {TextUtilit.handleText(generation.rightAnswers ? answer : answer.value)}
-                          </EditableWithInput>
+                            {generation.rightAnswers ? answer : answer.value}
+                          </EditableAnswer>
                         </li>
                       );
                     })}
                   </ul>
                   <button
                     onClick={() => {
-                      this.deleteGeneration(generation.id);
+                      this.deleteGeneration(generation.id, index);
                     }}
                   >
                     delete

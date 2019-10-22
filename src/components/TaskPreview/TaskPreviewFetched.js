@@ -13,7 +13,6 @@ class TaskPreviewFetched extends React.Component {
       let answers = {};
       if (item.data.inputs) {
         answers = this.getInputsAnswers(item);
-        console.log(answers);
       } else if (item.data.variants) {
         answers = this.getCommonAnswers(item);
       }
@@ -33,7 +32,7 @@ class TaskPreviewFetched extends React.Component {
   handleInputAnswer = (answers, question) => {
     let editableQuestion = question;
     for (const key in answers) {
-      editableQuestion = editableQuestion.replace(`%{${key}}`, `${answers[key]}`);
+      editableQuestion = editableQuestion.replace(`%{${key}}`, `in(${answers[key]})`);
     }
     return editableQuestion;
   };

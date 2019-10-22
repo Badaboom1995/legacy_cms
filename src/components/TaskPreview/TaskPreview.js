@@ -48,7 +48,10 @@ class TaskPreview extends React.Component {
   };
 
   render() {
-    const { generationsHidden, noDeleteButton, noAddButton } = this.props;
+    const { generationsHidden, noDeleteButton, noAddButton, generations } = this.props;
+    {
+      console.log(generations);
+    }
     return (
       <React.Fragment>
         <TaskPreviewContainer
@@ -56,7 +59,7 @@ class TaskPreview extends React.Component {
           noAddButton={noAddButton}
           className={this.props.className}
           task={this.props.task}
-          generations={this.props.generations}
+          generations={generations}
           deleteGeneration={this.deleteGeneration}
           generationsHidden={generationsHidden}
         />
