@@ -48,7 +48,7 @@ export default (state = generalReducerDefaultState, action) => {
     case SELECT_CHECK:
       return {
         ...state,
-        selectedCheck: state.checks_list.filter(item => item.id === action.id)[0],
+        selectedCheck: state.checks_list.filter(item => item.id === action.id)[0] || {},
       };
     case UPDATE_SELECTED_CHECK:
       return {

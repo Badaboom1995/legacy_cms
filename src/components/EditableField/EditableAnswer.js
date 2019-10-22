@@ -12,7 +12,7 @@ class EditableAnswer extends React.Component {
   getAdoptedValue = value => {
     let adoptedValue = '';
     const ALPHABET_START_CODE = 97;
-    const { task, param_name, index, handleFunction } = this.props;
+    const { task, paramName, index, handleFunction } = this.props;
     const answerLetter = String.fromCharCode(ALPHABET_START_CODE + index);
     const getAnswerLetter = index => String.fromCharCode(ALPHABET_START_CODE + index);
     if (this.props.task.kind == 'inputs') {
@@ -33,7 +33,7 @@ class EditableAnswer extends React.Component {
       });
       adoptedValue = {
         inputs: {
-          ...task[param_name].inputs,
+          ...task[paramName].inputs,
           [answerLetter]: {
             answers: processedAnswers,
             question: question,
@@ -43,9 +43,9 @@ class EditableAnswer extends React.Component {
     } else if (this.props.task.kind == 'variant') {
       adoptedValue = {
         variants: {
-          ...task[param_name].variants,
+          ...task[paramName].variants,
           [answerLetter]: {
-            ...task[param_name].variants[answerLetter],
+            ...task[paramName].variants[answerLetter],
             value: value || this.props.children,
             name: value || this.props.children,
           },

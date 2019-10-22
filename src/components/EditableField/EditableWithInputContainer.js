@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import './editable-element.scss';
 import TextInput from 'components/TextInput/TextInput';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
 
-class EditWithInputContainer extends React.Component {
+export default class EditWithInputContainer extends React.Component {
   state = {
     editing: false,
     value: '',
@@ -51,5 +50,3 @@ class EditWithInputContainer extends React.Component {
     );
   }
 }
-
-export default connect()(EditWithInputContainer);

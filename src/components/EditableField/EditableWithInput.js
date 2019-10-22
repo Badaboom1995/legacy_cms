@@ -4,7 +4,7 @@ import './editable-element.scss';
 import TextInput from 'components/TextInput/TextInput';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
 
-class EditWithInputContainer extends React.Component {
+export default class EditWithInputContainer extends React.Component {
   state = {
     editing: false,
     value: '',
@@ -13,14 +13,14 @@ class EditWithInputContainer extends React.Component {
     this.setState(() => ({ editing: true }));
   };
   editingOff = () => {
-    const { task, param_name, handleFunction } = this.props;
+    const { task, paramName, handleFunction } = this.props;
     this.setState(() => ({ editing: false }));
     const adoptedValue = this.props.getAdoptedValue
       ? this.props.getAdoptedValue(this.state.value)
       : '';
     const finalValue = adoptedValue || this.state.value || this.props.children;
     handleFunction(task.id, {
-      [param_name]: finalValue,
+      [paramName]: finalValue,
     });
   };
   onValueChange = value => {
@@ -51,5 +51,3 @@ class EditWithInputContainer extends React.Component {
     );
   }
 }
-
-export default connect()(EditWithInputContainer);

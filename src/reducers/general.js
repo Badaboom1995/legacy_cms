@@ -7,6 +7,7 @@ const generalReducerDefaultState = {
   generations: [],
   learning_levels: [],
   subjects: [],
+  difficulty: [{ id: 'A', name: 'Базовый' }, { id: 'B', name: 'Профильный' }],
 };
 
 export default (state = generalReducerDefaultState, action) => {
