@@ -30,7 +30,7 @@ class AddTaskInfo extends React.Component {
     body.append('check_generation[name]', '123');
     body.append('check_generation[kind]', 'inputs');
 
-    fetch('http://localhost:3001/b2t/api/v1/teachers/check_generations', {
+    fetch('https://43859.shot-uchi.ru/b2t/api/v1/teachers/check_generations', {
       body,
       headers: {
         'Content-Type': 'multipart/form-data',
