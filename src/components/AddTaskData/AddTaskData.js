@@ -23,21 +23,32 @@ class AddTaskInfo extends React.Component {
   getSubjectNames = subjects => {
     return Object.keys(subjects);
   };
-  addPicture = () => {
+  addPicture = async () => {
+    // const response = await fetch('http://localhost:3001/b2t/api/v1/teachers/check_generations/1', {
+    //   headers: {
+    //     'Content-type': 'application/json',
+    //     'Uchi-User-Id': '12',
+    //   },
+    // });
+
+    // const data = await response.json();
+    // console.log(data);
+
     const body = new FormData();
     body.append('check_generation[images][a]', '@/Users/aleksey/Desktop/goal.svg');
     body.append('check_generation[images][b]', '@/Users/aleksey/Desktop/goal.svg');
     body.append('check_generation[name]', '123');
     body.append('check_generation[kind]', 'inputs');
 
-    fetch('https://43859.shot-uchi.ru/b2t/api/v1/teachers/check_generations', {
+    fetch('http://localhost:3001/b2t/api/v1/teachers/check_generations/1', {
       body,
       headers: {
         'Content-Type': 'multipart/form-data',
+        Accept: 'multipart/form-data',
         'Uchi-User-Id': '12',
         'Uchi-User-Type': 'Teacher',
       },
-      method: 'POST',
+      method: 'PUT',
     });
 
     // const body = new FormData();
