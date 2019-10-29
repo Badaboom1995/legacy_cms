@@ -20,6 +20,7 @@ class TextUtilit {
       text: /[^0-9]/g,
       number: /((−|-)?\d+(\.|,)?(\d+)?)/g,
       rawNumber: /((?:−|-)?\d+(?:\.|,)?(?:\d+)?)/g,
+      textWrap: /\n/g,
     }
   };
 
@@ -28,7 +29,7 @@ class TextUtilit {
   }
 
   static handleText(text) {
-    const { markdown, latex, b2t, rawNumber } = this.RegExps;
+    const { markdown, latex, b2t, rawNumber, textWrap } = this.RegExps;
     let result = text;
     let needParse = false;
 
@@ -42,6 +43,11 @@ class TextUtilit {
 
     if (markdown.test(result)) {
       result = this.createMarkdownText(result);
+      needParse = true;
+    }
+
+    if (textWrap.test(result)) {
+      result = this.createWrapText(result);
       needParse = true;
     }
 
@@ -82,6 +88,13 @@ class TextUtilit {
     if (italic.test(text)) {
       handledText = handledText.replace(italic, '<em>$1</em>');
     }
+
+    return handledText;
+  }
+
+  static createWrapText(text) {
+    const { textWrap } = this.RegExps;
+    const handledText = text.replace(textWrap, '<br>');
 
     return handledText;
   }
