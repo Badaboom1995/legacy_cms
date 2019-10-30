@@ -1,0 +1,49 @@
+.textarea {
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  margin-right: 15px;
+  &--pretending {
+    input {
+      border: none;
+      background-color: transparent;
+      border-radius: 0;
+      padding: 18px 20px;
+      font-weight: normal;
+      font-size: 22px;
+      border-bottom: 1px solid;
+      &:focus {
+        background-color: transparent;
+        outline: none;
+        border-bottom: 1px solid #000;
+      }
+    }
+  }
+  &__switch-mode {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 5px;
+    top: 38px;
+    border-radius: 50%;
+    border: none;
+  }
+  .math {
+    width: 100%;
+    margin-top: 15px;
+  }
+}
+.textarea__field {
+  flex-grow: 1;
+  border: 1px solid #6cd4ff;
+  border-radius: 10px;
+  padding: 10px;
+}
+.textarea__label {
+  width: 100%;
+  font-size: 14px;
+  margin-bottom: 15px;
+}

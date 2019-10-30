@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TextInput from 'components/TextInput/TextInput';
+import TextArea from 'components/TextArea/TextArea';
 import Select from 'components/Select/Select';
 import Answers from 'components/Answers/Answers';
 import AddAnswer from 'components/AddAnswer/AddAnswer';
@@ -102,7 +102,7 @@ class AddTaskInfo extends React.Component {
     return (
       <div className="content__wrap">
         <div className="content__fragment">
-          <TextInput name="text" onChange={this.onChange} label="Текст задания" mathMode />
+          <TextArea name="text" onChange={this.onChange} label="Текст задания" mathMode />
           <div className="content__row">
             <Select
               name="columns"

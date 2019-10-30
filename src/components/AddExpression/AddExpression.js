@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import TextInput from 'components/TextInput/TextInput';
+import TextArea from 'components/TextArea/TextArea';
 import TextUtilit from 'components/TextUtilit/TextUtilit';
 import { addExpression } from 'actions/general';
 import './add-expression.scss';
@@ -91,7 +91,7 @@ class AddExpression extends React.Component {
 
     return (
       <div className="add-expression">
-        <TextInput
+        <TextArea
           name="expressionToAdd"
           value={value}
           onChange={this.onChange}
