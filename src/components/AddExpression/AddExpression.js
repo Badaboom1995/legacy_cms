@@ -38,9 +38,11 @@ class AddExpression extends React.Component {
         const question = b2texp.replace(kindRegexp, (str, match) => {
           const char = String.fromCharCode(charCode);
           if (kind === 'inputs') {
-            const inputValue = TextUtilit.handleNumber(match);
+            const inputType = (match.search(RegExps.number) !== -1) ? 'numeric' : 'text';
+            const inputValue = (inputType === 'numeric' ? TextUtilit.handleNumber(match) : match);
+
             rawValue = rawValue.replace(match, inputValue);
-            expression.answers[char] = TextUtilit.handleNumber(inputValue);
+            expression.answers[char] = inputValue;
           } else if (kind === 'dropdown') {
             expression.answers[char] = {
               values: [],
