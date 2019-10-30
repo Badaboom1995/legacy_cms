@@ -65,7 +65,7 @@ export default class ChecksService {
     }
 
     const data = await this.response.json();
-    console.log(data);
+    return data;
   }
   async deleteGeneration(json) {
     const path = `/teachers/checks_generations/1`;

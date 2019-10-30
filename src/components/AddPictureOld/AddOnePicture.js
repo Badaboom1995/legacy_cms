@@ -16,7 +16,7 @@ class AddOnePicture extends React.Component {
             }}
             className="upload-image__preview-task"
           >
-            {this.props.generationName}
+            <p>{this.props.generationName}</p>
           </div>
           <div className="upload-image__preview-image" style={{ width: this.props.percents }}>
             <AddPictureButton percents={this.props.percents} />
