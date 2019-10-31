@@ -184,7 +184,7 @@ class TextUtilit {
   static handleNumber(text) {
     const result = text
       .replace('.', ',')
-      .replace('-', '−')
+      .replace(/(-|–)/g, '−')
       .replace(/(,.*)(,|\.)/g, '$1');
 
     return result;
