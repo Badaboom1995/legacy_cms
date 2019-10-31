@@ -13,7 +13,7 @@ import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
 
-import config from '../config';
+import config from 'config';
 
 const base_url = config.api.url;
 
