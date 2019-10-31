@@ -8,17 +8,17 @@ class TextUtilit {
     return {
       markdown: /%m\{(.+?)\}%/g,
       latex: /%l\{(.+?)\}%/g,
-      b2t: /%b2t\{((?:.)*?(%\{.+?\})+(?:.)*?)\}%/g,
+      b2t: /%b2t\{((?:.)*?(%\{.*?\})+(?:.)*?)\}%/g,
       customExp: /%(?:b2t|l|m)\{.+?\}%/g,
       bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
       italic: /(?:\*|_)(.+)(?:\*|_)/g,
-      inputs: /%\{([^|]+?)\}/g,
+      inputs: /%\{([^|]*?)\}/g,
       dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
       dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
-      numericOnly: /^[0-9.,+−-]+$/g,
-      notNumeric: /[^0-9.,+−]/g,
+      numericOnly: /^[0-9,+−]+$/g,
+      notNumeric: /[^0-9,+−]/g,
       text: /[^0-9]/g,
-      number: /((−|-)?\d+(\.|,)?(\d+)?)/g,
+      number: /^[+-−]?\d+((,|\.)\d+)?$/,
       rawNumber: /((?:−|-)?\d+(?:\.|,)?(?:\d+)?)/g,
       textWrap: /\n/g,
     }
@@ -182,14 +182,11 @@ class TextUtilit {
   }
 
   static handleNumber(text) {
-    const { numericOnly } = this.RegExps;
-    let result = text;
-    if (text.search(numericOnly) !== -1) {
-      result = text
-        .replace('.', ',')
-        .replace(/-/g, '−')
-        .replace(/(,.*)(,|\.)/g, '$1');
-    }
+    const result = text
+      .replace('.', ',')
+      .replace(/(-|–)/g, '−')
+      .replace(/(,.*)(,|\.)/g, '$1');
+
     return result;
   }
 }
