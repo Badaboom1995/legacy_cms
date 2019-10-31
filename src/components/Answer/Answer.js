@@ -12,9 +12,7 @@ class Answer extends React.Component {
   };
   chooseAnswer = e => {
     e.persist();
-    // const answerChoosed = this.props.rightAnswers.includes(this.decodeHTML(e.target.innerHTML));
     const answerChoosed = this.props.rightAnswers.includes(e.target.dataset.answer);
-    console.log(answerChoosed)
     const timer = setTimeout(() => {
       if (answerChoosed) {
         this.props.unchooseAnswer(e);
@@ -28,7 +26,7 @@ class Answer extends React.Component {
   };
 
   render() {
-    const { index, answer, rightAnswers } = this.props;
+    const { index, answer, rightAnswers, image } = this.props;
     return (
       <li
         className={`answers__item ${rightAnswers.includes(answer) && 'answers__item--true'}`}
@@ -38,6 +36,7 @@ class Answer extends React.Component {
         onDoubleClick={this.removeAnswer}
         data-answer={answer}
       >
+        <img className="answers__image" src={URL.createObjectURL(image)} alt="" />
         {TextUtilit.handleText(answer)}
       </li>
     );

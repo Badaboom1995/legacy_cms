@@ -29,7 +29,6 @@ class Answers extends React.Component {
       }));
       this.props.dispatch(addRightAnswer(righAnswer));
     }
-    console.log(this.props.general);
   };
 
   unchooseAnswer = e => {
@@ -38,7 +37,6 @@ class Answers extends React.Component {
     });
     this.setState(() => ({ rightAnswers }));
     this.props.dispatch(removeRightAnswer(e.target.dataset.answer));
-    console.log(this.props.general);
   };
 
   render() {
@@ -56,6 +54,7 @@ class Answers extends React.Component {
                     chooseAnswer={this.chooseAnswer}
                     unchooseAnswer={this.unchooseAnswer}
                     answer={answer}
+                    image={this.props.imagesAnswers[index]}
                   ></Answer>
                 );
               })}
@@ -69,6 +68,7 @@ class Answers extends React.Component {
 
 const mapStateToProps = state => ({
   general: state.general,
+  imagesAnswers: state.images.imagesAnswers,
 });
 
 export default connect(mapStateToProps)(Answers);
