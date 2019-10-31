@@ -13,6 +13,10 @@ import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
 
+import config from '../config';
+
+const base_url = config.api.url;
+
 class Home extends React.Component {
   state = {
     kind: '',
@@ -92,7 +96,7 @@ class Home extends React.Component {
     });
 
     axios
-      .put(`http://localhost:3001/b2t/api/v1/teachers/check_generations/${id}`, data, {
+      .put(`${base_url}teachers/check_generations/${id}`, data, {
         headers: {
           accept: 'application/json',
           'Accept-Language': 'en-US,en;q=0.8',
