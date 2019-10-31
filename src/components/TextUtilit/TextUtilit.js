@@ -18,7 +18,7 @@ class TextUtilit {
       numericOnly: /^[0-9,+−]+$/g,
       notNumeric: /[^0-9,+−]/g,
       text: /[^0-9]/g,
-      number: /^[+-−]?\d+(\.\d+)?$/,
+      number: /^[+-−]?\d+((,|\.)\d+)?$/,
       rawNumber: /((?:−|-)?\d+(?:\.|,)?(?:\d+)?)/g,
       textWrap: /\n/g,
     }
