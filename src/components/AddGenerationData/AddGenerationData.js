@@ -111,7 +111,7 @@ class AddTaskInfo extends React.Component {
               onChange={this.onChange}
               label="Колонки(optional)"
             />
-            <AddPicture />
+            {/* <AddPicture /> */}
           </div>
           <Select
             name="kind"
