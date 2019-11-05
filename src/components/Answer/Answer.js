@@ -36,7 +36,7 @@ class Answer extends React.Component {
         onDoubleClick={this.removeAnswer}
         data-answer={answer}
       >
-        <img className="answers__image" src={URL.createObjectURL(image)} alt="" />
+        {image && <img className="answers__image" src={URL.createObjectURL(image)} alt="" />}
         {TextUtilit.handleText(answer)}
       </li>
     );
