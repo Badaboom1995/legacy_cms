@@ -37,7 +37,7 @@ export default (state = generalReducerDefaultState, action) => {
     case 'CHECKS_RECEIVED':
       return {
         ...state,
-        checks_list: action.checks,
+        checks_list: [...state.checks_list, ...action.checks],
         loading: false,
       };
     case 'GET_CHECKS':

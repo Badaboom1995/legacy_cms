@@ -11,6 +11,15 @@ import TaskPreview from 'components/TaskPreview/TaskPreview';
 import SelectElement from 'components/SelectElement/SelectElement';
 import './create-test.scss';
 
+const TESTS_LIMIT = 20;
+const defaultParams = {
+  sort: `id+desc`,
+  limit: TESTS_LIMIT,
+  filters: {
+    base: 'true',
+  }
+};
+
 class CreateTest extends React.Component {
   subjects = { Математика: 1, Русский: 2 };
   difficulty = { Базовый: 1, Продвинутый: 2 };
@@ -23,9 +32,13 @@ class CreateTest extends React.Component {
     checkJobs: [],
   };
 
-  componentDidMount() {
-    this.props.dispatch(getTasks());
-  }
+  async componentDidMount() {
+    const params = {
+      ...defaultParams,
+    };
+    console.log(params)
+    await this.props.dispatch(getTasks(params));
+  };
   togglePopupVisibility = e => {
     if (e.target == e.currentTarget) {
       this.setState(state => ({ popupVisible: state.popupVisible ? false : true }));

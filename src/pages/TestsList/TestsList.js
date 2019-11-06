@@ -24,15 +24,36 @@ import {
 import { getNameById, getGradeValueById, getSubjectValueById } from 'helpers/getters';
 import './tests-list.scss';
 
+const TESTS_LIMIT = 20;
+const defaultParams = {
+  sort: `id+desc`,
+  limit: TESTS_LIMIT,
+};
+
 class TestsList extends React.Component {
   state = {
     activeSubject: '1',
+    testsOffset: 0,
   };
 
   componentDidMount() {
-    this.props.dispatch(getChecks());
+    const { activeSubject } = this.state;
+    const params = {
+      ...defaultParams,
+      filter: {
+        subject: activeSubject,
+      },
+    };
+    this.props.dispatch(getChecks(params));
   }
-  selectSubject = subjectId => {
+  selectSubject = async subjectId => {
+    const params = {
+      ...defaultParams,
+      filter: {
+        subject: subjectId,
+      },
+    };
+    await this.props.dispatch(getChecks(params));
     this.setState(() => ({ activeSubject: subjectId }));
   };
   deleteCheck = id => {
@@ -75,6 +96,21 @@ class TestsList extends React.Component {
   updateTask = () => {
     const Request = new Tasks();
     Request.updateCheckJob();
+  };
+  buttonRequestHandler = async () => {
+    const { dispatch } = this.props;
+    const { testsOffset, activeSubject } = this.state;
+    const newOffset = testsOffset + TESTS_LIMIT;
+
+    const params = {
+      ...defaultParams,
+      offset: newOffset,
+      filter: {
+        subject: activeSubject,
+      },
+    };
+    await dispatch(getChecks(params));
+    this.setState({ testsOffset: newOffset });
   };
   render() {
     const { checks_list } = this.props.checks;
@@ -124,6 +160,9 @@ class TestsList extends React.Component {
               )
             );
           })}
+          <Button className="tests-button__request" onClick={this.buttonRequestHandler}>
+            {`Показать ещё ${TESTS_LIMIT}`}
+          </Button>
         </div>
         <div className={`content__secondary ${!selectedCheck && 'content__secondary--disabled'}`}>
           <TextInput

@@ -6,15 +6,17 @@ import Structure from 'helpers/Structure';
 
 const getStore = state => state;
 
-function* getTasks() {
+function* getTasks(action) {
+  console.log(action);
   const Request = new Tasks();
-  const response = yield Request.getTasks();
+  const response = yield Request.getTasks(action && action.params);
   yield put({ type: 'TASKS_RECEIVED', tasks: response });
 }
 
-function* getChecks() {
+function* getChecks(action) {
+  console.log(action)
   const Request = new Checks();
-  const response = yield Request.getChecks();
+  const response = yield Request.getChecks(action && action.params);
   yield put({ type: 'CHECKS_RECEIVED', checks: response });
 }
 
