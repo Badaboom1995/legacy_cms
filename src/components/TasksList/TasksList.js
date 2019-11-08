@@ -16,6 +16,8 @@ class TaskPreview extends React.Component {
     Request.deleteTask(id);
   };
   selectSubject = subjectId => {
+    const { onSelect } = this.props;
+    onSelect(subjectId);
     this.setState(() => ({ activeSubject: subjectId }));
   };
   render() {
@@ -49,6 +51,7 @@ class TaskPreview extends React.Component {
 
 TaskPreview.propTypes = {
   name: PropTypes.string,
+  onSelect: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

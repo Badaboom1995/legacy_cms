@@ -17,3 +17,9 @@
     border-top: 1px dashed #999;
   }
 }
+
+.tests-button__request {
+  &.hidden {
+    display: none;
+  }
+}

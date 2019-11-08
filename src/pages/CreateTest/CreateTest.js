@@ -5,16 +5,17 @@ import Tasks from 'helpers/Tasks';
 import TextInput from 'components/TextInput/TextInput';
 import TasksList from 'components/TasksList/TasksList';
 import Select from 'components/Select/Select';
-import { getTasks } from 'actions/tasks';
+import Button from 'components/Button/Button';
+import { getTasks, getTasksPart } from 'actions/tasks';
 import { addTaskToTest, addCheckOption } from 'actions/checks';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
 import SelectElement from 'components/SelectElement/SelectElement';
 import './create-test.scss';
 
-const TESTS_LIMIT = 20;
+const TASKS_LIMIT = 20;
 const defaultParams = {
   sort: `id+desc`,
-  limit: TESTS_LIMIT,
+  limit: TASKS_LIMIT,
   filters: {
     base: 'true',
   }
@@ -30,19 +31,44 @@ class CreateTest extends React.Component {
     choosedTasksIds: [],
     check: {},
     checkJobs: [],
+    tasksOffset: 0,
+    tasksFetching: false,
+    activeSubject: 1,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { dispatch } = this.props;
     const params = {
       ...defaultParams,
     };
     console.log(params)
-    await this.props.dispatch(getTasks(params));
+    dispatch(getTasks(params));
   };
   togglePopupVisibility = e => {
     if (e.target == e.currentTarget) {
       this.setState(state => ({ popupVisible: state.popupVisible ? false : true }));
     }
+  };
+
+  componentDidUpdate(prevProps) {
+    const { tasks } = this.props;
+    if (prevProps.tasks.taskList
+      && tasks.taskList
+      && prevProps.tasks.taskList.length !== tasks.taskList.length
+    ) {
+      this.setState({ tasksFetching: false });
+    }
+  };
+
+  selectSubject = subjectId => {
+    const params = {
+      ...defaultParams,
+      filter: {
+        subject: subjectId,
+      },
+    };
+    this.props.dispatch(getChecks(params));
+    this.setState(() => ({ activeSubject: subjectId, tasksFetching: true }));
   };
 
   onCustomChange = (value, name, list) => {
@@ -131,12 +157,43 @@ class CreateTest extends React.Component {
     });
   };
 
+  buttonRequestHandler = () => {
+    const { dispatch } = this.props;
+    const { tasksOffset, activeSubject } = this.state;
+    const newOffset = tasksOffset + TASKS_LIMIT;
+
+    const params = {
+      ...defaultParams,
+      offset: newOffset,
+      filters: {
+        ...defaultParams.base,
+        subject: activeSubject,
+      },
+    };
+    console.log(params)
+    dispatch(getTasksPart(params));
+    this.setState({ tasksOffset: newOffset, tasksFetching: true });
+  };
+
   render() {
+    const { tasks, isAllTasksReceived } = this.props;
+    const { tasksFetching } = this.state;
     return (
       <div className="content">
         <div className="content__main">
           <p className="content__title">Конструктор теста</p>
-          <TasksList tasks={this.props.tasks.taskList} />
+          <TasksList tasks={tasks.taskList} />
+          {isAllTasksReceived
+            ? null
+            : (
+              <Button className={`tests-button__request ${tasks.taskList.length ? '' : 'hidden'}`} onClick={this.buttonRequestHandler}>
+              {tasksFetching
+                ? `Загрузка...`
+                : `Показать ещё ${TASKS_LIMIT}`
+              }
+              </Button>
+            )
+          }
         </div>
         <div className="content__secondary">
           <TextInput
@@ -232,6 +289,7 @@ const mapStateToProps = state => ({
   tasks: state.tasks,
   checks: state.checks,
   learning_levels: state.general.learning_levels.map(item => item.value),
+  isAllTasksReceived: state.tasks.isAllReceived,
 });
 
 export default connect(mapStateToProps)(CreateTest);
