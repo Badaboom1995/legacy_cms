@@ -181,7 +181,7 @@ class CreateTest extends React.Component {
     const { tasksFetching } = this.state;
     return (
       <div className="content">
-        <div className="content__main">
+        <div className="content__main content__main--create-test">
           <p className="content__title">Конструктор теста</p>
           <TasksList tasks={tasks.taskList} onSelect={this.selectSubject} />
           {isAllTasksReceived

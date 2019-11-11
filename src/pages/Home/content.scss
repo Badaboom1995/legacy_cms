@@ -10,8 +10,11 @@
   position: relative;
   &__main {
     width: 65%;
-    height: 100%;
-    overflow: scroll;
+
+    &--create-test {
+      height: 100%;
+      overflow: scroll;
+    }
   }
   &__secondary {
     // position: fixed;
@@ -25,6 +28,9 @@
     padding-bottom: 40px;
     overflow: scroll;
     background-color: #f4f6f9;
+    &.task-preview {
+      position: fixed;
+    }
     &--disabled {
       &:after {
         content: '';
