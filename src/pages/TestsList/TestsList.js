@@ -42,7 +42,7 @@ class TestsList extends React.Component {
     const { activeSubject } = this.state;
     const params = {
       ...defaultParams,
-      filter: {
+      filters: {
         subject: activeSubject,
       },
     };
@@ -62,7 +62,7 @@ class TestsList extends React.Component {
   selectSubject = subjectId => {
     const params = {
       ...defaultParams,
-      filter: {
+      filters: {
         subject: subjectId,
       },
     };
@@ -118,7 +118,7 @@ class TestsList extends React.Component {
     const params = {
       ...defaultParams,
       offset: newOffset,
-      filter: {
+      filters: {
         subject: activeSubject,
       },
     };

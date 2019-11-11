@@ -63,11 +63,12 @@ class CreateTest extends React.Component {
   selectSubject = subjectId => {
     const params = {
       ...defaultParams,
-      filter: {
+      filters: {
+        ...defaultParams.filters,
         subject: subjectId,
       },
     };
-    this.props.dispatch(getChecks(params));
+    this.props.dispatch(getTasks(params));
     this.setState(() => ({ activeSubject: subjectId, tasksFetching: true }));
   };
 
@@ -166,7 +167,7 @@ class CreateTest extends React.Component {
       ...defaultParams,
       offset: newOffset,
       filters: {
-        ...defaultParams.base,
+        ...defaultParams.filters,
         subject: activeSubject,
       },
     };
@@ -182,7 +183,7 @@ class CreateTest extends React.Component {
       <div className="content">
         <div className="content__main">
           <p className="content__title">Конструктор теста</p>
-          <TasksList tasks={tasks.taskList} />
+          <TasksList tasks={tasks.taskList} onSelect={this.selectSubject} />
           {isAllTasksReceived
             ? null
             : (

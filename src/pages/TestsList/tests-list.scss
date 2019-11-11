@@ -3,6 +3,8 @@
   flex-direction: column;
   padding: 20px;
   width: 65%;
+  height: 100%;
+  overflow: scroll;
   &__test {
     width: 100%;
     cursor: pointer;
