@@ -67,7 +67,7 @@ class TestsList extends React.Component {
       },
     };
     this.props.dispatch(getChecks(params));
-    this.setState(() => ({ activeSubject: subjectId, checksFetching: true, checksOffset: 0 }));
+    this.setState(() => ({ activeSubject: subjectId, checksOffset: 0 }));
   };
   deleteCheck = id => {
     this.props.dispatch(deleteChecks(id));
