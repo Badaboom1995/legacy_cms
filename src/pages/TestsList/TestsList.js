@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Button from 'components/Button/Button';
-import { deleteChecks, getChecks, selectCheck, updateSelectedCheck } from 'actions/checks';
+import { deleteChecks, getChecks, getChecksPart, selectCheck, updateSelectedCheck } from 'actions/checks';
 import TaskPreviewFetched from 'components/TaskPreview/TaskPreviewFetched';
 import SelectElement from 'components/SelectElement/SelectElement';
 import Tasks from 'helpers/Tasks';
@@ -24,16 +24,50 @@ import {
 import { getNameById, getGradeValueById, getSubjectValueById } from 'helpers/getters';
 import './tests-list.scss';
 
+const CHECKS_LIMIT = 20;
+const defaultParams = {
+  sort: 'id+desc',
+  limit: CHECKS_LIMIT,
+};
+
 class TestsList extends React.Component {
   state = {
     activeSubject: '1',
+    checksOffset: 0,
+    checksFetching: false,
   };
 
   componentDidMount() {
-    this.props.dispatch(getChecks());
+    const { dispatch } = this.props;
+    const { activeSubject } = this.state;
+    const params = {
+      ...defaultParams,
+      filters: {
+        subject: activeSubject,
+      },
+    };
+    dispatch(getChecks(params));
   }
+
+  componentDidUpdate(prevProps) {
+    const { checks } = this.props;
+    if (prevProps.checks.checks_list
+      && checks.checks_list
+      && prevProps.checks.checks_list.length !== checks.checks_list.length
+    ) {
+      this.setState({ checksFetching: false });
+    }
+  }
+
   selectSubject = subjectId => {
-    this.setState(() => ({ activeSubject: subjectId }));
+    const params = {
+      ...defaultParams,
+      filters: {
+        subject: subjectId,
+      },
+    };
+    this.props.dispatch(getChecks(params));
+    this.setState(() => ({ activeSubject: subjectId, checksFetching: true, checksOffset: 0 }));
   };
   deleteCheck = id => {
     this.props.dispatch(deleteChecks(id));
@@ -76,8 +110,29 @@ class TestsList extends React.Component {
     const Request = new Tasks();
     Request.updateCheckJob();
   };
+  buttonRequestHandler = () => {
+    const { dispatch } = this.props;
+    const { checksOffset, activeSubject } = this.state;
+    const newOffset = checksOffset + CHECKS_LIMIT;
+
+    const params = {
+      ...defaultParams,
+      offset: newOffset,
+      filters: {
+        subject: activeSubject,
+      },
+    };
+    dispatch(getChecksPart(params));
+    this.setState({ checksOffset: newOffset, checksFetching: true });
+  };
+
   render() {
-    const { checks_list } = this.props.checks;
+    const {
+      checks: {
+        checks_list,
+      },
+    } = this.props;
+
     const {
       selectedCheckName,
       selectedCheck,
@@ -94,7 +149,10 @@ class TestsList extends React.Component {
       topicId,
       time_limit,
       selectedCheckId,
+      isAllChecksReceived,
     } = this.props;
+    const { checksFetching } = this.state;
+
     return (
       <div className="content">
         <div className="tests-list">
@@ -124,6 +182,17 @@ class TestsList extends React.Component {
               )
             );
           })}
+          {isAllChecksReceived
+            ? null
+            : (
+              <Button className={`tests-button__request ${checks_list.length ? '' : 'hidden'}`} onClick={this.buttonRequestHandler}>
+              {checksFetching
+                ? `Загрузка...`
+                : `Показать ещё ${CHECKS_LIMIT}`
+              }
+              </Button>
+            )
+          }
         </div>
         <div className={`content__secondary ${!selectedCheck && 'content__secondary--disabled'}`}>
           <TextInput
@@ -242,6 +311,7 @@ const mapStateToProps = state => ({
   chapters: state.general.chapters,
   topicId: state.checks.selectedCheck.topic_id,
   topics: state.general.topics,
+  isAllChecksReceived: state.checks.isAllReceived,
 });
 
 export default connect(mapStateToProps)(TestsList);

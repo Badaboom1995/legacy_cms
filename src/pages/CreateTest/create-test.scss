@@ -45,3 +45,11 @@
     color: #767676;
   }
 }
+
+.tests-button__request {
+  width: 100%;
+
+  &.hidden {
+    display: none;
+  }
+}
