@@ -41,7 +41,6 @@ class CreateTest extends React.Component {
     const params = {
       ...defaultParams,
     };
-    console.log(params)
     dispatch(getTasks(params));
   };
   togglePopupVisibility = e => {
@@ -69,7 +68,7 @@ class CreateTest extends React.Component {
       },
     };
     this.props.dispatch(getTasks(params));
-    this.setState(() => ({ activeSubject: subjectId, tasksFetching: true }));
+    this.setState(() => ({ activeSubject: subjectId, tasksOffset: 0 }));
   };
 
   onCustomChange = (value, name, list) => {
