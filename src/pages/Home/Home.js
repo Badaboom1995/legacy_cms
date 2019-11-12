@@ -16,9 +16,9 @@ class Home extends React.Component {
     kind: '',
     generations: [],
   };
-  componentDidMount() {
-    this.checkTask();
-  }
+  // componentDidMount() {
+  //   this.checkTask();
+  // }
   onChange = (value, name) => {
     this.setState(() => ({ [name]: value }));
     this.props.dispatch(addOption(name, value));
@@ -123,14 +123,14 @@ class Home extends React.Component {
     Request.createGeneration(generation);
   };
 
-  checkTask = () => {
-    const CheckTask = new Tasks();
-    CheckTask.getTasks();
-  };
-  checkTasks = () => {
-    const CheckTask = new Request();
-    CheckTask.send(`http://localhost:3001/b2t/api/v1/teachers/check_jobs`, 'GET');
-  };
+  // checkTask = () => {
+  //   const CheckTask = new Tasks();
+  //   CheckTask.getTasks();
+  // };
+  // checkTasks = () => {
+  //   const CheckTask = new Request();
+  //   CheckTask.send(`http://localhost:3001/b2t/api/v1/teachers/check_jobs`, 'GET');
+  // };
   setStep = step => {
     this.setState(() => ({ step }));
   };
