@@ -6,12 +6,12 @@ import { array } from 'prop-types';
 class TextUtilit {
   static get RegExps() {
     return {
-      markdown: /%m\{(.+?)\}%/g,
+      markdown: /%m\{((?:.|\n)+?)\}%/g,
       latex: /%l\{(.+?)\}%/g,
       b2t: /%b2t\{((?:.)*?(%\{.*?\})+(?:.)*?)\}%/g,
       customExp: /%(?:b2t|l|m)\{.+?\}%/g,
-      bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
-      italic: /(?:\*|_)(.+)(?:\*|_)/g,
+      bold: /(?:\*\*|__)((?:.|\n)+)(?:\*\*|__)/g,
+      italic: /(?:\*|_)((?:.|\n)+)(?:\*|_)/g,
       inputs: /%\{([^|]*?)\}/g,
       dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
       dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
@@ -80,16 +80,20 @@ class TextUtilit {
   static createMarkdownText(text) {
     const { markdown, bold, italic } = this.RegExps;
 
-    let handledText = text.replace(markdown, '$1');
-    if (bold.test(text)) {
-      handledText = handledText.replace(bold, '<strong>$1</strong>');
-    }
+    let result = text;
+    result = result.replace(markdown, (markdownPlace, markdownExp) => {
+      let r = markdownExp;
+      if (bold.test(text)) {
+        r = r.replace(bold, '<strong>$1</strong>');
+      }
 
-    if (italic.test(text)) {
-      handledText = handledText.replace(italic, '<em>$1</em>');
-    }
+      if (italic.test(text)) {
+        r = r.replace(italic, '<em>$1</em>');
+      }
+      return r;
+    });
 
-    return handledText;
+    return result;
   }
 
   static createWrapText(text) {
@@ -132,21 +136,6 @@ class TextUtilit {
       prevOffset = offset + str.length;
     });
     return content;
-  }
-
-  static styleText(text) {
-    const { bold, italic } = this.RegExps;
-
-    let handledText = text;
-    if (bold.test(text)) {
-      handledText = handledText.replace(bold, '<strong>$1</strong>');
-    }
-
-    if (italic.test(text)) {
-      handledText = handledText.replace(italic, '<em>$1</em>');
-    }
-    const result = (handledText === text) ? text : ReactHtmlParser(handledText);
-    return result;
   }
 
   static handleSymbolsToLatex(text) {
