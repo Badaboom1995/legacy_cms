@@ -20,6 +20,9 @@
     margin: 0;
     margin-bottom: 5px;
   }
+  &__update-image {
+    display: none;
+  }
   &__subtitle {
     display: block;
     font-size: 14px;
@@ -27,7 +30,11 @@
     margin: 0;
     margin-bottom: 25px;
   }
-
+  &__answer-image {
+    height: 150px;
+    display: block;
+    cursor: pointer;
+  }
   &__param {
     display: inline-block;
     padding: 5px 10px;

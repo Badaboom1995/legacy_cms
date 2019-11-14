@@ -33,7 +33,6 @@ class TaskPreview extends React.Component {
       result = (
         <ul className="task-preview__generations">
           {generation.expressions.map((exp, index) => {
-            console.log(exp);
             return (
               <li className={`task-preview__generation-answer`} key={index}>
                 {exp.value}

@@ -85,16 +85,18 @@ class Home extends React.Component {
     return genData;
   };
 
-  addPicture = async id => {
+  addPicture = async (id, setIndex) => {
     let data = new FormData();
     const alphabetStartIndex = 97;
-    this.props.imagesAnswers.forEach((item, index) => {
+    console.log(this.props.images[setIndex]);
+    this.props.images[setIndex].forEach((item, index) => {
+      console.log(item);
       data.append(
         `check_generation[images][${String.fromCharCode(alphabetStartIndex + index)}]`,
         item,
       );
     });
-
+    console.log(data);
     axios
       .put(`${base_url}teachers/check_generations/${id}`, data, {
         headers: {
@@ -144,9 +146,8 @@ class Home extends React.Component {
       .then(() => {
         setTimeout(() => {
           if (this.state.gensIds) {
-            console.log(this.state.gensIds);
-            this.state.gensIds.forEach(item => {
-              this.addPicture(item);
+            this.state.gensIds.forEach((item, index) => {
+              this.addPicture(item, index);
             });
           }
         }, 1000);
@@ -221,6 +222,7 @@ class Home extends React.Component {
 const mapStateToProps = state => ({
   general: state.general,
   tasks: state.tasks,
+  images: state.images.images,
   imagesAnswers: state.images.imagesAnswers,
 });
 
