@@ -135,7 +135,6 @@ class CreateTest extends React.Component {
   onFilterChange = (value, name) => {
     const { general } = this.props;
     const chosenLevel = general.learning_levels.find(level => level.value == value);
-    console.log(chosenLevel);
     const { activeSubject } = this.state;
     const params = {
       ...defaultParams,
@@ -155,7 +154,6 @@ class CreateTest extends React.Component {
     }));
 
     this.props.dispatch(getTasks(params));
-    console.log(value, name)
   };
   toggleTask = id => {
     if (this.state.choosedTasksIds.includes(id)) {
@@ -208,7 +206,6 @@ class CreateTest extends React.Component {
   render() {
     const { tasks, isAllTasksReceived } = this.props;
     const { tasksFetching } = this.state;
-    console.log(this.props)
     return (
       <div className="content">
         <div className="content__main content__main--create-test">
