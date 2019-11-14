@@ -133,17 +133,28 @@ class CreateTest extends React.Component {
     this.props.dispatch(addCheckOption(name, value));
   };
   onFilterChange = (value, name) => {
+    const { general } = this.props;
+    const chosenLevel = general.learning_levels.find(level => level.value == value);
+    console.log(chosenLevel);
     const { activeSubject } = this.state;
     const params = {
       ...defaultParams,
       filters: {
         ...defaultParams.filters,
-        learning_level_id: value,
         subject: activeSubject,
       },
     };
+
+    if (chosenLevel) {
+      params.filters.learning_level_id = chosenLevel.id;
+    }
+
+    this.setState(() => ({
+      filterLearningLevel: chosenLevel ? chosenLevel.id : null,
+      tasksOffset: 0
+    }));
+
     this.props.dispatch(getTasks(params));
-    this.setState(() => ({ filterLearningLevel: value, tasksOffset: 0 }));
     console.log(value, name)
   };
   toggleTask = id => {
@@ -197,6 +208,7 @@ class CreateTest extends React.Component {
   render() {
     const { tasks, isAllTasksReceived } = this.props;
     const { tasksFetching } = this.state;
+    console.log(this.props)
     return (
       <div className="content">
         <div className="content__main content__main--create-test">
@@ -205,7 +217,7 @@ class CreateTest extends React.Component {
             <Select
               name="grade-filter"
               modificators="select--in-row"
-              options={this.props.learning_levels}
+              options={["Все", ...this.props.learning_levels]}
               onChange={this.onFilterChange}
               value="Фильтр по классу"
             />
