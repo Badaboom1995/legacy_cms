@@ -34,6 +34,7 @@ class CreateTest extends React.Component {
     tasksOffset: 0,
     tasksFetching: false,
     activeSubject: 1,
+    filterLearningLevel: null,
   };
 
   componentDidMount() {
@@ -60,6 +61,7 @@ class CreateTest extends React.Component {
   };
 
   selectSubject = subjectId => {
+    const { filterLearningLevel } = this.state;
     const params = {
       ...defaultParams,
       filters: {
@@ -67,6 +69,8 @@ class CreateTest extends React.Component {
         subject: subjectId,
       },
     };
+    if (filterLearningLevel) params.filters.learning_level_id = filterLearningLevel;
+
     this.props.dispatch(getTasks(params));
     this.setState(() => ({ activeSubject: subjectId, tasksOffset: 0 }));
   };
@@ -128,6 +132,20 @@ class CreateTest extends React.Component {
   onChange = (value, name) => {
     this.props.dispatch(addCheckOption(name, value));
   };
+  onFilterChange = (value, name) => {
+    const { activeSubject } = this.state;
+    const params = {
+      ...defaultParams,
+      filters: {
+        ...defaultParams.filters,
+        learning_level_id: value,
+        subject: activeSubject,
+      },
+    };
+    this.props.dispatch(getTasks(params));
+    this.setState(() => ({ filterLearningLevel: value, tasksOffset: 0 }));
+    console.log(value, name)
+  };
   toggleTask = id => {
     if (this.state.choosedTasksIds.includes(id)) {
       this.setState(state => ({
@@ -159,7 +177,7 @@ class CreateTest extends React.Component {
 
   buttonRequestHandler = () => {
     const { dispatch } = this.props;
-    const { tasksOffset, activeSubject } = this.state;
+    const { tasksOffset, activeSubject, filterLearningLevel } = this.state;
     const newOffset = tasksOffset + TASKS_LIMIT;
 
     const params = {
@@ -170,7 +188,8 @@ class CreateTest extends React.Component {
         subject: activeSubject,
       },
     };
-    console.log(params)
+    if (filterLearningLevel) params.filters.learning_level_id = filterLearningLevel;
+
     dispatch(getTasksPart(params));
     this.setState({ tasksOffset: newOffset, tasksFetching: true });
   };
@@ -182,7 +201,17 @@ class CreateTest extends React.Component {
       <div className="content">
         <div className="content__main content__main--create-test">
           <p className="content__title">Конструктор теста</p>
+          <div className="filters-wrapper" >
+            <Select
+              name="grade-filter"
+              modificators="select--in-row"
+              options={this.props.learning_levels}
+              onChange={this.onFilterChange}
+              value="Фильтр по классу"
+            />
+          </div>
           <TasksList tasks={tasks.taskList} onSelect={this.selectSubject} />
+          {(tasks.taskList.length === 0) && "Ничего не найдено"}
           {isAllTasksReceived
             ? null
             : (
