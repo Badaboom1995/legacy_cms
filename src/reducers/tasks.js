@@ -19,6 +19,7 @@ export default (state = tasksReducerDefaultState, action) => {
       return {
         ...state,
         taskList: [...action.tasks],
+        isAllReceived: false,
         loading: false,
       };
     case 'TASKS_PART_RECEIVED':

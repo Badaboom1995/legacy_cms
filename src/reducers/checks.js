@@ -50,6 +50,7 @@ export default (state = generalReducerDefaultState, action) => {
       return {
         ...state,
         checks_list: [...action.checks],
+        isAllReceived: false,
         loading: false,
       };
     case 'CHECKS_PART_RECEIVED':

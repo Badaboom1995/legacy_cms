@@ -3,7 +3,7 @@ import './select.scss';
 
 export default class Select extends React.Component {
   state = {
-    value: 'Выбрать',
+    value: this.props.value || 'Выбрать',
     listOpened: false,
     listHovered: false,
   };
@@ -40,9 +40,9 @@ export default class Select extends React.Component {
   };
 
   setDefaultValue = () => {
-    if (this.props.value) {
-      return this.props.value;
-    }
+    // if (this.props.value) {
+    //   return this.props.value;
+    // }
     if (this.state.value) {
       return this.state.value;
     }

@@ -7,10 +7,15 @@ import Structure from 'helpers/Structure';
 const getStore = state => state;
 
 function* getTasks(action) {
+  const { params = {} } = action;
   console.log(action);
   const Request = new Tasks();
-  const response = yield Request.getTasks(action && action.params);
+  const response = yield Request.getTasks(params);
   yield put({ type: 'TASKS_RECEIVED', tasks: response });
+
+  if (!params.limit || params.limit > response.length) {
+    yield put({ type: 'TASKS_RECEIVED_ALL' });
+  }
 }
 
 function* getTasksPart(action = {}) {
@@ -26,10 +31,14 @@ function* getTasksPart(action = {}) {
 }
 
 function* getChecks(action) {
+  const { params = {} } = action;
   const Request = new Checks();
-  const response = yield Request.getChecks(action && action.params);
+  const response = yield Request.getChecks(params);
   yield put({ type: 'CHECKS_RECEIVED', checks: response });
 
+  if (!params.limit || params.limit > response.length) {
+    yield put({ type: 'CHECKS_RECEIVED_ALL' });
+  }
 }
 
 function* getChecksPart(action = {}) {
