@@ -15,8 +15,13 @@ export const addTaskToTest = task => ({
   type: 'ADD_TASK_TO_TEST',
   task,
 });
-export const getChecks = () => ({
+export const getChecks = params => ({
   type: 'GET_CHECKS',
+  params,
+});
+export const getChecksPart = params => ({
+  type: 'GET_CHECKS_PART',
+  params,
 });
 export const selectCheck = id => ({
   type: SELECT_CHECK,

@@ -6,20 +6,21 @@ import { array } from 'prop-types';
 class TextUtilit {
   static get RegExps() {
     return {
-      markdown: /%m\{(.+?)\}%/g,
+      markdown: /%m\{((?:.|\n)+?)\}%/g,
       latex: /%l\{(.+?)\}%/g,
-      b2t: /%b2t\{((?:.)*?(%\{.+?\})+(?:.)*?)\}%/g,
+      b2t: /%b2t\{((?:.)*?(%\{.*?\})+(?:.)*?)\}%/g,
       customExp: /%(?:b2t|l|m)\{.+?\}%/g,
-      bold: /(?:\*\*|__)(.+)(?:\*\*|__)/g,
-      italic: /(?:\*|_)(.+)(?:\*|_)/g,
-      inputs: /%\{([^|]+?)\}/g,
+      bold: /(?:\*\*|__)((?:.|\n)+)(?:\*\*|__)/g,
+      italic: /(?:\*|_)((?:.|\n)+)(?:\*|_)/g,
+      inputs: /%\{([^|]*?)\}/g,
       dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
       dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
-      numericOnly: /^[0-9.,+−-]+$/g,
-      notNumeric: /[^0-9.,+−]/g,
+      numericOnly: /^[0-9,+−]+$/g,
+      notNumeric: /[^0-9,+−]/g,
       text: /[^0-9]/g,
-      number: /((−|-)?\d+(\.|,)?(\d+)?)/g,
+      number: /^[+-−]?\d+((,|\.)\d+)?$/,
       rawNumber: /((?:−|-)?\d+(?:\.|,)?(?:\d+)?)/g,
+      textWrap: /\n/g,
     }
   };
 
@@ -28,7 +29,7 @@ class TextUtilit {
   }
 
   static handleText(text) {
-    const { markdown, latex, b2t, rawNumber } = this.RegExps;
+    const { markdown, latex, b2t, rawNumber, textWrap } = this.RegExps;
     let result = text;
     let needParse = false;
 
@@ -42,6 +43,11 @@ class TextUtilit {
 
     if (markdown.test(result)) {
       result = this.createMarkdownText(result);
+      needParse = true;
+    }
+
+    if (textWrap.test(result)) {
+      result = this.createWrapText(result);
       needParse = true;
     }
 
@@ -74,14 +80,25 @@ class TextUtilit {
   static createMarkdownText(text) {
     const { markdown, bold, italic } = this.RegExps;
 
-    let handledText = text.replace(markdown, '$1');
-    if (bold.test(text)) {
-      handledText = handledText.replace(bold, '<strong>$1</strong>');
-    }
+    let result = text;
+    result = result.replace(markdown, (markdownPlace, markdownExp) => {
+      let r = markdownExp;
+      if (bold.test(text)) {
+        r = r.replace(bold, '<strong>$1</strong>');
+      }
 
-    if (italic.test(text)) {
-      handledText = handledText.replace(italic, '<em>$1</em>');
-    }
+      if (italic.test(text)) {
+        r = r.replace(italic, '<em>$1</em>');
+      }
+      return r;
+    });
+
+    return result;
+  }
+
+  static createWrapText(text) {
+    const { textWrap } = this.RegExps;
+    const handledText = text.replace(textWrap, '<br>');
 
     return handledText;
   }
@@ -121,21 +138,6 @@ class TextUtilit {
     return content;
   }
 
-  static styleText(text) {
-    const { bold, italic } = this.RegExps;
-
-    let handledText = text;
-    if (bold.test(text)) {
-      handledText = handledText.replace(bold, '<strong>$1</strong>');
-    }
-
-    if (italic.test(text)) {
-      handledText = handledText.replace(italic, '<em>$1</em>');
-    }
-    const result = (handledText === text) ? text : ReactHtmlParser(handledText);
-    return result;
-  }
-
   static handleSymbolsToLatex(text) {
     const { rawNumber, customExp } = this.RegExps;
     let result = text;
@@ -169,14 +171,11 @@ class TextUtilit {
   }
 
   static handleNumber(text) {
-    const { numericOnly } = this.RegExps;
-    let result = text;
-    if (text.search(numericOnly) !== -1) {
-      result = text
-        .replace('.', ',')
-        .replace(/-/g, '−')
-        .replace(/(,.*)(,|\.)/g, '$1');
-    }
+    const result = text
+      .replace('.', ',')
+      .replace(/(-|–)/g, '−')
+      .replace(/(,.*)(,|\.)/g, '$1');
+
     return result;
   }
 }

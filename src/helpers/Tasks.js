@@ -8,6 +8,35 @@ const base_headers = {
   crossDomain: true,
 };
 
+function makeParamsString(params) {
+  const flatArray = Object.entries(params).reduce((sum, [key, val]) => {
+    switch (typeof val) {
+      case 'object':
+        return [
+          ...sum,
+          ...Object.entries(val).map(([filterKey, filterValue]) => `${key}[${filterKey}]=${filterValue.toString()}`),
+        ];
+      default:
+        return [
+          ...sum,
+          `${key}=${val.toString()}`,
+        ];
+    }
+  }, []);
+  return flatArray.join('&');
+}
+
+function combineUrl({ endpoint, params }) {
+  const apiUrl = base_url;
+  const isNeedParams = params && typeof params === 'object';
+  const paramsString = isNeedParams ? makeParamsString(params) : '';
+  let result = `${apiUrl}${endpoint}`;
+  if (paramsString) {
+    result += `?${paramsString}`;
+  }
+  return result;
+}
+
 export default class ChecksService {
   async request(method, path, body) {
     this.response = await fetch(`${base_url}${path}`, {
@@ -215,7 +244,22 @@ export default class ChecksService {
     console.log(data);
     return data;
   }
-  async getTasks() {
-    return this.request('GET', 'teachers/check_jobs?filters[base]=true');
+  async getTasks(params) {
+    // return this.request('GET', 'teachers/check_jobs?filters[base]=true');
+    const endpoint = 'teachers/check_jobs';
+    const url = combineUrl({ endpoint, params });
+    console.log(url);
+    this.response = await fetch(url, {
+      method: 'GET',
+      headers: { ...base_headers },
+    });
+
+    if (!this.response.ok) {
+      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    }
+
+    const data = await this.response.json();
+    console.log(data);
+    return data;
   }
 }

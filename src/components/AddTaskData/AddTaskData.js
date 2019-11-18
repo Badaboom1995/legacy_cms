@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TextInput from 'components/TextInput/TextInput';
+import TextArea from 'components/TextArea/TextArea';
 import Select from 'components/Select/Select';
 import Structure from 'helpers/Structure';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
@@ -45,7 +45,7 @@ class AddTaskInfo extends React.Component {
     return (
       <div className="content__wrapper">
         <div className="content__fragment content__main">
-          <TextInput
+          <TextArea
             name="name"
             placeholder="Например: Найди значение функции по графику"
             onChange={this.onChange}
