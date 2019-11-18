@@ -14,6 +14,7 @@ export default (state = tasksReducerDefaultState, action) => {
       return {
         ...state,
         imagesAnswers: action.images,
+        images: [...state.images, action.images],
       };
     case 'DELETE_IMAGE':
       return {

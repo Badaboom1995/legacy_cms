@@ -33,7 +33,7 @@ class AddAnswer extends React.Component {
         <button className="button button--add" onClick={this.addAnswer}>
           Добавить ответ
         </button>
-        {/* <AddPicture multiple /> */}
+        <AddPicture multiple />
       </div>
     );
   }

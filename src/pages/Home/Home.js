@@ -5,16 +5,23 @@ import AddTaskData from 'components/AddTaskData/AddTaskData';
 import AddGenerationData from 'components/AddGenerationData/AddGenerationData';
 import FinishAddingTask from 'components/FinishAddingTask/FinishAddingTask';
 
+import axios from 'axios';
+
 import { addOption, clearTasks } from 'actions/tasks';
 import { clearGenerations } from 'actions/general';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
 
+import config from 'config';
+
+const base_url = config.api.url;
+
 class Home extends React.Component {
   state = {
     kind: '',
     generations: [],
+    gensIds: [],
   };
   // componentDidMount() {
   //   this.checkTask();
@@ -74,8 +81,40 @@ class Home extends React.Component {
     if (this.props.general.columns) {
       genData.params = { columns: parseInt(this.props.general.columns) };
     }
+    console.log(genData);
     return genData;
   };
+
+  addPicture = async (id, setIndex) => {
+    let data = new FormData();
+    const alphabetStartIndex = 97;
+    console.log(this.props.images[setIndex]);
+    this.props.images[setIndex].forEach((item, index) => {
+      console.log(item);
+      data.append(
+        `check_generation[images][${String.fromCharCode(alphabetStartIndex + index)}]`,
+        item,
+      );
+    });
+    console.log(data);
+    axios
+      .put(`${base_url}teachers/check_generations/${id}`, data, {
+        headers: {
+          accept: 'application/json',
+          'Accept-Language': 'en-US,en;q=0.8',
+          'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+          'Uchi-User-Id': '12',
+          'Uchi-User-Type': 'Teacher',
+        },
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        //handle error
+      });
+  };
+
   getGradeId = () => {
     const targetGrade = this.props.general.learning_levels.filter(grade => {
       return grade.value == this.props.tasks.grade;
@@ -105,6 +144,13 @@ class Home extends React.Component {
         });
       })
       .then(() => {
+        setTimeout(() => {
+          if (this.state.gensIds) {
+            this.state.gensIds.forEach((item, index) => {
+              this.addPicture(item, index);
+            });
+          }
+        }, 1000);
         this.props.dispatch(clearTasks());
         this.props.dispatch(clearGenerations());
       });
@@ -120,7 +166,11 @@ class Home extends React.Component {
       data: this.getGenerationData(item),
     };
     const Request = new Tasks();
-    Request.createGeneration(generation);
+    Request.createGeneration(generation).then(response => {
+      this.setState(() => ({
+        gensIds: [...this.state.gensIds, response.id],
+      }));
+    });
   };
 
   // checkTask = () => {
@@ -172,6 +222,8 @@ class Home extends React.Component {
 const mapStateToProps = state => ({
   general: state.general,
   tasks: state.tasks,
+  images: state.images.images,
+  imagesAnswers: state.images.imagesAnswers,
 });
 
 export default connect(mapStateToProps)(Home);

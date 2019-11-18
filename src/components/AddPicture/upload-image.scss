@@ -1,6 +1,7 @@
 .upload-image {
   display: flex;
   align-items: flex-end;
+  width: 100%;
   &__button-area {
     width: 100%;
   }
@@ -30,6 +31,7 @@
     margin-right: 10px;
   }
   &__preview-task {
+    width: 100%;
     padding: 15px;
     margin-bottom: 15px;
     font-size: 16px;

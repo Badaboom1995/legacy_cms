@@ -16,7 +16,6 @@ class TaskPreviewFetched extends React.Component {
       } else if (item.data.variants) {
         answers = this.getCommonAnswers(item);
       }
-
       return {
         id: item.id,
         data: item.data,
@@ -24,6 +23,7 @@ class TaskPreviewFetched extends React.Component {
         kind: item.kind,
         answers: answers.answersNames,
         rightAnswers: answers.rightAnswers,
+        images: item.images,
       };
     });
 

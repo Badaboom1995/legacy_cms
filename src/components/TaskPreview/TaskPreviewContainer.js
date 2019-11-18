@@ -2,12 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { addTaskToTest } from 'actions/checks';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
 import Tasks from 'helpers/Tasks';
+import config from 'config';
+
+const api_url = config.api.root;
+const base_url = config.api.url;
 
 class TaskPreviewContainer extends React.Component {
   state = {
@@ -18,6 +22,14 @@ class TaskPreviewContainer extends React.Component {
       showGens: state.showGens ? false : true,
     }));
   };
+  getLetter = index => {
+    const alphabetStartIndex = 97;
+    return String.fromCharCode(alphabetStartIndex + index);
+  };
+  getImageUrl = (images = [], letter) => {
+    const image = images.find(item => item.answer == letter) || { path: '' };
+    return image.path;
+  };
   deleteGeneration = (id, index) => {
     if (id) {
       const Request = new Tasks();
@@ -25,6 +37,63 @@ class TaskPreviewContainer extends React.Component {
     } else {
       this.props.deleteGeneration(index);
     }
+  };
+  addPicture = async id => {
+    let data = new FormData();
+    const alphabetStartIndex = 97;
+    this.props.imagesAnswers.forEach((item, index) => {
+      data.append(
+        `check_generation[images][${String.fromCharCode(alphabetStartIndex + index)}]`,
+        item,
+      );
+    });
+
+    axios
+      .put(`${base_url}teachers/check_generations/${id}`, data, {
+        headers: {
+          accept: 'application/json',
+          'Accept-Language': 'en-US,en;q=0.8',
+          'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+          'Uchi-User-Id': '12',
+          'Uchi-User-Type': 'Teacher',
+        },
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        //handle error
+      });
+  };
+  savePicture = e => {
+    const image = e.target.files;
+    this.setState(() => ({ image }));
+  };
+  uploadPicture = (index, id) => {
+    const image = this.state.image;
+    const data = new FormData();
+    const alphabetStartIndex = 97;
+    data.append(
+      `check_generation[images][${String.fromCharCode(alphabetStartIndex + index)}]`,
+      image[0],
+    );
+    console.log(`check_generation[image][${String.fromCharCode(alphabetStartIndex + index)}]`);
+    axios
+      .put(`${base_url}teachers/check_generations/${id}`, data, {
+        headers: {
+          accept: 'application/json',
+          'Accept-Language': 'en-US,en;q=0.8',
+          'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+          'Uchi-User-Id': '12',
+          'Uchi-User-Type': 'Teacher',
+        },
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        //handle error
+      });
   };
   render() {
     const { generationsHidden, noDeleteButton, noAddButton } = this.props;
@@ -114,8 +183,23 @@ class TaskPreviewContainer extends React.Component {
                     {generation.text}
                   </EditableWithInput>
                   <span className="task-preview__subtitle">{generation.kind}</span>
+                  <button>
+                    <label htmlFor="edit-image">Change image</label>
+                  </button>
+                  <input
+                    type="file"
+                    id="edit-image"
+                    className="task-preview__update-image"
+                    onChange={e => {
+                      this.savePicture(e);
+                    }}
+                  />
                   <ul className="task-preview__generations">
                     {answers.map((answer, index) => {
+                      const imagePath = this.getImageUrl(
+                        generation.images,
+                        this.getLetter(index),
+                      ).substr(1);
                       return (
                         <li
                           className={`task-preview__generation-answer
@@ -124,6 +208,18 @@ class TaskPreviewContainer extends React.Component {
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
+                          <label htmlFor="edit-image">
+                            <img
+                              className="task-preview__answer-image"
+                              src={`${api_url}${imagePath}`}
+                              alt=""
+                            />
+                          </label>
+                          {this.state.image && (
+                            <button onClick={() => this.uploadPicture(index, generation.id)}>
+                              Submit
+                            </button>
+                          )}
                           <EditableAnswer
                             task={generation}
                             paramName="data"

@@ -1,19 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addImages, addImagesAnswers, deleteImage, deleteImageAnswer } from 'actions/images';
+import { addAnswer } from 'actions/general';
 
 import './upload-image.scss';
 
 class AddPictureButton extends React.Component {
   savePictures = e => {
     const images = Array.from(e.target.files);
-    this.props.multiple
-      ? this.props.dispatch(addImagesAnswers(images))
-      : this.props.dispatch(addImages(images));
+    this.props.dispatch(this.props.saveImages(images));
+    images.forEach((item, index) => {
+      this.props.dispatch(addAnswer('picture' + index));
+    });
   };
-  deletePicture = () => {};
   render() {
-    const images = this.props.multiple ? this.props.imagesAnswers : this.props.images;
+    const images = this.props.imagesAnswers || this.props.images;
     return (
       <div className="upload-image__button-area">
         {!images.length ? (
@@ -44,10 +45,7 @@ class AddPictureButton extends React.Component {
                   <span className="upload-image__name">{item.name}</span>
                   <button
                     onClick={() => {
-                      console.log(this.props);
-                      this.props.multiple
-                        ? this.props.dispatch(deleteImageAnswer(item.name))
-                        : this.props.dispatch(deleteImage(item.name));
+                      this.props.dispatch(this.props.deleteImage(item.name));
                     }}
                   >
                     delete

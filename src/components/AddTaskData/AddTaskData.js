@@ -4,7 +4,6 @@ import TextArea from 'components/TextArea/TextArea';
 import Select from 'components/Select/Select';
 import Structure from 'helpers/Structure';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
-import Button from 'components/Button/Button';
 
 import { addOption } from 'actions/tasks';
 import { getChapters } from 'actions/general';
@@ -14,7 +13,7 @@ class AddTaskInfo extends React.Component {
   difficulty = ['A', 'B'];
   subjects = { Математика: 1, Русский: 2 };
   grade = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
-
+  input = React.createRef();
   state = {
     elements: [],
     popupVisible: false,
@@ -96,6 +95,7 @@ class AddTaskInfo extends React.Component {
 
 const mapStateToProps = state => ({
   tasks: state.tasks,
+  imagesAnswers: state.images.imagesAnswers,
   general: state.general,
   learning_levels: state.general.learning_levels.map(item => item.value),
 });
