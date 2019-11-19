@@ -6,16 +6,50 @@ import Structure from 'helpers/Structure';
 
 const getStore = state => state;
 
-function* getTasks() {
+function* getTasks(action) {
+  const { params = {} } = action;
+  console.log(action);
   const Request = new Tasks();
-  const response = yield Request.getTasks();
+  const response = yield Request.getTasks(params);
   yield put({ type: 'TASKS_RECEIVED', tasks: response });
+
+  if (!params.limit || params.limit > response.length) {
+    yield put({ type: 'TASKS_RECEIVED_ALL' });
+  }
 }
 
-function* getChecks() {
+function* getTasksPart(action = {}) {
+  const { params = {} } = action;
+  console.log(action)
+  const Request = new Tasks();
+  const response = yield Request.getTasks(params);
+  yield put({ type: 'TASKS_PART_RECEIVED', tasks: response });
+
+  if (!params.limit || params.limit > response.length) {
+    yield put({ type: 'TASKS_RECEIVED_ALL' });
+  }
+}
+
+function* getChecks(action) {
+  const { params = {} } = action;
   const Request = new Checks();
-  const response = yield Request.getChecks();
+  const response = yield Request.getChecks(params);
   yield put({ type: 'CHECKS_RECEIVED', checks: response });
+
+  if (!params.limit || params.limit > response.length) {
+    yield put({ type: 'CHECKS_RECEIVED_ALL' });
+  }
+}
+
+function* getChecksPart(action = {}) {
+  const { params = {} } = action;
+  const Request = new Checks();
+  const response = yield Request.getChecks(params);
+  yield put({ type: 'CHECKS_PART_RECEIVED', checks: response });
+
+  if (!params.limit || params.limit > response.length) {
+    yield put({ type: 'CHECKS_RECEIVED_ALL' });
+  }
 }
 
 function* getChapters() {
@@ -82,11 +116,17 @@ function* addTask() {
 
 ///////////////////////
 
-function* actionWatcher() {
+function* getTasksWatcher() {
   yield takeLatest('GET_TASKS', getTasks);
+}
+function* getTasksPartWatcher() {
+  yield takeLatest('GET_TASKS_PART', getTasksPart);
 }
 function* getChecksWatcher() {
   yield takeLatest('GET_CHECKS', getChecks);
+}
+function* getChecksPartWatcher() {
+  yield takeLatest('GET_CHECKS_PART', getChecksPart);
 }
 function* getChaptersWatcher() {
   yield takeLatest('GET_CHAPTERS', getChapters);
@@ -118,9 +158,11 @@ function* addTaskWatcher() {
 
 export default function* rootSaga() {
   yield all([
-    actionWatcher(),
+    getTasksWatcher(),
+    getTasksPartWatcher(),
     addTaskWatcher(),
     getChecksWatcher(),
+    getChecksPartWatcher(),
     deleteCheckWatcher(),
     getChaptersWatcher(),
     getTopicsWatcher(),

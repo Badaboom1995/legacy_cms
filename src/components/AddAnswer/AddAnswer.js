@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TextInput from 'components/TextInput/TextInput';
+import TextArea from 'components/TextArea/TextArea';
 import { addAnswer } from 'actions/general';
 import AddPicture from 'components/AddPicture/AddPicture';
 import './add-answer.scss';
@@ -23,7 +23,7 @@ class AddAnswer extends React.Component {
   render() {
     return (
       <div className="add-answer">
-        <TextInput
+        <TextArea
           name="answerToAdd"
           value={this.state.answer}
           onChange={this.onChange}

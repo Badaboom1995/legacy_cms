@@ -3,25 +3,34 @@
   flex-wrap: wrap;
   padding-left: 180px;
   height: 100vh;
-  overflow: scroll;
+  overflow: hidden;
   flex-grow: 1;
   background-color: #fff;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   &__main {
     width: 65%;
+
+    &--create-test {
+      height: 100%;
+      overflow: scroll;
+    }
   }
   &__secondary {
-    position: fixed;
+    // position: fixed;
+    position: relative;
     top: 0;
     right: 0;
     margin: 0;
-    width: 30%;
+    width: 35%;
     height: 100vh;
     padding: 20px;
     padding-bottom: 40px;
     overflow: scroll;
     background-color: #f4f6f9;
+    &.task-preview {
+      position: fixed;
+    }
     &--disabled {
       &:after {
         content: '';

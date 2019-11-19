@@ -11,6 +11,7 @@ const generalReducerDefaultState = {
   checks_list: [],
   loading: false,
   selectedCheck: '',
+  isAllReceived: false,
 };
 
 export default (state = generalReducerDefaultState, action) => {
@@ -34,16 +35,34 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         tasks: [...state.tasks, action.task],
       };
-    case 'CHECKS_RECEIVED':
-      return {
-        ...state,
-        checks_list: action.checks,
-        loading: false,
-      };
     case 'GET_CHECKS':
       return {
         ...state,
         loading: true,
+        isAllReceived: false,
+      };
+    case 'GET_CHECKS_PART':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'CHECKS_RECEIVED':
+      return {
+        ...state,
+        checks_list: [...action.checks],
+        isAllReceived: false,
+        loading: false,
+      };
+    case 'CHECKS_PART_RECEIVED':
+      return {
+        ...state,
+        checks_list: [...state.checks_list, ...action.checks],
+        loading: false,
+      };
+    case 'CHECKS_RECEIVED_ALL':
+      return {
+        ...state,
+        isAllReceived: true,
       };
     case SELECT_CHECK:
       return {

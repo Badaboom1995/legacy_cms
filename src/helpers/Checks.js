@@ -8,6 +8,35 @@ const base_headers = {
   crossDomain: true,
 };
 
+function makeParamsString(params) {
+  const flatArray = Object.entries(params).reduce((sum, [key, val]) => {
+    switch (typeof val) {
+      case 'object':
+        return [
+          ...sum,
+          ...Object.entries(val).map(([filterKey, filterValue]) => `${key}[${filterKey}]=${filterValue.toString()}`),
+        ];
+      default:
+        return [
+          ...sum,
+          `${key}=${val.toString()}`,
+        ];
+    }
+  }, []);
+  return flatArray.join('&');
+}
+
+function combineUrl({ endpoint, params }) {
+  const apiUrl = config.api.url;
+  const isNeedParams = params && typeof params === 'object';
+  const paramsString = isNeedParams ? makeParamsString(params) : '';
+  let result = `${apiUrl}${endpoint}`;
+  if (paramsString) {
+    result += `?${paramsString}`;
+  }
+  return result;
+}
+
 export default class ChecksService {
   async request(method, path, body) {
     this.response = await fetch(`${base_url}${path}`, {
@@ -31,9 +60,11 @@ export default class ChecksService {
     return data;
   }
 
-  async getChecks() {
-    const path = 'teachers/checks';
-    this.response = await fetch(`${base_url}${path}`, {
+  async getChecks(params) {
+    const endpoint = 'teachers/checks';
+    const url = combineUrl({ endpoint, params });
+    console.log(url);
+    this.response = await fetch(url, {
       method: 'GET',
       headers: { ...base_headers },
     });
