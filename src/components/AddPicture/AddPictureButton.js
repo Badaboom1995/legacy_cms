@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addImages, addImagesAnswers, deleteImage, deleteImageAnswer } from 'actions/images';
-import { addAnswer } from 'actions/general';
+import { addAnswer, addAnswerByIndex } from 'actions/general';
+import TextInput from 'components/TextInput/TextInput';
 
 import './upload-image.scss';
 
@@ -12,6 +12,10 @@ class AddPictureButton extends React.Component {
     images.forEach((item, index) => {
       this.props.dispatch(addAnswer('picture' + index));
     });
+  };
+  changeAnswer = (answer, index) => {
+    this.props.dispatch(addAnswerByIndex(answer, index));
+    console.log(index, answer);
   };
   render() {
     const images = this.props.imagesAnswers || this.props.images;
@@ -39,6 +43,10 @@ class AddPictureButton extends React.Component {
                 <div>
                   <div className="upload-image__image-wrapper">
                     <img src={URL.createObjectURL(item)} alt="" />
+                    <TextInput
+                      onChange={value => this.changeAnswer(value, index)}
+                      value={this.props.answers[index]}
+                    />
                   </div>
                 </div>
                 <p>
@@ -63,6 +71,7 @@ class AddPictureButton extends React.Component {
 const mapStateToProps = state => ({
   images: state.images.images,
   imagesAnswers: state.images.imagesAnswers,
+  answers: state.general.answers,
 });
 
 export default connect(mapStateToProps)(AddPictureButton);
