@@ -13,7 +13,7 @@ class TextUtilit {
       bold: /(?:\*\*|__)((?:.|\n)+)(?:\*\*|__)/g,
       italic: /(?:\*|_)((?:.|\n)+)(?:\*|_)/g,
       inputs: /%\{([^|]*?)\}/g,
-      dropdown: /%\{(([^|]+?\|?){2,4})\}/g,
+      dropdown: /%\{(([^|]+?\|?){2,7})\}/g,
       dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
       numericOnly: /^[0-9,+−]+$/g,
       notNumeric: /[^0-9,+−]/g,
