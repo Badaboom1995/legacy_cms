@@ -1,7 +1,7 @@
 import React from 'react';
 import './editable-element.scss';
 import TextArea from 'components/TextArea/TextArea';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 export default class EditWithInputContainer extends React.Component {
   state = {

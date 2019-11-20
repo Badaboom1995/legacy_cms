@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './editable-element.scss';
 import EditableWithInput from './EditableWithInput';
+import DataCreator from 'utilits/DataCreator/DataCreator';
 
 class EditableAnswer extends React.Component {
   state = {
@@ -14,33 +15,19 @@ class EditableAnswer extends React.Component {
     const ALPHABET_START_CODE = 97;
     const { task, paramName, index, handleFunction } = this.props;
     const answerLetter = String.fromCharCode(ALPHABET_START_CODE + index);
-    const getAnswerLetter = index => String.fromCharCode(ALPHABET_START_CODE + index);
-    if (this.props.task.kind == 'inputs') {
-      const answers = value.match(/%\{.*?\}/g) || [];
-      const answersWithoutBrackets = [];
-      answers.forEach(item => {
-        answersWithoutBrackets = [
-          ...answersWithoutBrackets,
-          item.replace('%{', '').replace('}', ''),
-        ];
-      });
-      const processedAnswers = answersWithoutBrackets.reduce((accum, item, index) => {
-        return { ...accum, [getAnswerLetter(index)]: item };
-      }, {});
-      let question = value;
-      answersWithoutBrackets.forEach((item, index) => {
-        question = question.replace(`%{${item}}`, `%{${getAnswerLetter(index)}}`);
-      });
+    if (task.kind == 'inputs' || task.kind == 'dropdown') {
+      const data = DataCreator.createData(value, task.kind);
+      if (!data) return false;
+
       adoptedValue = {
-        inputs: {
-          ...task[paramName].inputs,
-          [answerLetter]: {
-            answers: processedAnswers,
-            question: question,
-          },
-        },
-      };
-    } else if (this.props.task.kind == 'variant') {
+        [task.kind]: {
+          ...task[paramName][task.kind],
+          [answerLetter]: data,
+        }
+      }
+
+      console.log(data, adoptedValue);
+    } else if (/^variant/.test(task.kind)) {
       adoptedValue = {
         variants: {
           ...task[paramName].variants,

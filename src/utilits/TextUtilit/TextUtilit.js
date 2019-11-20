@@ -77,6 +77,18 @@ class TextUtilit {
     return result;
   }
 
+  // Функция обработки текста из человеческого в b2t-формат
+  static unhandleText(text) {
+    let result = text;
+    this.Kinds.forEach((kind) => {
+      const regex = new RegExp(`${kind.substr(0,2)}\\((.*?)\\)`, 'g');
+      if (regex.test(result)) {
+        result = result.replace(regex, '%b2t{%{$1}}%');
+      }
+    });
+    return result;
+  }
+
   static createMarkdownText(text) {
     const { markdown, bold, italic } = this.RegExps;
 
@@ -177,6 +189,18 @@ class TextUtilit {
       .replace(/(,.*)(,|\.)/g, '$1');
 
     return result;
+  }
+
+  static validateExpression(expression, kind) {
+    const mainRegexp = this.RegExps.b2t;
+    const kindRegexp = this.RegExps[kind];
+    if (!kindRegexp) {
+      console.warn(`Wrong kind, expected one of: ${this.Kinds.join(', ')}`);
+      return false;
+    }
+
+    const isValid = mainRegexp.test(expression) && kindRegexp.test(expression);
+    return isValid;
   }
 }
 

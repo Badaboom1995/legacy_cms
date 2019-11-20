@@ -4,7 +4,7 @@ import './task-preview.scss';
 import PropTypes from 'prop-types';
 import { removeGeneration } from 'actions/general';
 import TaskPreviewContainer from './TaskPreviewContainer';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 class TaskPreviewFetched extends React.Component {
   subjects = { 1: { name: 'Математика' }, 2: { name: 'Русский' } };
@@ -13,6 +13,8 @@ class TaskPreviewFetched extends React.Component {
       let answers = {};
       if (item.data.inputs) {
         answers = this.getInputsAnswers(item);
+      } else if (item.data.dropdown) {
+        answers = this.getDropdownAnswers(item);
       } else if (item.data.variants) {
         answers = this.getCommonAnswers(item);
       }
@@ -36,6 +38,15 @@ class TaskPreviewFetched extends React.Component {
     }
     return editableQuestion;
   };
+  handleDropdownAnswer = (answers, question) => {
+    let editableQuestion = question;
+    for (const key in answers) {
+      const answer = answers[key];
+      const answerValue = answer.values.join('|').replace(answer.expected, `${answer.expected}*`)
+      editableQuestion = editableQuestion.replace(`%{${key}}`, `dr(${answerValue})`);
+    }
+    return editableQuestion;
+  };
   getInputsAnswers = item => {
     const answersObject = item.data.inputs;
     let answers = [];
@@ -43,6 +54,17 @@ class TaskPreviewFetched extends React.Component {
       answers = [...answers, answersObject[key]];
     }
     let answersNames = answers.map(item => this.handleInputAnswer(item.answers, item.question));
+
+    const rightAnswers = [];
+    return { rightAnswers, answersNames };
+  };
+  getDropdownAnswers = item => {
+    const answersObject = item.data.dropdown;
+    let answers = [];
+    for (const key in answersObject) {
+      answers = [...answers, answersObject[key]];
+    }
+    let answersNames = answers.map(item => this.handleDropdownAnswer(item.answers, item.question));
 
     const rightAnswers = [];
     return { rightAnswers, answersNames };

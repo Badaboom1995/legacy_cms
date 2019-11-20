@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './answer.scss';
 import { removeAnswer } from 'actions/general';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 class Answer extends React.Component {
   decodeHTML = html => {
