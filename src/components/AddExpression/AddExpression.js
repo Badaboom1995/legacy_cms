@@ -5,7 +5,6 @@ import TextArea from 'components/TextArea/TextArea';
 import DataCreator from 'utilits/DataCreator/DataCreator';
 import { addExpression } from 'actions/general';
 import './add-expression.scss';
-import { expression } from '@babel/template';
 
 class AddExpression extends React.Component {
   state = {
