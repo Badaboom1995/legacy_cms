@@ -43,11 +43,11 @@ class AddPictureButton extends React.Component {
                 <div>
                   <div className="upload-image__image-wrapper">
                     <img src={URL.createObjectURL(item)} alt="" />
-                    <TextInput
-                      onChange={value => this.changeAnswer(value, index)}
-                      value={this.props.answers[index]}
-                    />
                   </div>
+                  <TextInput
+                    onChange={value => this.changeAnswer(value, index)}
+                    value={this.props.answers[index]}
+                  />
                 </div>
                 <p>
                   <span className="upload-image__name">{item.name}</span>

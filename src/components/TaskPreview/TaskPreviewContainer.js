@@ -27,6 +27,7 @@ class TaskPreviewContainer extends React.Component {
     return String.fromCharCode(alphabetStartIndex + index);
   };
   getImageUrl = (images = [], letter) => {
+    console.log(images);
     const image = images.find(item => item.answer == letter) || { path: '' };
     return image.path;
   };
@@ -200,6 +201,9 @@ class TaskPreviewContainer extends React.Component {
                         generation.images,
                         this.getLetter(index),
                       ).substr(1);
+                      const url = generation.images
+                        ? `${api_url}${imagePath}`
+                        : URL.createObjectURL(image);
                       return (
                         <li
                           className={`task-preview__generation-answer
@@ -257,6 +261,7 @@ TaskPreviewContainer.propTypes = {
 const mapStateToProps = state => ({
   general: state.general,
   checks: state.checks,
+  images: state.images.images,
 });
 
 export default connect(mapStateToProps)(TaskPreviewContainer);
