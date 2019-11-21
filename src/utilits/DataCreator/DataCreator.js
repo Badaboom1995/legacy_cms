@@ -41,9 +41,10 @@ class DataCreator {
       return question;
     });
 
-    data.value = rawValue.replace(RegExps.b2t, (b2tPlace, b2texp) => {
+    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace, b2texp) => {
       return b2texp.replace(RegExps.inputs, `in($1)`);
-    }).replace(/−/g, '-');  // - Katex от минуса падает :/
+    });
+    data.value = this._replaceNonReadableForKatex(rawValue);
 
     return data;
   }
@@ -81,11 +82,17 @@ class DataCreator {
       return question;
     });
 
-    data.value = rawValue.replace(RegExps.b2t, (b2tPlace, b2texp) => {
+    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace, b2texp) => {
       return b2texp.replace(RegExps.dropdown, `dr($1)`);
-    }).replace(/−/g, '-');  // - Katex от минуса падает :/
+    });
+    data.value = this._replaceNonReadableForKatex(rawValue);
 
     return data;
+  }
+
+  _replaceNonReadableForKatex = (string) => {
+    const result = string.replace(/(–|−)/g, '-');
+    return result;
   }
 }
 
