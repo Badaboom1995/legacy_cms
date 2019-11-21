@@ -201,9 +201,11 @@ class TaskPreviewContainer extends React.Component {
                         generation.images,
                         this.getLetter(index),
                       ).substr(1);
-                      const url = generation.images
+                      {
+                        /* const url = generation.images
                         ? `${api_url}${imagePath}`
-                        : URL.createObjectURL(image);
+                        : URL.createObjectURL(image); */
+                      }
                       return (
                         <li
                           className={`task-preview__generation-answer
