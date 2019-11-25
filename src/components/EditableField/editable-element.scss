@@ -52,4 +52,8 @@
       transform: translate(-50%, -50%) rotate(-45deg);
     }
   }
+
+  & + .expression-warning {
+    position: static;
+  }
 }

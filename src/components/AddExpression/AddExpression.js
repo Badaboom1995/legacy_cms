@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import TextArea from 'components/TextArea/TextArea';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import DataCreator from 'utilits/DataCreator/DataCreator';
 import { addExpression } from 'actions/general';
 import './add-expression.scss';
 
@@ -18,60 +18,14 @@ class AddExpression extends React.Component {
 
   addExpression = (e) => {
     e.persist();
-    const { RegExps } = TextUtilit;
     const { kind } = this.props;
     const value = String(this.state.value);
-    const mainRegexp = RegExps.b2t;
-    const kindRegexp = RegExps[kind];
-    const isValid = mainRegexp.test(value) && kindRegexp.test(value);
-    const isUnique = this.props.general.expressions.every(exp => exp.value !== value);
+    const expressionData = DataCreator.createData(value, kind);
 
-    if (isValid && isUnique) {
-      const expression = {
-        question: '',
-        answers: {},
-      };
-
-      let rawValue = value;
-      let charCode = 97;
-      expression.question = value.replace(mainRegexp, (b2tPlace, b2texp) => {
-        const question = b2texp.replace(kindRegexp, (str, match) => {
-          const char = String.fromCharCode(charCode);
-          if (kind === 'inputs') {
-            const inputType = (match.search(RegExps.number) !== -1) ? 'numeric' : 'text';
-            const inputValue = (inputType === 'numeric' ? TextUtilit.handleNumber(match) : match);
-
-            rawValue = rawValue.replace(match, inputValue);
-            expression.answers[char] = inputValue;
-          } else if (kind === 'dropdown') {
-            expression.answers[char] = {
-              values: [],
-              expected: null,
-            };
-
-            str.replace(RegExps.dropdownInner, (raw, variant) => {
-              let ddValue = variant;
-              if (variant.slice(-1) === '*') {
-                ddValue = variant.slice(0, -1);
-                expression.answers[char].expected = ddValue;
-              }
-              expression.answers[char].values.push(ddValue);
-            });
-          }
-
-          charCode++;
-          return `%\{${char}}`;
-        });
-
-        return question;
-      });
-
-      expression.value = rawValue.replace(mainRegexp, (b2tPlace, b2texp) => {
-        return b2texp.replace(kindRegexp, `${kind.substr(0,2)}($1)`);
-      }).replace(/−/g, '-');  // - Katex от минуса падает :/
-      this.props.dispatch(addExpression(expression));
-      console.log(expression);
-    } else if (isUnique) {
+    if (expressionData) {
+      this.props.dispatch(addExpression(expressionData));
+      console.log(expressionData);
+    } else if (expressionData === false) {
       this.setState({ wrongExpression: true });
     }
   };

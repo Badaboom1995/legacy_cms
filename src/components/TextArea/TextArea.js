@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './text-area.scss';
 import KaTex from 'components/KaTex/KaTex';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 class TextArea extends React.Component {
   state = {
