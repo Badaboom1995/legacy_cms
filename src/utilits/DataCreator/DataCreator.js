@@ -59,18 +59,17 @@ class DataCreator {
     const data = {
       question: '',
       answers: {},
-      type: null,
     };
 
     let rawValue = string;
     let charCode = FIRST_CHAR_CODE;
     data.question = string.replace(RegExps.b2t, (b2tPlace, b2texp) => {
       const question = b2texp.replace(RegExps.dropdown, (str, typeLetter, match) => {
-        data.type = this.DropdownTypes[typeLetter];
         const char = String.fromCharCode(charCode);
         data.answers[char] = {
           values: [],
           expected: null,
+          type: this.DropdownTypes[typeLetter],
         };
 
         str.replace(RegExps.dropdownInner, (raw, variant) => {
