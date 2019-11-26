@@ -3,6 +3,11 @@ import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 const FIRST_CHAR_CODE = 97;
 
 class DataCreator {
+  DropdownTypes = {
+    h: 'horizontal',
+    v: 'vertical',
+  }
+
   createData = (string, kind) => {
     if (!TextUtilit.validateExpression(string, kind)) {
       console.warn('Expression string is not valid!');
@@ -54,12 +59,14 @@ class DataCreator {
     const data = {
       question: '',
       answers: {},
+      type: null,
     };
 
     let rawValue = string;
     let charCode = FIRST_CHAR_CODE;
     data.question = string.replace(RegExps.b2t, (b2tPlace, b2texp) => {
-      const question = b2texp.replace(RegExps.dropdown, (str, match) => {
+      const question = b2texp.replace(RegExps.dropdown, (str, typeLetter, match) => {
+        data.type = this.DropdownTypes[typeLetter];
         const char = String.fromCharCode(charCode);
         data.answers[char] = {
           values: [],
@@ -82,12 +89,27 @@ class DataCreator {
       return question;
     });
 
-    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace, b2texp) => {
-      return b2texp.replace(RegExps.dropdown, `dr($1)`);
+    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace, typeLetter, b2texp) => {
+      return b2texp.replace(RegExps.dropdown, `dr($2)`);
     });
     data.value = this._replaceNonReadableForKatex(rawValue);
 
     return data;
+  }
+
+  getWarningText = (kind) => {
+    let warningText = '"%b2t{%{значение}}%"';
+    switch (kind) {
+      case 'inputs':
+        warningText = '"%b2t{%{значение}}%"';
+        break;
+
+      case 'dropdown':
+        warningText = '"%b2t{%(h/v){значение|правильное*|значение}}%"';
+        break;
+    }
+
+    return warningText;
   }
 
   _replaceNonReadableForKatex = (string) => {
