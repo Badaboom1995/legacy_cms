@@ -30,6 +30,12 @@ export default (state = tasksReducerDefaultState, action) => {
           return item.name != action.imageName;
         }),
       };
+    case 'RESET_IMAGES':
+      return {
+        ...state,
+        imagesAnswers: [],
+        images: [],
+      };
     default:
       return state;
   }

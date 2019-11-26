@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import { addOption, clearTasks } from 'actions/tasks';
 import { clearGenerations } from 'actions/general';
+import { resetImages } from 'actions/images';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
@@ -153,6 +154,7 @@ class Home extends React.Component {
         }, 1000);
         this.props.dispatch(clearTasks());
         this.props.dispatch(clearGenerations());
+        this.props.dispatch(resetImages());
       });
   };
 
