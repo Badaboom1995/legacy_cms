@@ -46,7 +46,7 @@
     position: absolute;
     top: 100px;
     left: 50%;
-    width: 600px;
+    min-width: 600px;
     transform: translateX(-50%);
     background-color: #f6f8f9;
     padding: 30px;

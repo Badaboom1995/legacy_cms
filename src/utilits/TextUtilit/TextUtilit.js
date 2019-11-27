@@ -21,8 +21,8 @@ class TextUtilit {
       number: /^[+-−]?\d+((,|\.)\d+)?$/,
       rawNumber: /((?:−|-)?\d+(?:\.|,)?(?:\d+)?)/g,
       textWrap: /\n/g,
-    }
-  };
+    };
+  }
 
   static get Kinds() {
     return ['inputs', 'dropdown'];
@@ -54,7 +54,7 @@ class TextUtilit {
     if (latex.test(result)) {
       result = this.createLatexText(result, needParse);
     } else if (needParse) {
-      result = ReactHtmlParser(result)
+      result = ReactHtmlParser(result);
     }
 
     return result;
@@ -65,7 +65,7 @@ class TextUtilit {
     let result = text;
     result = result.replace(b2t, (b2tPlace, b2texp) => {
       let r = b2texp;
-      this.Kinds.forEach((kind) => {
+      this.Kinds.forEach(kind => {
         const kindRegexp = this.RegExps[kind];
         if (kindRegexp.test(r)) {
           r = r.replace(kindRegexp, `${kind.substr(0,2)}($${kind === 'dropdown' ? '2' : '1'})`);
@@ -131,7 +131,7 @@ class TextUtilit {
       // let [beforeText, afterText] = stringParts;
       let beforeText = text.substring(prevOffset, offset);
       let afterText = text.substring(offset + str.length);
-      const isLast = (afterText.search(latex) === -1);
+      const isLast = afterText.search(latex) === -1;
       if (needParse) {
         beforeText = ReactHtmlParser(beforeText);
         afterText = ReactHtmlParser(afterText);
@@ -167,15 +167,17 @@ class TextUtilit {
     let result = text;
     if (text.search(customExp) !== -1) {
       const allExps = [];
-      text.replace(customExp, (str) => {
+      text.replace(customExp, str => {
         allExps.push(str);
       });
       const allRest = text.split(customExp).map(textPart => textPart.replace(rawNumber, '%l{$1}%'));
-      result = allRest.map((txt1) => {
-        const txt2 = allExps.shift();
-        const res = (txt2 !== undefined) ? txt1+txt2 : txt1;
-        return res;
-      }).join('');
+      result = allRest
+        .map(txt1 => {
+          const txt2 = allExps.shift();
+          const res = txt2 !== undefined ? txt1 + txt2 : txt1;
+          return res;
+        })
+        .join('');
       if (allExps.length > 0) result += allExps.join('');
     }
 
