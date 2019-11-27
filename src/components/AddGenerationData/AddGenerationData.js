@@ -34,14 +34,14 @@ class AddTaskInfo extends React.Component {
       name: 'dropdown',
       component: <ExpressionsList />,
     },
-    {
-      name: 'Перетаскивание',
-      component: <DragAndDrop />,
-    },
-    {
-      name: 'Графики',
-      component: <Answers multipleChoise />,
-    },
+    // {
+    //   name: 'Перетаскивание',
+    //   component: <DragAndDrop />,
+    // },
+    // {
+    //   name: 'Графики',
+    //   component: <Answers multipleChoise />,
+    // },
   ];
 
   state = {

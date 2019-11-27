@@ -2,36 +2,63 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './editable-element.scss';
 import TextArea from 'components/TextArea/TextArea';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 export default class EditWithInputContainer extends React.Component {
-  state = {
-    editing: false,
-    value: '',
-  };
+  constructor(props) {
+    super(props);
+
+    const { children } = props;
+    this.state = {
+      editing: false,
+      value: TextUtilit.unhandleText(children),
+      isValid: true,
+    };
+  }
+
   editingOn = () => {
     this.setState(() => ({ editing: true }));
   };
   editingOff = () => {
     const { task, paramName, handleFunction } = this.props;
-    this.setState(() => ({ editing: false }));
+    console.log(task);
+
     const adoptedValue = this.props.getAdoptedValue
       ? this.props.getAdoptedValue(this.state.value)
-      : '';
-    const finalValue = adoptedValue || this.state.value || this.props.children;
-    handleFunction(task.id, {
-      [paramName]: finalValue,
-    });
+      : this.state.value;
+
+    if (!adoptedValue) {
+      this.setState({ isValid: false });
+    } else {
+      this.setState({ editing: false, isValid: true });
+      const finalValue = adoptedValue || this.props.children;
+      handleFunction(task.id, {
+        [paramName]: finalValue,
+      });
+    }
   };
   onValueChange = value => {
     this.setState(() => ({ value }));
   };
   render() {
-    const { className } = this.props;
-    const value = this.state.value || this.props.children;
+    const { className, task } = this.props;
+    const { value, editing, isValid } = this.state;
+
+    let warningText = '"%b2t{%{значение}}%"';
+    switch (task.kind) {
+      case 'inputs':
+        warningText = '"%b2t{%{значение}}%"';
+        break;
+
+      case 'dropdown':
+        warningText = '"%b2t{%{значение|правильное*|значение}}%"';
+        break;
+    }
+
     return (
       <React.Fragment>
-        {this.state.editing ? (
+        {editing
+        ? (
           <div className="editable-element editable-element--input">
             <TextArea
               className="editable-element__input"
@@ -41,11 +68,17 @@ export default class EditWithInputContainer extends React.Component {
             />
             <button onClick={this.editingOff}>submit</button>
           </div>
-        ) : (
+        )
+        : (
           <span onClick={this.editingOn} className={className}>
             {TextUtilit.handleText(value)}
             <button onClick={this.editingOn}>edit</button>
           </span>
+        )}
+        {(editing && !isValid) && (
+          <div className="expression-warning">
+            {`Ожидаемое выражение: ${warningText}`}
+          </div>
         )}
       </React.Fragment>
     );

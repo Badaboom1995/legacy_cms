@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './expression.scss';
 import { removeExpression } from 'actions/general';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 class Expression extends React.Component {
   removeExpression = () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './text-input.scss';
 import KaTex from 'components/KaTex/KaTex';
-import TextUtilit from 'components/TextUtilit/TextUtilit';
+import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 class TextInput extends React.Component {
   state = {
