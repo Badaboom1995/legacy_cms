@@ -33,17 +33,7 @@ class AddExpression extends React.Component {
   render() {
     const { kind } = this.props;
     const { wrongExpression, value } = this.state;
-
-    let warningText = '"%b2t{%{значение}}%"';
-    switch (kind) {
-      case 'inputs':
-        warningText = '"%b2t{%{значение}}%"';
-        break;
-
-      case 'dropdown':
-        warningText = '"%b2t{%{значение|правильное*|значение}}%"';
-        break;
-    }
+    const warningText = DataCreator.getWarningText(kind);
 
     return (
       <div className="add-expression">
