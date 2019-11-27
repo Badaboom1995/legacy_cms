@@ -10,7 +10,7 @@ class AddPictureButton extends React.Component {
     const images = Array.from(e.target.files);
     this.props.dispatch(this.props.saveImages(images));
     images.forEach((item, index) => {
-      this.props.dispatch(addAnswer(index));
+      this.props.dispatch(addAnswer((index + 1).toString()));
     });
   };
   changeAnswer = (answer, index) => {
