@@ -15,7 +15,6 @@ class AddPictureButton extends React.Component {
   };
   changeAnswer = (answer, index) => {
     this.props.dispatch(addAnswerByIndex(answer, index));
-    console.log(index, answer);
   };
   render() {
     const images = this.props.imagesAnswers || this.props.images;
