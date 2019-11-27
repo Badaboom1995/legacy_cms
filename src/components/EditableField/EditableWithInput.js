@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './editable-element.scss';
 import TextArea from 'components/TextArea/TextArea';
 import TextUtilit from 'utilits/TextUtilit/TextUtilit';
+import DataCreator from 'utilits/DataCreator/DataCreator';
 
 export default class EditWithInputContainer extends React.Component {
   constructor(props) {
@@ -43,17 +44,7 @@ export default class EditWithInputContainer extends React.Component {
   render() {
     const { className, task } = this.props;
     const { value, editing, isValid } = this.state;
-
-    let warningText = '"%b2t{%{значение}}%"';
-    switch (task.kind) {
-      case 'inputs':
-        warningText = '"%b2t{%{значение}}%"';
-        break;
-
-      case 'dropdown':
-        warningText = '"%b2t{%{значение|правильное*|значение}}%"';
-        break;
-    }
+    const warningText = DataCreator.getWarningText(task.kind);
 
     return (
       <React.Fragment>
