@@ -8,12 +8,12 @@ class TextUtilit {
     return {
       markdown: /%m\{((?:.|\n)+?)\}%/g,
       latex: /%l\{(.+?)\}%/g,
-      b2t: /%b2t\{((?:.)*?(%\{.*?\})+(?:.)*?)\}%/g,
+      b2t: /%b2t\{((?:.)*?(%(\w{1,2})?\{.*?\})+(?:.)*?)\}%/g,
       customExp: /%(?:b2t|l|m)\{.+?\}%/g,
       bold: /(?:\*\*|__)((?:.|\n)+)(?:\*\*|__)/g,
       italic: /(?:\*|_)((?:.|\n)+)(?:\*|_)/g,
       inputs: /%\{([^|]*?)\}/g,
-      dropdown: /%\{(([^|]+?\|?){2,7})\}/g,
+      dropdown: /%(h|v)\{(([^|]+?\|?){2,7})\}/g, // (h|v) -типы dropdown (horizontal/vertical)
       dropdownInner: /\{?([^|{}]+)(?:\}|\|)/g,
       numericOnly: /^[0-9,+−]+$/g,
       notNumeric: /[^0-9,+−]/g,
@@ -68,7 +68,7 @@ class TextUtilit {
       this.Kinds.forEach(kind => {
         const kindRegexp = this.RegExps[kind];
         if (kindRegexp.test(r)) {
-          r = r.replace(kindRegexp, `${kind.substr(0, 2)}($1)`);
+          r = r.replace(kindRegexp, `${kind.substr(0,2)}($${kind === 'dropdown' ? '2' : '1'})`);
         }
       });
       return r;
