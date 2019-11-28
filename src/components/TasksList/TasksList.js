@@ -31,7 +31,6 @@ class TaskPreview extends React.Component {
         <Tabs elements={this.props.general.subjects} selectSubject={this.selectSubject} />
         {this.props.tasks &&
           filteredTasks.map((item, index) => {
-            // console.log(item);
             return (
               item.subject == this.state.activeSubject && (
                 <TasksPreviewFetched

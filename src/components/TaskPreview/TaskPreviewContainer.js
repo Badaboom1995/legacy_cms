@@ -7,6 +7,7 @@ import { addTaskToTest } from 'actions/checks';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
+import ToggleNotForTeacher from 'components/ToggleNotForTeacher/ToggleNotForTeacher';
 import Tasks from 'helpers/Tasks';
 import config from 'config';
 
@@ -96,8 +97,8 @@ class TaskPreviewContainer extends React.Component {
       });
   };
   render() {
-    const { generationsHidden, noDeleteButton, noAddButton } = this.props;
-    const { chapter, difficulty, grade, subject, name, id } = this.props.task;
+    const { generationsHidden, noDeleteButton, noAddButton, noToggleButton } = this.props;
+    const { chapter, difficulty, grade, subject, name, id, not_for_teacher } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
     return (
@@ -164,6 +165,7 @@ class TaskPreviewContainer extends React.Component {
                 Добавить задание в тест
               </button>
             )}
+            {!noToggleButton && <ToggleNotForTeacher task={this.props.task} />}
           </div>
         </div>
 
