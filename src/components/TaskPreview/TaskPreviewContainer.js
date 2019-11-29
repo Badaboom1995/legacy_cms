@@ -96,6 +96,19 @@ class TaskPreviewContainer extends React.Component {
         //handle error
       });
   };
+
+  confirmDelete = (taskId) => {
+    if (window.confirm('Вы действительно хотите удалить задание?')) {
+      this.props.deleteTask(taskId);
+    }
+  }
+
+  confirmDeleteGeneration = (genId, index) => {
+    if (window.confirm('Вы действительно хотите удалить генерацию?')) {
+      this.deleteGeneration(genId, index);
+    }
+  }
+
   render() {
     const { generationsHidden, noDeleteButton, noAddButton } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
@@ -146,9 +159,7 @@ class TaskPreviewContainer extends React.Component {
           <div>
             {!noDeleteButton && (
               <button
-                onClick={() => {
-                  this.props.deleteTask(id);
-                }}
+                onClick={() => this.confirmDelete(id)}
               >
                 Удалить задание
               </button>
@@ -240,9 +251,7 @@ class TaskPreviewContainer extends React.Component {
                     })}
                   </ul>
                   <button
-                    onClick={() => {
-                      this.deleteGeneration(generation.id, index);
-                    }}
+                    onClick={() => this.confirmDeleteGeneration(generation.id, index)}
                   >
                     delete
                   </button>
