@@ -126,6 +126,12 @@ class TestsList extends React.Component {
     this.setState({ checksOffset: newOffset, checksFetching: true });
   };
 
+  confirmDelete = (checkId) => {
+    if (window.confirm('Вы действительно хотите удалить тест?')) {
+      this.deleteCheck(checkId);
+    }
+  }
+
   render() {
     const {
       checks: {
@@ -172,9 +178,7 @@ class TestsList extends React.Component {
                   <span className="task-preview__param">{check_mode && check_mode.name}</span>
                   <span className="task-preview__param">{check_scale && check_scale.name}</span>
                   <button
-                    onClick={() => {
-                      this.deleteCheck(item.id);
-                    }}
+                    onClick={() => this.confirmDelete(item.id)}
                   >
                     delete
                   </button>
