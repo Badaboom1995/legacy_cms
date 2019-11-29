@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import { InlineMath, BlockMath } from 'react-katex';
-import { array } from 'prop-types';
+import { InlineMath } from 'react-katex';
 
 class TextUtilit {
   static get RegExps() {
@@ -38,7 +37,7 @@ class TextUtilit {
     }
 
     if (b2t.test(text)) {
-      result = this.createB2tText(result);
+      result = this.convertB2tToText(result);
     }
 
     if (markdown.test(result)) {
@@ -60,7 +59,7 @@ class TextUtilit {
     return result;
   }
 
-  static createB2tText(text) {
+  static convertB2tToText(text) {
     const { b2t } = this.RegExps;
     let result = text;
     result = result.replace(b2t, (b2tPlace, b2texp) => {
@@ -68,7 +67,10 @@ class TextUtilit {
       this.Kinds.forEach(kind => {
         const kindRegexp = this.RegExps[kind];
         if (kindRegexp.test(r)) {
-          r = r.replace(kindRegexp, `${kind.substr(0,2)}($${kind === 'dropdown' ? '2' : '1'})`);
+          r = r.replace(kindRegexp, (str, typeLetter, values) => {
+            const isDropdown = kind === 'dropdown';
+            return `${kind.substr(0,2)}${isDropdown ? typeLetter : ''}(${isDropdown ? values : typeLetter})`;
+          });
         }
       });
       return r;
@@ -78,12 +80,15 @@ class TextUtilit {
   }
 
   // Функция обработки текста из человеческого в b2t-формат
-  static unhandleText(text) {
+  static convertTextToB2t(text) {
     let result = text;
     this.Kinds.forEach((kind) => {
-      const regex = new RegExp(`${kind.substr(0,2)}\\((.*?)\\)`, 'g');
+      const isDropdown = kind === 'dropdown';
+      const regex = new RegExp(`${kind.substr(0,2)}${isDropdown ? '(h|v)' : ''}\\((.*?)\\)`, 'g');
       if (regex.test(result)) {
-        result = result.replace(regex, '%b2t{%{$1}}%');
+        result = result.replace(regex, (str, typeLetter, values) => {
+          return `%b2t{%${isDropdown ? typeLetter : ''}{${isDropdown ? values : typeLetter}}}%`;
+        })
       }
     });
     return result;

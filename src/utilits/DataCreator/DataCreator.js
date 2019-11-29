@@ -46,8 +46,8 @@ class DataCreator {
       return question;
     });
 
-    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace, b2texp) => {
-      return b2texp.replace(RegExps.inputs, `in($1)`);
+    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace) => {
+      return TextUtilit.convertB2tToText(b2tPlace);
     });
     data.value = this._replaceNonReadableForKatex(rawValue);
 
@@ -88,8 +88,8 @@ class DataCreator {
       return question;
     });
 
-    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace, typeLetter, b2texp) => {
-      return b2texp.replace(RegExps.dropdown, `dr($2)`);
+    rawValue = rawValue.replace(RegExps.b2t, (b2tPlace) => {
+      return TextUtilit.convertB2tToText(b2tPlace);
     });
     data.value = this._replaceNonReadableForKatex(rawValue);
 
