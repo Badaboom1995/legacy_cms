@@ -23,9 +23,7 @@ class Home extends React.Component {
     generations: [],
     gensIds: [],
   };
-  // componentDidMount() {
-  //   this.checkTask();
-  // }
+
   onChange = (value, name) => {
     this.setState(() => ({ [name]: value }));
     this.props.dispatch(addOption(name, value));
@@ -88,15 +86,13 @@ class Home extends React.Component {
   addPicture = async (id, setIndex) => {
     let data = new FormData();
     const alphabetStartIndex = 97;
-    console.log(this.props.images[setIndex]);
-    this.props.images[setIndex].forEach((item, index) => {
-      console.log(item);
+    const images = this.props.images || [];
+    images[setIndex].forEach((item, index) => {
       data.append(
         `check_generation[images][${String.fromCharCode(alphabetStartIndex + index)}]`,
         item,
       );
     });
-    console.log(data);
     axios
       .put(`${base_url}teachers/check_generations/${id}`, data, {
         headers: {
@@ -145,7 +141,7 @@ class Home extends React.Component {
       })
       .then(() => {
         setTimeout(() => {
-          if (this.state.gensIds) {
+          if (this.state.gensIds && this.props.images) {
             this.state.gensIds.forEach((item, index) => {
               this.addPicture(item, index);
             });

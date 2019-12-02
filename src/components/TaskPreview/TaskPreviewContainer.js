@@ -165,7 +165,7 @@ class TaskPreviewContainer extends React.Component {
                 Добавить задание в тест
               </button>
             )}
-            {!noToggleButton && <ToggleNotForTeacher task={this.props.task} />}
+            {!noToggleButton && <ToggleNotForTeacher targetType="task" target={this.props.task} />}
           </div>
         </div>
 
