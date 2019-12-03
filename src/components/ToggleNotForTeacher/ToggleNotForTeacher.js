@@ -11,16 +11,11 @@ class ToggleNotForTeacher extends React.Component {
   toggleNotForTeacher = not_for_teacher => {
     const toggleTo = not_for_teacher ? false : true;
     const changes = { not_for_teacher: toggleTo };
-    let method;
     if (this.props.targetType == 'task') {
-      method = Tasks.updateCheckJob;
+      Tasks.updateCheckJob(this.props.target.id, changes);
     } else {
-      method = Checks.updateCheck;
+      Checks.updateCheck(this.props.target.id, changes);
     }
-
-    method(this.props.target.id, changes);
-
-    // this.props.dispatch(updateTask(this.props.target.id, 'not_for_teacher', toggleTo));
     this.setState(state => ({
       not_for_teacher: state.not_for_teacher == undefined ? toggleTo : !state.not_for_teacher,
     }));
