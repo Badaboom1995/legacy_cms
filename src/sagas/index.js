@@ -8,7 +8,6 @@ const getStore = state => state;
 
 function* getTasks(action) {
   const { params = {} } = action;
-  console.log(action);
   const Request = new Tasks();
   const response = yield Request.getTasks(params);
   yield put({ type: 'TASKS_RECEIVED', tasks: response });
@@ -20,7 +19,6 @@ function* getTasks(action) {
 
 function* getTasksPart(action = {}) {
   const { params = {} } = action;
-  console.log(action)
   const Request = new Tasks();
   const response = yield Request.getTasks(params);
   yield put({ type: 'TASKS_PART_RECEIVED', tasks: response });
