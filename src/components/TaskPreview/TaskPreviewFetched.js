@@ -43,7 +43,7 @@ class TaskPreviewFetched extends React.Component {
     for (const key in answers) {
       const dropdown = answers[key];
       const dropdownValue = dropdown.values.join('|').replace(dropdown.expected, `${dropdown.expected}*`)
-      editableQuestion = editableQuestion.replace(`%{${key}}`, `dr${dropdown.type.substr(0,1)}(${dropdownValue})`);
+      editableQuestion = editableQuestion.replace(`%{${key}}`, `dr${dropdown.type && dropdown.type.substr(0,1)}(${dropdownValue})`);
     }
     return editableQuestion;
   };
