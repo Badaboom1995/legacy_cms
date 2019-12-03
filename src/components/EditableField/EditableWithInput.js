@@ -12,7 +12,7 @@ export default class EditWithInputContainer extends React.Component {
     const { children } = props;
     this.state = {
       editing: false,
-      value: TextUtilit.unhandleText(children),
+      value: TextUtilit.convertTextToB2t(children),
       isValid: true,
     };
   }
@@ -22,8 +22,6 @@ export default class EditWithInputContainer extends React.Component {
   };
   editingOff = () => {
     const { task, paramName, handleFunction } = this.props;
-    console.log(task);
-
     const adoptedValue = this.props.getAdoptedValue
       ? this.props.getAdoptedValue(this.state.value)
       : this.state.value;
@@ -42,9 +40,8 @@ export default class EditWithInputContainer extends React.Component {
     this.setState(() => ({ value }));
   };
   render() {
-    const { className, task } = this.props;
+    const { className, task, paramName } = this.props;
     const { value, editing, isValid } = this.state;
-    const warningText = DataCreator.getWarningText(task.kind);
 
     return (
       <React.Fragment>
@@ -66,9 +63,9 @@ export default class EditWithInputContainer extends React.Component {
             <button onClick={this.editingOn}>edit</button>
           </span>
         )}
-        {(editing && !isValid) && (
+        {(editing && !isValid && paramName === 'data') && (
           <div className="expression-warning">
-            {`Ожидаемое выражение: ${warningText}`}
+            {`Ожидаемое выражение: ${DataCreator.getWarningText(task.kind)}`}
           </div>
         )}
       </React.Fragment>
