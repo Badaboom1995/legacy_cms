@@ -145,14 +145,15 @@ class Home extends React.Component {
         });
       })
       .then(() => {
-        // setTimeout(() => {
-        //   if (this.state.gensIds) {
-        //     this.state.gensIds.forEach((item, index) => {
-        //       this.addPicture(item, index);
-        //     });
-        //     this.props.dispatch(resetImages());
-        //   }
-        // }, 1000);
+        setTimeout(() => {
+          if (this.state.gensIds) {
+            this.state.gensIds &&
+              this.state.gensIds.forEach((item, index) => {
+                this.addPicture(item, index);
+              });
+            // this.props.dispatch(resetImages());
+          }
+        }, 1000);
         this.props.dispatch(clearTasks());
         this.props.dispatch(clearGenerations());
       });
