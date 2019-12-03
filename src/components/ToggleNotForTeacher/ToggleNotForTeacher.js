@@ -23,7 +23,10 @@ class ToggleNotForTeacher extends React.Component {
     }));
   };
   render() {
-    const flag = this.state.not_for_teacher || this.props.target.not_for_teacher;
+    const flag =
+      this.state.not_for_teacher == undefined
+        ? this.props.target.not_for_teacher
+        : this.state.not_for_teacher;
     return (
       <button
         onClick={() => {
