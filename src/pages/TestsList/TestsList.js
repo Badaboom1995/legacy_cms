@@ -174,7 +174,7 @@ class TestsList extends React.Component {
                   className={`task-preview task-preview__main tests-list__test ${selectedCheckId ==
                     item.id && 'task-preview__main--selected'}`}
                 >
-                  <p className="tests-list__test-title">{item.name}</p>
+                  <p className="tests-list__test-title">{item.name} check</p>
                   <span className="task-preview__param">{check_mode && check_mode.name}</span>
                   <span className="task-preview__param">{check_scale && check_scale.name}</span>
                   <ToggleNotForTeacher targetType="check" target={item} />
