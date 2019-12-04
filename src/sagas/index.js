@@ -57,6 +57,13 @@ function* getChecksPart(action = {}) {
   }
 }
 
+function* createLessonFromCheck(action = {}) {
+  const { checkId } = action;
+  const Request = new Checks();
+  const response = yield Request.createLessonFromCheck(checkId);
+  yield put({ type: 'CHECK_LESSON_RECEIVED', payload: { checkId, lesson: response }});
+}
+
 function* getChapters() {
   const Request = new Structure();
   const response = yield Request.getChapters();
@@ -164,6 +171,10 @@ function* createLessonFromTaskWatcher() {
   yield takeLatest('CREATE_LESSON_FROM_TASK', createLessonFromTask);
 }
 
+function* createLessonFromCheckWatcher() {
+  yield takeLatest('CREATE_LESSON_FROM_CHECK', createLessonFromCheck);
+}
+
 export default function* rootSaga() {
   yield all([
     getTasksWatcher(),
@@ -172,6 +183,7 @@ export default function* rootSaga() {
     createLessonFromTaskWatcher(),
     getChecksWatcher(),
     getChecksPartWatcher(),
+    createLessonFromCheckWatcher(),
     deleteCheckWatcher(),
     getChaptersWatcher(),
     getTopicsWatcher(),

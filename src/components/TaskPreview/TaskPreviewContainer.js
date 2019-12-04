@@ -9,6 +9,7 @@ import { addTaskToTest } from 'actions/checks';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
+import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import Tasks from 'helpers/Tasks';
 import config from 'config';
 
@@ -18,7 +19,6 @@ const base_url = config.api.url;
 class TaskPreviewContainer extends React.Component {
   state = {
     showGens: this.props.generationsHidden ? false : true,
-    fetchingLesson: false,
   };
   toggleGens = () => {
     this.setState(state => ({
@@ -112,32 +112,16 @@ class TaskPreviewContainer extends React.Component {
     }
   }
 
-  buttonCreateLessonHandler = async (taskId) => {
+  buttonCreateLessonHandler = (taskId) => {
     const { dispatch } = this.props;
     dispatch(createLessonFromTask(taskId));
-    this.setState({ fetchingLesson: true });
-  }
-
-  createTestStudentUrl = (taskLesson = {}) => {
-    const { student_id } = taskLesson;
-    const studentUrl = `/admin/students/${student_id}`;
-    return studentUrl;
-  }
-
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.taskLesson !== this.props.taskLesson) {
-      this.setState({ fetchingLesson: false });
-    }
   }
 
   render() {
     const { generationsHidden, noDeleteButton, noAddButton, taskLesson } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
-    const { fetchingLesson } = this.state;
     const Request = new Tasks();
-
-    const urlToTestStudent = taskLesson ? this.createTestStudentUrl(taskLesson) : null;
 
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
@@ -202,19 +186,11 @@ class TaskPreviewContainer extends React.Component {
               </button>
             )}
             <div className="task-preview__test-lesson">
-
-              {taskLesson
-                ? (<a className="task-preview__lesson-link" href={`${urlToTestStudent}`}>
-                    {`${urlToTestStudent}`}
-                  </a>)
-                : (<button
-                    type="button"
-                    className="task-preview__create-lesson-button"
-                    onClick={() => this.buttonCreateLessonHandler(id)}
-                  >
-                    {fetchingLesson ? "Выполняю запрос..." : "Создать урок"}
-                  </button>)
-              }
+              <TestLessonButton
+                lesson={taskLesson}
+                className="task-preview__create-lesson-button"
+                buttonCreateLessonHandler={() => this.buttonCreateLessonHandler(id)}
+              />
             </div>
           </div>
         </div>
