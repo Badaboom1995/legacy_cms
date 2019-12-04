@@ -36,7 +36,7 @@ class ToggleNotForTeacher extends React.Component {
       >
         Not for teacher :{' '}
         {(this.state.not_for_teacher != undefined && this.state.not_for_teacher.toString()) ||
-          (this.props.target.not_for_teacher
+          (this.props.target.not_for_teacher != undefined
             ? this.props.target.not_for_teacher.toString()
             : 'undefiend')}
       </button>
