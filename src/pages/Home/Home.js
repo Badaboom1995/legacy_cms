@@ -150,11 +150,11 @@ class Home extends React.Component {
             this.state.gensIds.forEach((item, index) => {
               this.addPicture(item, index);
             });
+            this.props.dispatch(resetImages());
           }
         }, 1000);
         this.props.dispatch(clearTasks());
         this.props.dispatch(clearGenerations());
-        this.props.dispatch(resetImages());
       });
   };
 
