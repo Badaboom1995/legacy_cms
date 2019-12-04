@@ -177,7 +177,11 @@ class TestsList extends React.Component {
                   <p className="tests-list__test-title">{item.name}</p>
                   <span className="task-preview__param">{check_mode && check_mode.name}</span>
                   <span className="task-preview__param">{check_scale && check_scale.name}</span>
-                  <ToggleNotForTeacher targetType="check" target={item} />
+                  <ToggleNotForTeacher
+                    updateCheck={this.updateCheck}
+                    targetType="check"
+                    target={item}
+                  />
                   <button
                     onClick={() => {
                       this.deleteCheck(item.id);
