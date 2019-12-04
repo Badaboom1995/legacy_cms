@@ -11,6 +11,7 @@ class ToggleNotForTeacher extends React.Component {
   toggleNotForTeacher = not_for_teacher => {
     const toggleTo = not_for_teacher ? false : true;
     const changes = { not_for_teacher: toggleTo };
+    console.log(changes);
     if (this.props.targetType == 'task') {
       const Request = new Tasks();
       Request.updateCheckJob(this.props.target.id, changes);
