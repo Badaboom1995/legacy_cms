@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { createLessonFromTask } from 'actions/tasks';
+import { getTaskLesson } from 'reducers/tasks';
 import { addTaskToTest } from 'actions/checks';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
@@ -16,6 +18,7 @@ const base_url = config.api.url;
 class TaskPreviewContainer extends React.Component {
   state = {
     showGens: this.props.generationsHidden ? false : true,
+    fetchingLesson: false,
   };
   toggleGens = () => {
     this.setState(state => ({
@@ -109,11 +112,33 @@ class TaskPreviewContainer extends React.Component {
     }
   }
 
+  buttonCreateLessonHandler = async (taskId) => {
+    const { dispatch } = this.props;
+    dispatch(createLessonFromTask(taskId));
+    this.setState({ fetchingLesson: true });
+  }
+
+  createTestStudentUrl = (taskLesson = {}) => {
+    const { student_id } = taskLesson;
+    const studentUrl = `/admin/students/${student_id}`;
+    return studentUrl;
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.taskLesson !== this.props.taskLesson) {
+      this.setState({ fetchingLesson: false });
+    }
+  }
+
   render() {
-    const { generationsHidden, noDeleteButton, noAddButton } = this.props;
+    const { generationsHidden, noDeleteButton, noAddButton, taskLesson } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
+    const { fetchingLesson } = this.state;
     const Request = new Tasks();
+
+    const urlToTestStudent = taskLesson ? this.createTestStudentUrl(taskLesson) : null;
+
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
@@ -176,6 +201,21 @@ class TaskPreviewContainer extends React.Component {
                 Добавить задание в тест
               </button>
             )}
+            <div className="task-preview__test-lesson">
+
+              {taskLesson
+                ? (<a className="task-preview__lesson-link" href={`${urlToTestStudent}`}>
+                    {`${urlToTestStudent}`}
+                  </a>)
+                : (<button
+                    type="button"
+                    className="task-preview__create-lesson-button"
+                    onClick={() => this.buttonCreateLessonHandler(id)}
+                  >
+                    {fetchingLesson ? "Выполняю запрос..." : "Создать урок"}
+                  </button>)
+              }
+            </div>
           </div>
         </div>
 
@@ -269,10 +309,16 @@ TaskPreviewContainer.propTypes = {
   tasks: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  general: state.general,
-  checks: state.checks,
-  images: state.images.images,
-});
+const mapStateToProps = (state, ownProps) => {
+  const { task } = ownProps;
+  const taskLesson = getTaskLesson(state, task.id);
+
+  return {
+    general: state.general,
+    checks: state.checks,
+    images: state.images.images,
+    taskLesson,
+  }
+};
 
 export default connect(mapStateToProps)(TaskPreviewContainer);

@@ -1,5 +1,6 @@
 .task-preview {
   &__main {
+    position: relative;
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
@@ -54,5 +55,22 @@
     &--right {
       background-color: #63c7b2;
     }
+  }
+
+  &__test-lesson {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+  }
+
+  &__create-lesson-button {
+    margin-right: 15px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+
+  &__lesson-link {
+    display: block;
   }
 }
