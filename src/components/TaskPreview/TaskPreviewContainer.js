@@ -17,6 +17,11 @@ class TaskPreviewContainer extends React.Component {
   state = {
     showGens: this.props.generationsHidden ? false : true,
   };
+
+  isArrayOfFiles = (arr = []) => {
+    return arr.every(it => it instanceof File);
+  }
+
   toggleGens = () => {
     this.setState(state => ({
       showGens: state.showGens ? false : true,
@@ -26,10 +31,16 @@ class TaskPreviewContainer extends React.Component {
     const alphabetStartIndex = 97;
     return String.fromCharCode(alphabetStartIndex + index);
   };
-  getImageUrl = (images = [], letter) => {
-    console.log(images);
-    const image = images.find(item => item.answer == letter) || { path: '' };
-    return image.path;
+  getImageUrl = (image = {}) => {
+    let path = '';
+
+    // const image = images.find(item => item.answer == letter) || { path: '' };
+    if (image instanceof File) {
+      path = URL.createObjectURL(image);
+    } else if (image.path) {
+      path = `${api_url}${image.path}`;
+    }
+    return path;
   };
   deleteGeneration = (id, index) => {
     if (id) {
@@ -184,6 +195,12 @@ class TaskPreviewContainer extends React.Component {
             this.props.generations.map((generation, index) => {
               const answers =
                 generation.answers || generation.expressions || generation.inputs || [];
+              let images = [];
+              if (generation.images && generation.images.length) {
+                images = generation.images;
+              } else if (this.props.images && this.props.images[index]) {
+                images = this.props.images[index];
+              }
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
                   <EditableWithInput
@@ -208,10 +225,15 @@ class TaskPreviewContainer extends React.Component {
                   />
                   <ul className="task-preview__generations">
                     {answers.map((answer, index) => {
-                      const imagePath = this.getImageUrl(
-                        generation.images,
-                        this.getLetter(index),
-                      ).substr(1);
+                      const letter = this.getLetter(index);
+                      /* Если пришел массив файлов - берем из массива по индексу,
+                      если массив сохраненных картинок в генерации - ищем по букве ответа
+                      to do - Надо будет хранить файлы в store в объекте с полями-буквами,
+                      которые соответсвуют букве ответа, чтобы было удобно их оттуда доставать */
+                      const image = this.isArrayOfFiles(images)
+                        ? images[index]
+                        : images.find(item => item.answer == letter)
+                      const imageSource = this.getImageUrl(image);
                       {
                         /* const url = generation.images
                         ? `${api_url}${imagePath}`
@@ -228,7 +250,7 @@ class TaskPreviewContainer extends React.Component {
                           <label htmlFor="edit-image">
                             <img
                               className="task-preview__answer-image"
-                              src={`${api_url}${imagePath}`}
+                              src={imageSource}
                               alt=""
                             />
                           </label>
