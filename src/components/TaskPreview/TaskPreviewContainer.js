@@ -18,8 +18,9 @@ class TaskPreviewContainer extends React.Component {
     showGens: this.props.generationsHidden ? false : true,
   };
 
-  isArrayOfFiles = (arr = []) => {
-    return arr.every(it => it instanceof File);
+  isArrayOfFiles = (arr) => {
+    if (!arr) throw new Error('isArrayOfFiles: Argument is required');
+    return Array.isArray(arr) && arr.every(it => it instanceof File);
   };
 
   toggleGens = () => {
