@@ -3,10 +3,13 @@ import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { createLessonFromTask } from 'actions/tasks';
+import { getTaskLesson } from 'reducers/tasks';
 import { addTaskToTest } from 'actions/checks';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
+import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import Tasks from 'helpers/Tasks';
 import config from 'config';
 
@@ -120,11 +123,17 @@ class TaskPreviewContainer extends React.Component {
     }
   }
 
+  buttonCreateLessonHandler = (taskId) => {
+    const { dispatch } = this.props;
+    dispatch(createLessonFromTask(taskId));
+  }
+
   render() {
-    const { generationsHidden, noDeleteButton, noAddButton } = this.props;
+    const { generationsHidden, noDeleteButton, noAddButton, taskLesson } = this.props;
     const { chapter, difficulty, grade, subject, name, id } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
+
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
@@ -187,6 +196,13 @@ class TaskPreviewContainer extends React.Component {
                 Добавить задание в тест
               </button>
             )}
+            <div className="task-preview__test-lesson">
+              <TestLessonButton
+                lesson={taskLesson}
+                className="task-preview__create-lesson-button"
+                buttonCreateLessonHandler={() => this.buttonCreateLessonHandler(id)}
+              />
+            </div>
           </div>
         </div>
 
@@ -291,10 +307,16 @@ TaskPreviewContainer.propTypes = {
   tasks: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  general: state.general,
-  checks: state.checks,
-  images: state.images.images,
-});
+const mapStateToProps = (state, ownProps) => {
+  const { task } = ownProps;
+  const taskLesson = getTaskLesson(state, task.id);
+
+  return {
+    general: state.general,
+    checks: state.checks,
+    images: state.images.images,
+    taskLesson,
+  }
+};
 
 export default connect(mapStateToProps)(TaskPreviewContainer);

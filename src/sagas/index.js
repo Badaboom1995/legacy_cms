@@ -8,7 +8,6 @@ const getStore = state => state;
 
 function* getTasks(action) {
   const { params = {} } = action;
-  console.log(action);
   const Request = new Tasks();
   const response = yield Request.getTasks(params);
   yield put({ type: 'TASKS_RECEIVED', tasks: response });
@@ -20,7 +19,6 @@ function* getTasks(action) {
 
 function* getTasksPart(action = {}) {
   const { params = {} } = action;
-  console.log(action)
   const Request = new Tasks();
   const response = yield Request.getTasks(params);
   yield put({ type: 'TASKS_PART_RECEIVED', tasks: response });
@@ -28,6 +26,13 @@ function* getTasksPart(action = {}) {
   if (!params.limit || params.limit > response.length) {
     yield put({ type: 'TASKS_RECEIVED_ALL' });
   }
+}
+
+function* createLessonFromTask(action = {}) {
+  const { taskId } = action;
+  const Request = new Tasks();
+  const response = yield Request.createLessonFromTask(taskId);
+  yield put({ type: 'TASK_LESSON_RECEIVED', payload: { taskId, lesson: response }});
 }
 
 function* getChecks(action) {
@@ -50,6 +55,13 @@ function* getChecksPart(action = {}) {
   if (!params.limit || params.limit > response.length) {
     yield put({ type: 'CHECKS_RECEIVED_ALL' });
   }
+}
+
+function* createLessonFromCheck(action = {}) {
+  const { checkId } = action;
+  const Request = new Checks();
+  const response = yield Request.createLessonFromCheck(checkId);
+  yield put({ type: 'CHECK_LESSON_RECEIVED', payload: { checkId, lesson: response }});
 }
 
 function* getChapters() {
@@ -155,14 +167,23 @@ function* deleteCheckWatcher() {
 function* addTaskWatcher() {
   yield takeLatest('ADD_TASK_TO_TEST', addTask);
 }
+function* createLessonFromTaskWatcher() {
+  yield takeLatest('CREATE_LESSON_FROM_TASK', createLessonFromTask);
+}
+
+function* createLessonFromCheckWatcher() {
+  yield takeLatest('CREATE_LESSON_FROM_CHECK', createLessonFromCheck);
+}
 
 export default function* rootSaga() {
   yield all([
     getTasksWatcher(),
     getTasksPartWatcher(),
     addTaskWatcher(),
+    createLessonFromTaskWatcher(),
     getChecksWatcher(),
     getChecksPartWatcher(),
+    createLessonFromCheckWatcher(),
     deleteCheckWatcher(),
     getChaptersWatcher(),
     getTopicsWatcher(),
