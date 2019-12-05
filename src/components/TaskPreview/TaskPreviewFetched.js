@@ -58,6 +58,7 @@ class TaskPreviewFetched extends React.Component {
     for (const key in answersObject) {
       answers = [...answers, answersObject[key]];
     }
+    let answersType = answers.map(item => item.right);
     let answersNames = answers.map(item => this.handleInputAnswer(item.answers, item.question));
 
     const rightAnswers = [];
@@ -69,6 +70,7 @@ class TaskPreviewFetched extends React.Component {
     for (const key in answersObject) {
       answers = [...answers, answersObject[key]];
     }
+    let answersType = answers.map(item => item.right);
     let answersNames = answers.map(item => this.handleDropdownAnswer(item.answers, item.question));
 
     const rightAnswers = [];
