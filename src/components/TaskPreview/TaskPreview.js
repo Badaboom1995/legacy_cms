@@ -48,9 +48,6 @@ class TaskPreview extends React.Component {
 
   render() {
     const { generationsHidden, noDeleteButton, noAddButton, generations } = this.props;
-    {
-      console.log(generations);
-    }
     return (
       <React.Fragment>
         <TaskPreviewContainer
