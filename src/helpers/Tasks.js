@@ -262,4 +262,21 @@ export default class ChecksService {
     console.log(data);
     return data;
   }
+  async createLessonFromTask(taskId) {
+    const endpoint = `metodists/check_job_copy_to_lesson/${taskId}`;
+    const url = combineUrl({ endpoint });
+
+    this.response = await fetch(url, {
+      method: 'POST',
+      headers: { ...base_headers },
+    });
+
+    if (!this.response.ok) {
+      throw new Error(`RequestService getChecks failed, HTTP status ${this.response.status}`);
+    }
+
+    const data = await this.response.json();
+    console.log(data);
+    return data;
+  }
 }

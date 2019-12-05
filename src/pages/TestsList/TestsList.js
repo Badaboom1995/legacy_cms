@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { createLessonFromCheck } from 'actions/checks';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Button from 'components/Button/Button';
@@ -10,6 +11,7 @@ import SelectElement from 'components/SelectElement/SelectElement';
 import Tasks from 'helpers/Tasks';
 import { addCheckOption, saveSelectedCheck } from 'actions/checks';
 import Tabs from 'components/Tabs/Tabs';
+import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import SuccessAnimation from 'components/SuccessAnimation/SuccessAnimation';
 import {
   levelsNamesSelector,
@@ -132,6 +134,11 @@ class TestsList extends React.Component {
     }
   }
 
+  buttonCreateLessonHandler = (checkId) => {
+    const { dispatch } = this.props;
+    dispatch(createLessonFromCheck(checkId));
+  }
+
   render() {
     const {
       checks: {
@@ -156,6 +163,7 @@ class TestsList extends React.Component {
       time_limit,
       selectedCheckId,
       isAllChecksReceived,
+      checkLessons,
     } = this.props;
     const { checksFetching } = this.state;
 
@@ -165,7 +173,8 @@ class TestsList extends React.Component {
           <p className="tests-list__title">Тесты</p>
           <Tabs elements={this.props.general.subjects} selectSubject={this.selectSubject} />
           {checks_list.map((item, index) => {
-            const { check_mode, check_scale } = item;
+            const { id, check_mode, check_scale } = item;
+            const checkLesson = checkLessons[id];
             return (
               this.state.activeSubject == item.subject && (
                 <div
@@ -182,6 +191,13 @@ class TestsList extends React.Component {
                   >
                     delete
                   </button>
+                  <div className="task-preview__test-lesson">
+                    <TestLessonButton
+                      lesson={checkLesson}
+                      className="task-preview__create-lesson-button"
+                      buttonCreateLessonHandler={() => this.buttonCreateLessonHandler(id)}
+                    />
+                  </div>
                 </div>
               )
             );
@@ -293,29 +309,32 @@ TestsList.propTypes = {
   name: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
-  general: state.general,
-  checks: state.checks,
-  selectedCheck: state.checks.selectedCheck,
-  selectedCheckId: state.checks.selectedCheck.id,
-  selectedCheckName: Object.keys(state.checks.selectedCheck).length
-    ? state.checks.selectedCheck.name
-    : 'Название теста',
-  time_limit: state.checks.selectedCheck.time_limit || '',
-  selectedCheckTasks: state.checks.selectedCheck.check_jobs || [],
-  learning_levels_names: levelsNamesSelector(state),
-  learning_levels: levelsSelector(state),
-  subjects: subjectsSelector(state),
-  subjectsNames: subjectsNamesSelector(state),
-  scales: scalesSelector(state),
-  scalesNames: scalesNamesSelector(state),
-  checkModes: checkModesSelector(state),
-  checkModesNames: checkModesNamesSelector(state),
-  chapterId: state.checks.selectedCheck.chapter_id,
-  chapters: state.general.chapters,
-  topicId: state.checks.selectedCheck.topic_id,
-  topics: state.general.topics,
-  isAllChecksReceived: state.checks.isAllReceived,
-});
+const mapStateToProps = state => {
+  return {
+    general: state.general,
+    checks: state.checks,
+    selectedCheck: state.checks.selectedCheck,
+    selectedCheckId: state.checks.selectedCheck.id,
+    selectedCheckName: Object.keys(state.checks.selectedCheck).length
+      ? state.checks.selectedCheck.name
+      : 'Название теста',
+    time_limit: state.checks.selectedCheck.time_limit || '',
+    selectedCheckTasks: state.checks.selectedCheck.check_jobs || [],
+    learning_levels_names: levelsNamesSelector(state),
+    learning_levels: levelsSelector(state),
+    subjects: subjectsSelector(state),
+    subjectsNames: subjectsNamesSelector(state),
+    scales: scalesSelector(state),
+    scalesNames: scalesNamesSelector(state),
+    checkModes: checkModesSelector(state),
+    checkModesNames: checkModesNamesSelector(state),
+    chapterId: state.checks.selectedCheck.chapter_id,
+    chapters: state.general.chapters,
+    topicId: state.checks.selectedCheck.topic_id,
+    topics: state.general.topics,
+    isAllChecksReceived: state.checks.isAllReceived,
+    checkLessons: state.checks.checkLessons,
+  }
+};
 
 export default connect(mapStateToProps)(TestsList);

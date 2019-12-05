@@ -13,12 +13,14 @@ import SelectElement from 'components/SelectElement/SelectElement';
 import './create-test.scss';
 
 const TASKS_LIMIT = 20;
+const DEFAULT_SUBJECT_ID = 1;
 const defaultParams = {
   sort: `id+desc`,
   limit: TASKS_LIMIT,
   filters: {
     base: 'true',
-  },
+    subject: DEFAULT_SUBJECT_ID,
+  }
 };
 
 class CreateTest extends React.Component {
@@ -33,7 +35,7 @@ class CreateTest extends React.Component {
     checkJobs: [],
     tasksOffset: 0,
     tasksFetching: false,
-    activeSubject: 1,
+    activeSubject: DEFAULT_SUBJECT_ID,
     filterLearningLevel: null,
   };
 
@@ -223,16 +225,19 @@ class CreateTest extends React.Component {
               value="Фильтр по классу"
             />
           </div>
-          <TasksList tasks={tasks.taskList} onSelect={this.selectSubject} />
-          {tasks.taskList.length === 0 && 'Ничего не найдено'}
-          {isAllTasksReceived ? null : (
-            <Button
-              className={`tests-button__request ${tasks.taskList.length ? '' : 'hidden'}`}
-              onClick={this.buttonRequestHandler}
-            >
-              {tasksFetching ? `Загрузка...` : `Показать ещё ${TASKS_LIMIT}`}
-            </Button>
-          )}
+          <TasksList tasks={tasks.taskList} activeSubject={this.state.activeSubject} onSelect={this.selectSubject} />
+          {(tasks.taskList.length === 0) && "Ничего не найдено"}
+          {isAllTasksReceived
+            ? null
+            : (
+              <Button className={`tests-button__request ${tasks.taskList.length ? '' : 'hidden'}`} onClick={this.buttonRequestHandler}>
+              {tasksFetching
+                ? `Загрузка...`
+                : `Показать ещё ${TASKS_LIMIT}`
+              }
+              </Button>
+            )
+          }
         </div>
         <div className="content__secondary">
           <TextInput

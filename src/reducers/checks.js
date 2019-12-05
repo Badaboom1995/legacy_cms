@@ -11,6 +11,7 @@ const generalReducerDefaultState = {
   checks_list: [],
   loading: false,
   selectedCheck: '',
+  checkLessons: {},
   isAllReceived: false,
 };
 
@@ -91,7 +92,20 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         checks_list: state.checks_list.filter(item => item.id != action.id),
       };
+    case 'CHECK_LESSON_RECEIVED':
+      return {
+        ...state,
+        checkLessons: {
+          ...state.checkLessons,
+          [action.payload.checkId]: { ...action.payload.lesson },
+        }
+      };
     default:
       return state;
   }
 };
+
+export function getCheckLesson(state, checkId) {
+  const { checks } = state;
+  return checks.checkLessons[checkId];
+}
