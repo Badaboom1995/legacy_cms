@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { createLessonFromTask } from 'actions/tasks';
+import { getTaskLesson } from 'reducers/tasks';
 import { addTaskToTest } from 'actions/checks';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
 import ToggleNotForTeacher from 'components/ToggleNotForTeacher/ToggleNotForTeacher';
+import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import Tasks from 'helpers/Tasks';
 import config from 'config';
 
@@ -18,6 +21,11 @@ class TaskPreviewContainer extends React.Component {
   state = {
     showGens: this.props.generationsHidden ? false : true,
   };
+
+  isArrayOfFiles = (arr = []) => {
+    return arr.every(it => it instanceof File);
+  }
+
   toggleGens = () => {
     this.setState(state => ({
       showGens: state.showGens ? false : true,
@@ -27,9 +35,16 @@ class TaskPreviewContainer extends React.Component {
     const alphabetStartIndex = 97;
     return String.fromCharCode(alphabetStartIndex + index);
   };
-  getImageUrl = (images = [], letter) => {
-    const image = images.find(item => item.answer == letter) || { path: '' };
-    return image.path;
+  getImageUrl = (image = {}) => {
+    let path = '';
+
+    // const image = images.find(item => item.answer == letter) || { path: '' };
+    if (image instanceof File) {
+      path = URL.createObjectURL(image);
+    } else if (image.path) {
+      path = `${api_url}${image.path}`;
+    }
+    return path;
   };
   deleteGeneration = (id, index) => {
     if (id) {
@@ -96,11 +111,31 @@ class TaskPreviewContainer extends React.Component {
         //handle error
       });
   };
+
+  confirmDelete = (taskId) => {
+    if (window.confirm('Вы действительно хотите удалить задание?')) {
+      this.props.deleteTask(taskId);
+    }
+  }
+
+  confirmDeleteGeneration = (genId, index) => {
+    if (window.confirm('Вы действительно хотите удалить генерацию?')) {
+      this.deleteGeneration(genId, index);
+    }
+  }
+
+  buttonCreateLessonHandler = (taskId) => {
+    const { dispatch } = this.props;
+    dispatch(createLessonFromTask(taskId));
+  }
+
   render() {
-    const { generationsHidden, noDeleteButton, noAddButton, noToggleButton } = this.props;
+
+    const { generationsHidden, noDeleteButton, noAddButton, taskLesson, noToggleButton } = this.props;
     const { chapter, difficulty, grade, subject, name, id, not_for_teacher } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
+
     return (
       <div key={this.props.key} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
@@ -146,9 +181,7 @@ class TaskPreviewContainer extends React.Component {
           <div>
             {!noDeleteButton && (
               <button
-                onClick={() => {
-                  this.props.deleteTask(id);
-                }}
+                onClick={() => this.confirmDelete(id)}
               >
                 Удалить задание
               </button>
@@ -166,6 +199,13 @@ class TaskPreviewContainer extends React.Component {
               </button>
             )}
             {!noToggleButton && <ToggleNotForTeacher targetType="task" target={this.props.task} />}
+            <div className="task-preview__test-lesson">
+              <TestLessonButton
+                lesson={taskLesson}
+                className="task-preview__create-lesson-button"
+                buttonCreateLessonHandler={() => this.buttonCreateLessonHandler(id)}
+              />
+            </div>
           </div>
         </div>
 
@@ -174,6 +214,12 @@ class TaskPreviewContainer extends React.Component {
             this.props.generations.map((generation, index) => {
               const answers =
                 generation.answers || generation.expressions || generation.inputs || [];
+              let images = [];
+              if (generation.images && generation.images.length) {
+                images = generation.images;
+              } else if (this.props.images && this.props.images[index]) {
+                images = this.props.images[index];
+              }
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
                   <EditableWithInput
@@ -198,10 +244,20 @@ class TaskPreviewContainer extends React.Component {
                   />
                   <ul className="task-preview__generations">
                     {answers.map((answer, index) => {
-                      const imagePath = this.getImageUrl(
-                        generation.images,
-                        this.getLetter(index),
-                      ).substr(1);
+                      const letter = this.getLetter(index);
+                      /* Если пришел массив файлов - берем из массива по индексу,
+                      если массив сохраненных картинок в генерации - ищем по букве ответа
+                      to do - Надо будет хранить файлы в store в объекте с полями-буквами,
+                      которые соответсвуют букве ответа, чтобы было удобно их оттуда доставать */
+                      const image = this.isArrayOfFiles(images)
+                        ? images[index]
+                        : images.find(item => item.answer == letter)
+                      const imageSource = this.getImageUrl(image);
+                      {
+                        /* const url = generation.images
+                        ? `${api_url}${imagePath}`
+                        : URL.createObjectURL(image); */
+                      }
                       return (
                         <li
                           className={`task-preview__generation-answer
@@ -213,7 +269,7 @@ class TaskPreviewContainer extends React.Component {
                           <label htmlFor="edit-image">
                             <img
                               className="task-preview__answer-image"
-                              src={`${api_url}${imagePath}`}
+                              src={imageSource}
                               alt=""
                             />
                           </label>
@@ -236,9 +292,7 @@ class TaskPreviewContainer extends React.Component {
                     })}
                   </ul>
                   <button
-                    onClick={() => {
-                      this.deleteGeneration(generation.id, index);
-                    }}
+                    onClick={() => this.confirmDeleteGeneration(generation.id, index)}
                   >
                     delete
                   </button>
@@ -256,9 +310,16 @@ TaskPreviewContainer.propTypes = {
   tasks: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  general: state.general,
-  checks: state.checks,
-});
+const mapStateToProps = (state, ownProps) => {
+  const { task } = ownProps;
+  const taskLesson = getTaskLesson(state, task.id);
+
+  return {
+    general: state.general,
+    checks: state.checks,
+    images: state.images.images,
+    taskLesson,
+  }
+};
 
 export default connect(mapStateToProps)(TaskPreviewContainer);

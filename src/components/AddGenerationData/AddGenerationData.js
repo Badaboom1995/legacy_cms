@@ -103,16 +103,7 @@ class AddTaskInfo extends React.Component {
       <div className="content__wrap">
         <div className="content__fragment">
           <TextArea name="text" onChange={this.onChange} label="Текст задания" mathMode />
-          <div className="content__row">
-            <Select
-              name="columns"
-              modificators="select--in-row"
-              options={['1', '2']}
-              onChange={this.onChange}
-              label="Колонки(optional)"
-            />
-            {/* <AddPicture /> */}
-          </div>
+          <div className="content__row">{/* <AddPicture /> */}</div>
           <Select
             name="kind"
             modificators="select--in-row"

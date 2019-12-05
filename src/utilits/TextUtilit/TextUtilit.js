@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import { InlineMath, BlockMath } from 'react-katex';
-import { array } from 'prop-types';
+import { InlineMath } from 'react-katex';
 
 class TextUtilit {
   static get RegExps() {
@@ -21,8 +20,8 @@ class TextUtilit {
       number: /^[+-−]?\d+((,|\.)\d+)?$/,
       rawNumber: /((?:−|-)?\d+(?:\.|,)?(?:\d+)?)/g,
       textWrap: /\n/g,
-    }
-  };
+    };
+  }
 
   static get Kinds() {
     return ['inputs', 'dropdown'];
@@ -38,7 +37,7 @@ class TextUtilit {
     }
 
     if (b2t.test(text)) {
-      result = this.createB2tText(result);
+      result = this.convertB2tToText(result);
     }
 
     if (markdown.test(result)) {
@@ -54,21 +53,24 @@ class TextUtilit {
     if (latex.test(result)) {
       result = this.createLatexText(result, needParse);
     } else if (needParse) {
-      result = ReactHtmlParser(result)
+      result = ReactHtmlParser(result);
     }
 
     return result;
   }
 
-  static createB2tText(text) {
+  static convertB2tToText(text) {
     const { b2t } = this.RegExps;
     let result = text;
     result = result.replace(b2t, (b2tPlace, b2texp) => {
       let r = b2texp;
-      this.Kinds.forEach((kind) => {
+      this.Kinds.forEach(kind => {
         const kindRegexp = this.RegExps[kind];
         if (kindRegexp.test(r)) {
-          r = r.replace(kindRegexp, `${kind.substr(0,2)}($${kind === 'dropdown' ? '2' : '1'})`);
+          r = r.replace(kindRegexp, (str, typeLetter, values) => {
+            const isDropdown = kind === 'dropdown';
+            return `${kind.substr(0,2)}${isDropdown ? typeLetter : ''}(${isDropdown ? values : typeLetter})`;
+          });
         }
       });
       return r;
@@ -78,12 +80,15 @@ class TextUtilit {
   }
 
   // Функция обработки текста из человеческого в b2t-формат
-  static unhandleText(text) {
+  static convertTextToB2t(text) {
     let result = text;
     this.Kinds.forEach((kind) => {
-      const regex = new RegExp(`${kind.substr(0,2)}\\((.*?)\\)`, 'g');
+      const isDropdown = kind === 'dropdown';
+      const regex = new RegExp(`${kind.substr(0,2)}${isDropdown ? '(h|v)' : ''}\\((.*?)\\)`, 'g');
       if (regex.test(result)) {
-        result = result.replace(regex, '%b2t{%{$1}}%');
+        result = result.replace(regex, (str, typeLetter, values) => {
+          return `%b2t{%${isDropdown ? typeLetter : ''}{${isDropdown ? values : typeLetter}}}%`;
+        })
       }
     });
     return result;
@@ -131,7 +136,7 @@ class TextUtilit {
       // let [beforeText, afterText] = stringParts;
       let beforeText = text.substring(prevOffset, offset);
       let afterText = text.substring(offset + str.length);
-      const isLast = (afterText.search(latex) === -1);
+      const isLast = afterText.search(latex) === -1;
       if (needParse) {
         beforeText = ReactHtmlParser(beforeText);
         afterText = ReactHtmlParser(afterText);
@@ -167,15 +172,17 @@ class TextUtilit {
     let result = text;
     if (text.search(customExp) !== -1) {
       const allExps = [];
-      text.replace(customExp, (str) => {
+      text.replace(customExp, str => {
         allExps.push(str);
       });
       const allRest = text.split(customExp).map(textPart => textPart.replace(rawNumber, '%l{$1}%'));
-      result = allRest.map((txt1) => {
-        const txt2 = allExps.shift();
-        const res = (txt2 !== undefined) ? txt1+txt2 : txt1;
-        return res;
-      }).join('');
+      result = allRest
+        .map(txt1 => {
+          const txt2 = allExps.shift();
+          const res = txt2 !== undefined ? txt1 + txt2 : txt1;
+          return res;
+        })
+        .join('');
       if (allExps.length > 0) result += allExps.join('');
     }
 

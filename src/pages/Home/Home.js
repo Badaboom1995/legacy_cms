@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import { addOption, clearTasks } from 'actions/tasks';
 import { clearGenerations } from 'actions/general';
+import { resetImages } from 'actions/images';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
@@ -145,6 +146,7 @@ class Home extends React.Component {
             this.state.gensIds.forEach((item, index) => {
               this.addPicture(item, index);
             });
+            this.props.dispatch(resetImages());
           }
         }, 1000);
         this.props.dispatch(clearTasks());

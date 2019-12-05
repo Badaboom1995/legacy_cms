@@ -14,3 +14,6 @@ export const deleteImageAnswer = imageName => ({
   type: 'DELETE_IMAGE_ANSWER',
   imageName,
 });
+export const resetImages = () => ({
+  type: 'RESET_IMAGES',
+});

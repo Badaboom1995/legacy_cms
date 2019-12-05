@@ -2,6 +2,11 @@ export const addAnswer = answer => ({
   type: 'ADD_ANSWER',
   answer,
 });
+export const addAnswerByIndex = (answer, index) => ({
+  type: 'ADD_ANSWER_BY_INDEX',
+  answer,
+  index,
+});
 export const addRightAnswer = answer => ({
   type: 'ADD_RIGHT_ANSWER',
   answer,
