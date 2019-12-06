@@ -43,6 +43,12 @@ export const saveGeneration = generation => ({
   type: 'SAVE_GENERATION',
   generation,
 });
+export const updateGeneration = ({ generationIndex, fieldName, payload }) => ({
+  type: 'UPDATE_GENERATION',
+  generationIndex,
+  fieldName,
+  payload,
+});
 export const removeGeneration = index => ({
   type: 'REMOVE_GENERATION',
   index,

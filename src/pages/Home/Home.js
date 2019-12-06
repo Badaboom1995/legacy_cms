@@ -10,8 +10,11 @@ import axios from 'axios';
 import { addOption, clearTasks } from 'actions/tasks';
 import { clearGenerations } from 'actions/general';
 import { resetImages } from 'actions/images';
+import { resetIllustrations } from 'actions/illustrations';
+import { getIllustrationsEntities } from '../../reducers/illustrations';
 import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
+import FilesService from 'helpers/Files';
 import './content.scss';
 
 import config from 'config';
@@ -89,31 +92,31 @@ class Home extends React.Component {
   addPicture = async (id, setIndex) => {
     let data = new FormData();
     const alphabetStartIndex = 97;
-    console.log(this.props.images[setIndex]);
-    this.props.images[setIndex].forEach((item, index) => {
-      console.log(item);
-      data.append(
-        `check_generation[images][${String.fromCharCode(alphabetStartIndex + index)}]`,
-        item,
-      );
-    });
-    console.log(data);
-    axios
-      .put(`${base_url}teachers/check_generations/${id}`, data, {
-        headers: {
-          accept: 'application/json',
-          'Accept-Language': 'en-US,en;q=0.8',
-          'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-          'Uchi-User-Id': '12',
-          'Uchi-User-Type': 'Teacher',
-        },
-      })
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        //handle error
+    if (this.props.images[setIndex]) {
+      this.props.images[setIndex].forEach((item, index) => {
+        data.append(
+          `check_generation[images][${String.fromCharCode(alphabetStartIndex + index)}]`,
+          item,
+        );
       });
+      return axios
+        .put(`${base_url}teachers/check_generations/${id}`, data, {
+          headers: {
+            accept: 'application/json',
+            'Accept-Language': 'en-US,en;q=0.8',
+            'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+            'Uchi-User-Id': '12',
+            'Uchi-User-Type': 'Teacher',
+          },
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          //handle error
+        });
+    }
+    return Promise.resolve();
   };
 
   getGradeId = () => {
@@ -135,27 +138,50 @@ class Home extends React.Component {
     });
   };
 
-  createJob = () => {
+  createJob = async () => {
     // Соединяет задание с генерациями и отправляет на сервер
-    this.createTask()
-      .then(response => {
-        this.props.general.generations.map(item => {
-          this.createGeneration(item);
-          return response;
-        });
-      })
-      .then(() => {
-        setTimeout(() => {
-          if (this.state.gensIds) {
-            this.state.gensIds.forEach((item, index) => {
-              this.addPicture(item, index);
-            });
-            this.props.dispatch(resetImages());
-          }
-        }, 1000);
-        this.props.dispatch(clearTasks());
-        this.props.dispatch(clearGenerations());
-      });
+    // this.createTask()
+    //   .then(response => {
+    //     this.props.general.generations.map(item => {
+    //       this.createGeneration(item);
+    //       return response;
+    //     });
+    //   })
+    //   .then(() => {
+    //     setTimeout(() => {
+    //       if (this.state.gensIds) {
+    //         this.state.gensIds.forEach((item, index) => {
+    //           this.addPicture(item, index);
+    //         });
+    //         this.props.dispatch(resetImages());
+    //         this.props.dispatch(resetIllustrations());
+    //       }
+    //     }, 1000);
+    //     this.props.dispatch(clearTasks());
+    //     this.props.dispatch(clearGenerations());
+    //   });
+    const {
+      general: { generations },
+      illustrations
+    } = this.props;
+
+    await this.createTask();
+    for (let i = 0; i < generations.length; i++) {
+      await this.createGeneration(generations[i]);
+    }
+
+    if (this.state.gensIds) {
+      await Promise.all(this.state.gensIds.map((item, index) => this.addPicture(item, index)));
+      await Promise.all(this.state.gensIds.map((generationId, index) => {
+        const files = illustrations[index];
+        return FilesService.uploadIllustrations({ files, generationId });
+      }));
+    }
+
+    this.props.dispatch(resetImages());
+    this.props.dispatch(resetIllustrations());
+    this.props.dispatch(clearTasks());
+    this.props.dispatch(clearGenerations());
   };
 
   createGeneration = item => {
@@ -168,7 +194,7 @@ class Home extends React.Component {
       data: this.getGenerationData(item),
     };
     const Request = new Tasks();
-    Request.createGeneration(generation).then(response => {
+    return Request.createGeneration(generation).then(response => {
       this.setState(() => ({
         gensIds: [...this.state.gensIds, response.id],
       }));
@@ -226,6 +252,7 @@ const mapStateToProps = state => ({
   tasks: state.tasks,
   images: state.images.images,
   imagesAnswers: state.images.imagesAnswers,
+  illustrations: getIllustrationsEntities(state),
 });
 
 export default connect(mapStateToProps)(Home);
