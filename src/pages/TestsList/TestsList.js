@@ -5,12 +5,19 @@ import { createLessonFromCheck } from 'actions/checks';
 import TextInput from 'components/TextInput/TextInput';
 import Select from 'components/Select/Select';
 import Button from 'components/Button/Button';
-import { deleteChecks, getChecks, getChecksPart, selectCheck, updateSelectedCheck } from 'actions/checks';
+import {
+  deleteChecks,
+  getChecks,
+  getChecksPart,
+  selectCheck,
+  updateSelectedCheck,
+} from 'actions/checks';
 import TaskPreviewFetched from 'components/TaskPreview/TaskPreviewFetched';
 import SelectElement from 'components/SelectElement/SelectElement';
 import Tasks from 'helpers/Tasks';
 import { addCheckOption, saveSelectedCheck } from 'actions/checks';
 import Tabs from 'components/Tabs/Tabs';
+import ToggleNotForTeacher from 'components/ToggleNotForTeacher/ToggleNotForTeacher';
 import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import SuccessAnimation from 'components/SuccessAnimation/SuccessAnimation';
 import {
@@ -53,9 +60,10 @@ class TestsList extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { checks } = this.props;
-    if (prevProps.checks.checks_list
-      && checks.checks_list
-      && prevProps.checks.checks_list.length !== checks.checks_list.length
+    if (
+      prevProps.checks.checks_list &&
+      checks.checks_list &&
+      prevProps.checks.checks_list.length !== checks.checks_list.length
     ) {
       this.setState({ checksFetching: false });
     }
@@ -141,9 +149,7 @@ class TestsList extends React.Component {
 
   render() {
     const {
-      checks: {
-        checks_list,
-      },
+      checks: { checks_list },
     } = this.props;
 
     const {
@@ -186,6 +192,11 @@ class TestsList extends React.Component {
                   <p className="tests-list__test-title">{item.name}</p>
                   <span className="task-preview__param">{check_mode && check_mode.name}</span>
                   <span className="task-preview__param">{check_scale && check_scale.name}</span>
+                  <ToggleNotForTeacher
+                    updateCheck={this.updateCheck}
+                    targetType="check"
+                    target={item}
+                  />
                   <button
                     onClick={() => this.confirmDelete(item.id)}
                   >
@@ -202,17 +213,14 @@ class TestsList extends React.Component {
               )
             );
           })}
-          {isAllChecksReceived
-            ? null
-            : (
-              <Button className={`tests-button__request ${checks_list.length ? '' : 'hidden'}`} onClick={this.buttonRequestHandler}>
-              {checksFetching
-                ? `Загрузка...`
-                : `Показать ещё ${CHECKS_LIMIT}`
-              }
-              </Button>
-            )
-          }
+          {isAllChecksReceived ? null : (
+            <Button
+              className={`tests-button__request ${checks_list.length ? '' : 'hidden'}`}
+              onClick={this.buttonRequestHandler}
+            >
+              {checksFetching ? `Загрузка...` : `Показать ещё ${CHECKS_LIMIT}`}
+            </Button>
+          )}
         </div>
         <div className={`content__secondary ${!selectedCheck && 'content__secondary--disabled'}`}>
           <TextInput

@@ -11,6 +11,12 @@ export const getTasksPart = params => ({
   type: 'GET_TASKS_PART',
   params,
 });
+export const updateTask = (id, param, value) => ({
+  type: 'UPDATE_TASK',
+  id,
+  param,
+  value,
+});
 export const deleteTask = id => ({
   type: 'DELETE_TASK',
   id,

@@ -9,6 +9,7 @@ import { addTaskToTest } from 'actions/checks';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
+import ToggleNotForTeacher from 'components/ToggleNotForTeacher/ToggleNotForTeacher';
 import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import Tasks from 'helpers/Tasks';
 import config from 'config';
@@ -130,8 +131,9 @@ class TaskPreviewContainer extends React.Component {
   }
 
   render() {
-    const { generationsHidden, noDeleteButton, noAddButton, taskLesson } = this.props;
-    const { chapter, difficulty, grade, subject, name, id } = this.props.task;
+
+    const { generationsHidden, noDeleteButton, noAddButton, taskLesson, noToggleButton } = this.props;
+    const { chapter, difficulty, grade, subject, name, id, not_for_teacher } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
 
@@ -193,6 +195,7 @@ class TaskPreviewContainer extends React.Component {
                 Добавить задание в тест
               </button>
             )}
+            {!noToggleButton && <ToggleNotForTeacher targetType="task" target={this.props.task} />}
             <div className="task-preview__test-lesson">
               <TestLessonButton
                 lesson={taskLesson}
