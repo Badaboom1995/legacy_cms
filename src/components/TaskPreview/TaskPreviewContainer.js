@@ -22,9 +22,10 @@ class TaskPreviewContainer extends React.Component {
     showGens: this.props.generationsHidden ? false : true,
   };
 
-  isArrayOfFiles = (arr = []) => {
-    return arr.every(it => it instanceof File);
-  }
+  isArrayOfFiles = (arr) => {
+    if (!arr) throw new Error('isArrayOfFiles: Argument is required');
+    return Array.isArray(arr) && arr.every(it => it instanceof File);
+  };
 
   toggleGens = () => {
     this.setState(state => ({
@@ -112,17 +113,17 @@ class TaskPreviewContainer extends React.Component {
       });
   };
 
-  confirmDelete = (taskId) => {
+  confirmDelete = taskId => {
     if (window.confirm('Вы действительно хотите удалить задание?')) {
       this.props.deleteTask(taskId);
     }
-  }
+  };
 
   confirmDeleteGeneration = (genId, index) => {
     if (window.confirm('Вы действительно хотите удалить генерацию?')) {
       this.deleteGeneration(genId, index);
     }
-  }
+  };
 
   buttonCreateLessonHandler = (taskId) => {
     const { dispatch } = this.props;
@@ -180,11 +181,7 @@ class TaskPreviewContainer extends React.Component {
           </EditableWithSelect>
           <div>
             {!noDeleteButton && (
-              <button
-                onClick={() => this.confirmDelete(id)}
-              >
-                Удалить задание
-              </button>
+              <button onClick={() => this.confirmDelete(id)}>Удалить задание</button>
             )}
             {generationsHidden && <button onClick={this.toggleGens}>Показать генерации</button>}
             {!noAddButton && (
@@ -222,6 +219,7 @@ class TaskPreviewContainer extends React.Component {
               }
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
+                  {console.log(generation)}
                   <EditableWithInput
                     task={generation}
                     paramName="name"
@@ -251,7 +249,7 @@ class TaskPreviewContainer extends React.Component {
                       которые соответсвуют букве ответа, чтобы было удобно их оттуда доставать */
                       const image = this.isArrayOfFiles(images)
                         ? images[index]
-                        : images.find(item => item.answer == letter)
+                        : images.find(item => item.answer == letter);
                       const imageSource = this.getImageUrl(image);
                       {
                         /* const url = generation.images
@@ -262,16 +260,12 @@ class TaskPreviewContainer extends React.Component {
                         <li
                           className={`task-preview__generation-answer
                         ${generation.rightAnswers &&
-                          generation.rightAnswers.includes(answer) &&
+                          (generation.answersType && generation.answersType[index]) &&
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
                           <label htmlFor="edit-image">
-                            <img
-                              className="task-preview__answer-image"
-                              src={imageSource}
-                              alt=""
-                            />
+                            <img className="task-preview__answer-image" src={imageSource} alt="" />
                           </label>
                           {this.state.image && (
                             <button onClick={() => this.uploadPicture(index, generation.id)}>
@@ -291,9 +285,7 @@ class TaskPreviewContainer extends React.Component {
                       );
                     })}
                   </ul>
-                  <button
-                    onClick={() => this.confirmDeleteGeneration(generation.id, index)}
-                  >
+                  <button onClick={() => this.confirmDeleteGeneration(generation.id, index)}>
                     delete
                   </button>
                 </div>

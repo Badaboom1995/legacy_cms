@@ -54,9 +54,6 @@ class TaskPreview extends React.Component {
       noToggleButton,
       generations,
     } = this.props;
-    {
-      console.log(generations);
-    }
     return (
       <React.Fragment>
         <TaskPreviewContainer

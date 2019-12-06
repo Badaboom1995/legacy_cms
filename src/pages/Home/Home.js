@@ -10,7 +10,6 @@ import axios from 'axios';
 import { addOption, clearTasks } from 'actions/tasks';
 import { clearGenerations } from 'actions/general';
 import { resetImages } from 'actions/images';
-import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import './content.scss';
 
@@ -54,10 +53,12 @@ class Home extends React.Component {
     let fieldName = 'variants';
     if (/^variant/.test(kind)) {
       const { answers, rightAnswers } = item;
+
       values = answers.map(item => {
+        const value = this.props.images.length ? null : item;
         const obj = {
-          name: item,
-          value: item,
+          name: value,
+          value: value,
         };
         if (rightAnswers.includes(item)) obj.right = true;
         return obj;
@@ -142,10 +143,11 @@ class Home extends React.Component {
       })
       .then(() => {
         setTimeout(() => {
-          if (this.state.gensIds && this.props.images) {
-            this.state.gensIds.forEach((item, index) => {
-              this.addPicture(item, index);
-            });
+          if (this.state.gensIds) {
+            this.state.gensIds &&
+              this.state.gensIds.forEach((item, index) => {
+                this.addPicture(item, index);
+              });
             this.props.dispatch(resetImages());
           }
         }, 1000);
