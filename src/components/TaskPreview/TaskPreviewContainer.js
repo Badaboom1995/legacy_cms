@@ -143,7 +143,7 @@ class TaskPreviewContainer extends React.Component {
     const Request = new Tasks();
 
     return (
-      <div key={this.props.key} className={`${this.props.className} task-preview `}>
+      <div key={id} className={`${this.props.className} task-preview `}>
         <div className="task-preview__main">
           <EditableWithInput
             task={this.props.task}
