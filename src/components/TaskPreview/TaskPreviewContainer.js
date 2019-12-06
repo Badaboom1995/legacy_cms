@@ -264,8 +264,9 @@ class TaskPreviewContainer extends React.Component {
                       return (
                         <li
                           className={`task-preview__generation-answer
-                        ${(generation.rightAnswers && locallyRightAnswer) ||
-                          (fetchedRightAnswer && 'task-preview__generation-answer--right')}`}
+                        ${generation.rightAnswers &&
+                          (locallyRightAnswer || fetchedRightAnswer) &&
+                          'task-preview__generation-answer--right'}`}
                           key={index}
                         >
                           <label htmlFor="edit-image">
