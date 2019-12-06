@@ -7,9 +7,6 @@ import Tabs from 'components/Tabs/Tabs';
 import { deleteTask } from 'actions/tasks';
 
 class TaskPreview extends React.Component {
-  state = {
-    activeSubject: '1',
-  };
   deleteTask = id => {
     this.props.dispatch(deleteTask(id));
     const Request = new Tasks();
@@ -18,7 +15,6 @@ class TaskPreview extends React.Component {
   selectSubject = subjectId => {
     const { onSelect } = this.props;
     onSelect(subjectId);
-    this.setState(() => ({ activeSubject: subjectId }));
   };
   render() {
     const filteredTasks =
@@ -31,9 +27,8 @@ class TaskPreview extends React.Component {
         <Tabs elements={this.props.general.subjects} selectSubject={this.selectSubject} />
         {this.props.tasks &&
           filteredTasks.map((item, index) => {
-            // console.log(item);
             return (
-              item.subject == this.state.activeSubject && (
+              item.subject == this.props.activeSubject && (
                 <TasksPreviewFetched
                   generationsHidden
                   key={index}

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import './task-preview.scss';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { createLessonFromTask } from 'actions/tasks';
+import { getTaskLesson } from 'reducers/tasks';
 import { addTaskToTest } from 'actions/checks';
 import { updateTaskGeneration } from 'actions/tasks';
 import { updateGeneration } from 'actions/general';
@@ -13,6 +15,8 @@ import IllustrationsList from 'components/IllustrationsList/IllustrationsList';
 import IllustrationsButton from 'components/IllustrationsButton/IllustrationsButton';
 import { addIllustrationsFiles, changeIllustrationFile, removeIllustrationFile } from 'actions/illustrations';
 import { getIllustrationsEntities } from 'reducers/illustrations';
+import ToggleNotForTeacher from 'components/ToggleNotForTeacher/ToggleNotForTeacher';
+import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import Tasks from 'helpers/Tasks';
 import FilesService from 'helpers/Files';
 import FilesUtilit from 'utilits/FilesUtilit/FilesUtilit';
@@ -101,16 +105,21 @@ class TaskPreviewContainer extends React.Component {
       });
   };
 
-  confirmDelete = (taskId) => {
+  confirmDelete = taskId => {
     if (window.confirm('Вы действительно хотите удалить задание?')) {
       this.props.deleteTask(taskId);
     }
-  }
+  };
 
   confirmDeleteGeneration = (genId, index) => {
     if (window.confirm('Вы действительно хотите удалить генерацию?')) {
       this.deleteGeneration(genId, index);
     }
+  };
+
+  buttonCreateLessonHandler = (taskId) => {
+    const { dispatch } = this.props;
+    dispatch(createLessonFromTask(taskId));
   }
 
   addIllustration = async ({ files, generation }) => {
@@ -164,8 +173,9 @@ class TaskPreviewContainer extends React.Component {
   }
 
   render() {
-    const { generationsHidden, noDeleteButton, noAddButton } = this.props;
-    const { chapter, difficulty, grade, subject, name, id } = this.props.task;
+
+    const { generationsHidden, noDeleteButton, noAddButton, taskLesson, noToggleButton } = this.props;
+    const { chapter, difficulty, grade, subject, name, id, not_for_teacher } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
 
@@ -236,11 +246,7 @@ class TaskPreviewContainer extends React.Component {
           </EditableWithSelect>
           <div>
             {!noDeleteButton && (
-              <button
-                onClick={() => this.confirmDelete(id)}
-              >
-                Удалить задание
-              </button>
+              <button onClick={() => this.confirmDelete(id)}>Удалить задание</button>
             )}
             {generationsHidden && <button onClick={this.toggleGens}>Показать генерации</button>}
             {!noAddButton && (
@@ -254,6 +260,14 @@ class TaskPreviewContainer extends React.Component {
                 Добавить задание в тест
               </button>
             )}
+            {!noToggleButton && <ToggleNotForTeacher targetType="task" target={this.props.task} />}
+            <div className="task-preview__test-lesson">
+              <TestLessonButton
+                lesson={taskLesson}
+                className="task-preview__create-lesson-button"
+                buttonCreateLessonHandler={() => this.buttonCreateLessonHandler(id)}
+              />
+            </div>
           </div>
         </div>
 
@@ -270,6 +284,7 @@ class TaskPreviewContainer extends React.Component {
               }
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
+                  {console.log(generation)}
                   <EditableWithInput
                     task={generation}
                     paramName="name"
@@ -297,16 +312,12 @@ class TaskPreviewContainer extends React.Component {
                         <li
                           className={`task-preview__generation-answer
                         ${generation.rightAnswers &&
-                          generation.rightAnswers.includes(answer) &&
+                          (generation.answersType && generation.answersType[index]) &&
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
                           <label htmlFor="edit-image">
-                            <img
-                              className="task-preview__answer-image"
-                              src={imageSource}
-                              alt=""
-                            />
+                            <img className="task-preview__answer-image" src={imageSource} alt="" />
                           </label>
                           {this.state.image && (
                             <button onClick={() => this.uploadPicture(index, generation.id)}>
@@ -326,9 +337,7 @@ class TaskPreviewContainer extends React.Component {
                       );
                     })}
                   </ul>
-                  <button
-                    onClick={() => this.confirmDeleteGeneration(generation.id, index)}
-                  >
+                  <button onClick={() => this.confirmDeleteGeneration(generation.id, index)}>
                     delete
                   </button>
                 </div>
@@ -345,11 +354,17 @@ TaskPreviewContainer.propTypes = {
   tasks: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  general: state.general,
-  checks: state.checks,
-  images: state.images.images,
-  illustrations: getIllustrationsEntities(state),
-});
+const mapStateToProps = (state, ownProps) => {
+  const { task } = ownProps;
+  const taskLesson = getTaskLesson(state, task.id);
+
+  return {
+    general: state.general,
+    checks: state.checks,
+    images: state.images.images,
+    illustrations: getIllustrationsEntities(state),
+    taskLesson,
+  }
+};
 
 export default connect(mapStateToProps)(TaskPreviewContainer);

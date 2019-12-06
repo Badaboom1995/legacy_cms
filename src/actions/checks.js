@@ -40,3 +40,7 @@ export const deleteChecks = id => ({
   type: 'DELETE_CHECK',
   id,
 });
+export const createLessonFromCheck = checkId => ({
+  type: 'CREATE_LESSON_FROM_CHECK',
+  checkId,
+});

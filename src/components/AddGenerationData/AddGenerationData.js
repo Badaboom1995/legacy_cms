@@ -128,6 +128,7 @@ class AddTaskInfo extends React.Component {
           </Button>
         </div>
         <TaskPreview
+          noToggleButton
           task={this.props.tasks}
           generations={this.props.general.generations}
           className="content__secondary"

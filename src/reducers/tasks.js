@@ -1,5 +1,6 @@
 const tasksReducerDefaultState = {
   taskList: [],
+  taskLessons: {},
   loading: false,
   isAllReceived: false,
 };
@@ -10,7 +11,6 @@ const updateTaskGeneration = (state, action) => {
   const targetTaskIndex = taskList.findIndex(it => it.id === check_job_id);
   const targetTask = taskList[targetTaskIndex];
 
-  console.log(targetTask);
   if (targetTask) {
     const { check_generations } = targetTask;
     const targetGenIndex = check_generations.findIndex(it => it.id === id);
@@ -18,7 +18,7 @@ const updateTaskGeneration = (state, action) => {
     targetTask.check_generations = check_generations;
     taskList.splice(targetTaskIndex, 1, targetTask);
   }
-  console.log(targetTask, taskList, check_job_id, targetTaskIndex);
+
   return {
     ...state,
     taskList: [...taskList],
@@ -54,6 +54,17 @@ export default (state = tasksReducerDefaultState, action) => {
         ...state,
         isAllReceived: true,
       };
+    case 'UPDATE_TASK':
+      return {
+        ...state,
+        taskList: state.taskList.map(item => {
+          if (item.id == action.id) {
+            item[action.param] = action.value;
+          }
+          console.log(item.not_for_teacher);
+          return item;
+        }),
+      };
     case 'DELETE_TASK':
       return {
         ...state,
@@ -71,7 +82,20 @@ export default (state = tasksReducerDefaultState, action) => {
       };
     case 'UPDATE_TASK_GENERATION':
       return updateTaskGeneration(state, action);
+    case 'TASK_LESSON_RECEIVED':
+      return {
+        ...state,
+        taskLessons: {
+          ...state.taskLessons,
+          [action.payload.taskId]: { ...action.payload.lesson },
+        }
+      };
     default:
       return state;
   }
 };
+
+export function getTaskLesson(state, taskId) {
+  const { tasks } = state;
+  return tasks.taskLessons[taskId];
+}
