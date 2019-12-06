@@ -86,7 +86,15 @@ class TaskPreviewFetched extends React.Component {
     return { answersNames, rightAnswers };
   };
   getTaskObject = () => {
-    const { chapter_id, difficulty, learning_level, subject, name, id } = this.props.task;
+    const {
+      chapter_id,
+      difficulty,
+      learning_level,
+      subject,
+      name,
+      id,
+      not_for_teacher,
+    } = this.props.task;
     return {
       chapter: chapter_id,
       difficulty,
@@ -94,6 +102,7 @@ class TaskPreviewFetched extends React.Component {
       subject: this.subjects[subject],
       name,
       id,
+      not_for_teacher,
     };
   };
   render() {
