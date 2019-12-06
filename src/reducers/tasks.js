@@ -1,5 +1,6 @@
 const tasksReducerDefaultState = {
   taskList: [],
+  taskLessons: {},
   loading: false,
   isAllReceived: false,
 };
@@ -33,6 +34,17 @@ export default (state = tasksReducerDefaultState, action) => {
         ...state,
         isAllReceived: true,
       };
+    case 'UPDATE_TASK':
+      return {
+        ...state,
+        taskList: state.taskList.map(item => {
+          if (item.id == action.id) {
+            item[action.param] = action.value;
+          }
+          console.log(item.not_for_teacher);
+          return item;
+        }),
+      };
     case 'DELETE_TASK':
       return {
         ...state,
@@ -48,7 +60,20 @@ export default (state = tasksReducerDefaultState, action) => {
         grade: '',
         chapter: '',
       };
+    case 'TASK_LESSON_RECEIVED':
+      return {
+        ...state,
+        taskLessons: {
+          ...state.taskLessons,
+          [action.payload.taskId]: { ...action.payload.lesson },
+        }
+      };
     default:
       return state;
   }
 };
+
+export function getTaskLesson(state, taskId) {
+  const { tasks } = state;
+  return tasks.taskLessons[taskId];
+}

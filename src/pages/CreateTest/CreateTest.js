@@ -13,11 +13,13 @@ import SelectElement from 'components/SelectElement/SelectElement';
 import './create-test.scss';
 
 const TASKS_LIMIT = 20;
+const DEFAULT_SUBJECT_ID = 1;
 const defaultParams = {
   sort: `id+desc`,
   limit: TASKS_LIMIT,
   filters: {
     base: 'true',
+    subject: DEFAULT_SUBJECT_ID,
   }
 };
 
@@ -33,17 +35,20 @@ class CreateTest extends React.Component {
     checkJobs: [],
     tasksOffset: 0,
     tasksFetching: false,
-    activeSubject: 1,
+    activeSubject: DEFAULT_SUBJECT_ID,
     filterLearningLevel: null,
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
+    const Request = new Tasks();
+    const response = Request.getTasks();
+    console.log(response);
     const params = {
       ...defaultParams,
     };
     dispatch(getTasks(params));
-  };
+  }
   togglePopupVisibility = e => {
     if (e.target == e.currentTarget) {
       this.setState(state => ({ popupVisible: state.popupVisible ? false : true }));
@@ -52,13 +57,14 @@ class CreateTest extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { tasks } = this.props;
-    if (prevProps.tasks.taskList
-      && tasks.taskList
-      && prevProps.tasks.taskList.length !== tasks.taskList.length
+    if (
+      prevProps.tasks.taskList &&
+      tasks.taskList &&
+      prevProps.tasks.taskList.length !== tasks.taskList.length
     ) {
       this.setState({ tasksFetching: false });
     }
-  };
+  }
 
   selectSubject = subjectId => {
     const { filterLearningLevel } = this.state;
@@ -150,7 +156,7 @@ class CreateTest extends React.Component {
 
     this.setState(() => ({
       filterLearningLevel: chosenLevel ? chosenLevel.id : null,
-      tasksOffset: 0
+      tasksOffset: 0,
     }));
 
     this.props.dispatch(getTasks(params));
@@ -210,16 +216,16 @@ class CreateTest extends React.Component {
       <div className="content">
         <div className="content__main content__main--create-test">
           <p className="content__title">Конструктор теста</p>
-          <div className="filters-wrapper" >
+          <div className="filters-wrapper">
             <Select
               name="grade-filter"
               modificators="select--in-row"
-              options={["Все", ...this.props.learning_levels]}
+              options={['Все', ...this.props.learning_levels]}
               onChange={this.onFilterChange}
               value="Фильтр по классу"
             />
           </div>
-          <TasksList tasks={tasks.taskList} onSelect={this.selectSubject} />
+          <TasksList tasks={tasks.taskList} activeSubject={this.state.activeSubject} onSelect={this.selectSubject} />
           {(tasks.taskList.length === 0) && "Ничего не найдено"}
           {isAllTasksReceived
             ? null

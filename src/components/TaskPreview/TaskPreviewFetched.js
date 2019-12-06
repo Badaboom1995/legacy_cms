@@ -4,7 +4,6 @@ import './task-preview.scss';
 import PropTypes from 'prop-types';
 import { removeGeneration } from 'actions/general';
 import TaskPreviewContainer from './TaskPreviewContainer';
-import TextUtilit from 'utilits/TextUtilit/TextUtilit';
 
 class TaskPreviewFetched extends React.Component {
   subjects = { 1: { name: 'Математика' }, 2: { name: 'Русский' } };
@@ -25,6 +24,7 @@ class TaskPreviewFetched extends React.Component {
         kind: item.kind,
         answers: answers.answersNames,
         rightAnswers: answers.rightAnswers,
+        answersType: answers.answersType,
         images: item.images,
       };
     });
@@ -47,7 +47,11 @@ class TaskPreviewFetched extends React.Component {
         .replace(dropdown.expected, `${dropdown.expected}*`);
       editableQuestion = editableQuestion.replace(
         `%{${key}}`,
+<<<<<<< HEAD
         `dr${dropdown.type.substr(0, 1)}(${dropdownValue})`,
+=======
+        `dr${dropdown.type && dropdown.type.substr(0, 1)}(${dropdownValue})`,
+>>>>>>> 3d05044ec54f24de713113d3688ae27452f8b54c
       );
     }
     return editableQuestion;
@@ -58,10 +62,11 @@ class TaskPreviewFetched extends React.Component {
     for (const key in answersObject) {
       answers = [...answers, answersObject[key]];
     }
+    let answersType = answers.map(item => item.right);
     let answersNames = answers.map(item => this.handleInputAnswer(item.answers, item.question));
 
     const rightAnswers = [];
-    return { rightAnswers, answersNames };
+    return { rightAnswers, answersNames, answersType };
   };
   getDropdownAnswers = item => {
     const answersObject = item.data.dropdown;
@@ -69,10 +74,11 @@ class TaskPreviewFetched extends React.Component {
     for (const key in answersObject) {
       answers = [...answers, answersObject[key]];
     }
+    let answersType = answers.map(item => item.right);
     let answersNames = answers.map(item => this.handleDropdownAnswer(item.answers, item.question));
 
     const rightAnswers = [];
-    return { rightAnswers, answersNames };
+    return { rightAnswers, answersNames, answersType };
   };
   getCommonAnswers = item => {
     const answersObject = item.data.variants;
@@ -81,6 +87,7 @@ class TaskPreviewFetched extends React.Component {
       answers = [...answers, answersObject[key]];
     }
     let answersNames = answers.map(item => item.name);
+    let answersType = answers.map(item => item.right);
     let rightAnswers = answers.reduce((accum, item) => {
       if (item.right) {
         return [...accum, item.name];
@@ -88,10 +95,18 @@ class TaskPreviewFetched extends React.Component {
         return accum;
       }
     }, []);
-    return { answersNames, rightAnswers };
+    return { answersNames, rightAnswers, answersType };
   };
   getTaskObject = () => {
-    const { chapter_id, difficulty, learning_level, subject, name, id } = this.props.task;
+    const {
+      chapter_id,
+      difficulty,
+      learning_level,
+      subject,
+      name,
+      id,
+      not_for_teacher,
+    } = this.props.task;
     return {
       chapter: chapter_id,
       difficulty,
@@ -99,6 +114,7 @@ class TaskPreviewFetched extends React.Component {
       subject: this.subjects[subject],
       name,
       id,
+      not_for_teacher,
     };
   };
   render() {
