@@ -257,6 +257,7 @@ class TaskPreviewContainer extends React.Component {
                         : images.find(item => item.answer == letter);
                       const imageSource = this.getImageUrl(image);
                       const locallyRightAnswer =
+                        generation.answers &&
                         generation.answers[index] &&
                         generation.rightAnswers.includes(generation.answers[index]);
                       const fetchedRightAnswer =
