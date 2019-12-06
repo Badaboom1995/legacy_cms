@@ -47,11 +47,7 @@ class TaskPreviewFetched extends React.Component {
         .replace(dropdown.expected, `${dropdown.expected}*`);
       editableQuestion = editableQuestion.replace(
         `%{${key}}`,
-<<<<<<< HEAD
-        `dr${dropdown.type.substr(0, 1)}(${dropdownValue})`,
-=======
         `dr${dropdown.type && dropdown.type.substr(0, 1)}(${dropdownValue})`,
->>>>>>> 3d05044ec54f24de713113d3688ae27452f8b54c
       );
     }
     return editableQuestion;
