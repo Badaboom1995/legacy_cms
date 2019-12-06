@@ -12,7 +12,6 @@ import { clearGenerations } from 'actions/general';
 import { resetImages } from 'actions/images';
 import { resetIllustrations } from 'actions/illustrations';
 import { getIllustrationsEntities } from '../../reducers/illustrations';
-import Request from 'helpers/request';
 import Tasks from 'helpers/Tasks';
 import FilesService from 'helpers/Files';
 import './content.scss';

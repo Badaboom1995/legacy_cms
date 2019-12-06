@@ -19,6 +19,7 @@ class TaskPreviewFetched extends React.Component {
       }
       return {
         ...item,
+        text: item.name,
         answers: answers.answersNames,
         rightAnswers: answers.rightAnswers,
         answersType: answers.answersType,
