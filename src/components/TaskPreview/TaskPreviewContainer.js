@@ -256,21 +256,16 @@ class TaskPreviewContainer extends React.Component {
                         ? images[index]
                         : images.find(item => item.answer == letter);
                       const imageSource = this.getImageUrl(image);
-                      {
-                        /* const url = generation.images
-                        ? `${api_url}${imagePath}`
-                        : URL.createObjectURL(image); */
-                      }
                       const locallyRightAnswer =
                         generation.answers[index] &&
                         generation.rightAnswers.includes(generation.answers[index]);
+                      const fetchedRightAnswer =
+                        generation.answersType && generation.answersType[index];
                       return (
                         <li
                           className={`task-preview__generation-answer
-                        ${generation.rightAnswers &&
-                          (locallyRightAnswer ||
-                            (generation.answersType && generation.answersType[index])) &&
-                          'task-preview__generation-answer--right'}`}
+                        ${(generation.rightAnswers && locallyRightAnswer) ||
+                          (fetchedRightAnswer && 'task-preview__generation-answer--right')}`}
                           key={index}
                         >
                           <label htmlFor="edit-image">
