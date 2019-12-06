@@ -22,7 +22,7 @@ class TaskPreviewContainer extends React.Component {
     showGens: this.props.generationsHidden ? false : true,
   };
 
-  isArrayOfFiles = (arr) => {
+  isArrayOfFiles = arr => {
     if (!arr) throw new Error('isArrayOfFiles: Argument is required');
     return Array.isArray(arr) && arr.every(it => it instanceof File);
   };
@@ -125,14 +125,19 @@ class TaskPreviewContainer extends React.Component {
     }
   };
 
-  buttonCreateLessonHandler = (taskId) => {
+  buttonCreateLessonHandler = taskId => {
     const { dispatch } = this.props;
     dispatch(createLessonFromTask(taskId));
-  }
+  };
 
   render() {
-
-    const { generationsHidden, noDeleteButton, noAddButton, taskLesson, noToggleButton } = this.props;
+    const {
+      generationsHidden,
+      noDeleteButton,
+      noAddButton,
+      taskLesson,
+      noToggleButton,
+    } = this.props;
     const { chapter, difficulty, grade, subject, name, id, not_for_teacher } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
@@ -251,16 +256,16 @@ class TaskPreviewContainer extends React.Component {
                         ? images[index]
                         : images.find(item => item.answer == letter);
                       const imageSource = this.getImageUrl(image);
-                      {
-                        /* const url = generation.images
-                        ? `${api_url}${imagePath}`
-                        : URL.createObjectURL(image); */
-                      }
+                      const locallyRightAnswer =
+                        generation.answers[index] &&
+                        generation.rightAnswers.includes(generation.answers[index]);
+                      const fetchedRightAnswer =
+                        generation.answersType && generation.answersType[index];
                       return (
                         <li
                           className={`task-preview__generation-answer
                         ${generation.rightAnswers &&
-                          (generation.answersType && generation.answersType[index]) &&
+                          (locallyRightAnswer || fetchedRightAnswer) &&
                           'task-preview__generation-answer--right'}`}
                           key={index}
                         >
@@ -311,7 +316,7 @@ const mapStateToProps = (state, ownProps) => {
     checks: state.checks,
     images: state.images.images,
     taskLesson,
-  }
+  };
 };
 
 export default connect(mapStateToProps)(TaskPreviewContainer);
