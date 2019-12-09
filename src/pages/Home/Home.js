@@ -156,26 +156,6 @@ class Home extends React.Component {
 
   createJob = async () => {
     // Соединяет задание с генерациями и отправляет на сервер
-    // this.createTask()
-    //   .then(response => {
-    //     this.props.general.generations.map(item => {
-    //       this.createGeneration(item);
-    //       return response;
-    //     });
-    //   })
-    //   .then(() => {
-    //     setTimeout(() => {
-    //       if (this.state.gensIds) {
-    //         this.state.gensIds.forEach((item, index) => {
-    //           this.addPicture(item, index);
-    //         });
-    //         this.props.dispatch(resetImages());
-    //         this.props.dispatch(resetIllustrations());
-    //       }
-    //     }, 1000);
-    //     this.props.dispatch(clearTasks());
-    //     this.props.dispatch(clearGenerations());
-    //   });
     const {
       general: { generations },
       illustrations
