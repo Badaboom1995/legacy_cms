@@ -76,7 +76,7 @@ class AddTaskInfo extends React.Component {
           <SelectElement
             name="Выбрать тему"
             type="chapter"
-            elements={this.props.general.chaptersNames}
+            elements={this.props.general.chapters}
             reduxStore="tasks"
             chooseElement={(name, value) => {
               this.props.dispatch(addOption(name, value));

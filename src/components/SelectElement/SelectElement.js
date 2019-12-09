@@ -21,7 +21,7 @@ class AddTaskInfo extends React.Component {
   };
   filterSearchData = filter => {
     const filteredData = this.props.elements.filter(item => {
-      return item.includes(filter);
+      return item.name.includes(filter);
     });
     this.setState(() => ({ filteredElements: filteredData }));
   };
@@ -56,12 +56,14 @@ class AddTaskInfo extends React.Component {
               return (
                 <div
                   onClick={e => {
-                    this.chooseElement(this.props.type, item, e);
+                    this.chooseElement(this.props.type, item.name, e);
                   }}
                   className="search-popup__elements-item"
                   key={index}
                 >
-                  {item}
+                  {`${item.name} ${
+                    item.subject_id ? `(${item.subject_id == 1 ? 'math' : 'rus'})` : ''
+                  }`}
                 </div>
               );
             })}
