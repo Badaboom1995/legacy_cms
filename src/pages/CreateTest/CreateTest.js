@@ -43,7 +43,6 @@ class CreateTest extends React.Component {
     const { dispatch } = this.props;
     const Request = new Tasks();
     const response = Request.getTasks();
-    console.log(response);
     const params = {
       ...defaultParams,
     };
@@ -124,8 +123,8 @@ class CreateTest extends React.Component {
       this.getGradeId(),
       difficulty,
       type,
-      this.getChapterId(),
-      this.getTopicId(),
+      this.props.checks.chapter.id,
+      this.props.checks.topic.id,
       parseInt(time_limit),
     ).then(res => {
       this.props.dispatch(addCheckOption('id', res.id));

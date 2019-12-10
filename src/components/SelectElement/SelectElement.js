@@ -27,9 +27,13 @@ class AddTaskInfo extends React.Component {
   };
   getCurrentElement = () => {
     if (this.props.reduxStore === 'tasks') {
-      return this.props.tasks[this.props.type] || this.props.name;
+      return this.props.tasks[this.props.type]
+        ? this.props.tasks[this.props.type].name
+        : this.props.name;
     } else {
-      return this.props.checks[this.props.type] || this.props.name;
+      return this.props.checks[this.props.type]
+        ? this.props.checks[this.props.type].name
+        : this.props.name;
     }
   };
   render() {
@@ -56,7 +60,7 @@ class AddTaskInfo extends React.Component {
               return (
                 <div
                   onClick={e => {
-                    this.chooseElement(this.props.type, item.name, e);
+                    this.chooseElement(this.props.type, item, e);
                   }}
                   className="search-popup__elements-item"
                   key={index}

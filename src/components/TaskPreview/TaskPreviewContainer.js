@@ -153,7 +153,7 @@ class TaskPreviewContainer extends React.Component {
           >
             {name || 'Название'}
           </EditableWithInput>
-          <div className="task-preview__subtitle">{chapter}</div>
+          <div className="task-preview__subtitle">{chapter && chapter.name}</div>
           <EditableWithSelect
             task={this.props.task}
             options={this.props.general.difficulty}

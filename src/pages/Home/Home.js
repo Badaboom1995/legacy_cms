@@ -29,7 +29,7 @@ class Home extends React.Component {
     this.props.dispatch(addOption(name, value));
   };
   getTaskObject = () => {
-    const { difficulty, name, subject, grade } = this.props.tasks;
+    const { difficulty, name, subject, grade, chapter } = this.props.tasks;
     const chapterObj = this.props.general.chapters.filter(item => {
       return item.name == this.props.tasks.chapter;
     })[0];
@@ -39,8 +39,8 @@ class Home extends React.Component {
       subject: subject.id.toString(),
       learning_level_id: this.getGradeId(),
       difficulty: difficulty,
-      chapter_id: chapterObj ? chapterObj.id : '',
-      topic_id: chapterObj.topic_id,
+      chapter_id: chapter.id,
+      topic_id: chapter.topic_id,
       not_for_teacher: true,
     };
     return taskObject;
