@@ -102,12 +102,12 @@ class TestsList extends React.Component {
   };
   onTopicChange = (name, value) => {
     const topicObj = this.props.topics.find(item => item.name == value);
-    this.onCheckChange(topicObj.id, 'topic_id');
+    this.onCheckChange(value.id, 'topic_id');
     this.props.dispatch(addCheckOption(name, value));
   };
   onChapterChange = (name, value) => {
     const chapterObj = this.props.chapters.find(item => item.name == value);
-    this.onCheckChange(chapterObj.id, 'chapter_id');
+    this.onCheckChange(value.id, 'chapter_id');
     this.props.dispatch(addCheckOption(name, value));
   };
   deleteTask = id => {
@@ -136,16 +136,16 @@ class TestsList extends React.Component {
     this.setState({ checksOffset: newOffset, checksFetching: true });
   };
 
-  confirmDelete = (checkId) => {
+  confirmDelete = checkId => {
     if (window.confirm('Вы действительно хотите удалить тест?')) {
       this.deleteCheck(checkId);
     }
-  }
+  };
 
-  buttonCreateLessonHandler = (checkId) => {
+  buttonCreateLessonHandler = checkId => {
     const { dispatch } = this.props;
     dispatch(createLessonFromCheck(checkId));
-  }
+  };
 
   render() {
     const {
@@ -197,11 +197,7 @@ class TestsList extends React.Component {
                     targetType="check"
                     target={item}
                   />
-                  <button
-                    onClick={() => this.confirmDelete(item.id)}
-                  >
-                    delete
-                  </button>
+                  <button onClick={() => this.confirmDelete(item.id)}>delete</button>
                   <div className="task-preview__test-lesson">
                     <TestLessonButton
                       lesson={checkLesson}
@@ -271,14 +267,14 @@ class TestsList extends React.Component {
             reduxStore="checks"
             type="topicForUpdate"
             name={getNameById(topicId, topics) || 'Раздел'}
-            elements={this.props.general.topicsNames}
+            elements={this.props.general.topics}
             chooseElement={this.onTopicChange}
           />
           <SelectElement
             reduxStore="checks"
             type="chapterForUpdate"
             name={getNameById(chapterId, chapters) || 'Тема'}
-            elements={this.props.general.chaptersNames}
+            elements={this.props.general.chapters}
             chooseElement={this.onChapterChange}
           />
           {/* <button onClick={this.updateTask}>update</button> */}
@@ -342,7 +338,7 @@ const mapStateToProps = state => {
     topics: state.general.topics,
     isAllChecksReceived: state.checks.isAllReceived,
     checkLessons: state.checks.checkLessons,
-  }
+  };
 };
 
 export default connect(mapStateToProps)(TestsList);
