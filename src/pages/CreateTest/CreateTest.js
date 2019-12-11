@@ -20,7 +20,7 @@ const defaultParams = {
   filters: {
     base: 'true',
     subject: DEFAULT_SUBJECT_ID,
-  }
+  },
 };
 
 class CreateTest extends React.Component {
@@ -43,7 +43,6 @@ class CreateTest extends React.Component {
     const { dispatch } = this.props;
     const Request = new Tasks();
     const response = Request.getTasks();
-    console.log(response);
     const params = {
       ...defaultParams,
     };
@@ -124,8 +123,8 @@ class CreateTest extends React.Component {
       this.getGradeId(),
       difficulty,
       type,
-      this.getChapterId(),
-      this.getTopicId(),
+      this.props.checks.chapter.id,
+      this.props.checks.topic.id,
       parseInt(time_limit),
     ).then(res => {
       this.props.dispatch(addCheckOption('id', res.id));
@@ -225,19 +224,20 @@ class CreateTest extends React.Component {
               value="Фильтр по классу"
             />
           </div>
-          <TasksList tasks={tasks.taskList} activeSubject={this.state.activeSubject} onSelect={this.selectSubject} />
-          {(tasks.taskList.length === 0) && "Ничего не найдено"}
-          {isAllTasksReceived
-            ? null
-            : (
-              <Button className={`tests-button__request ${tasks.taskList.length ? '' : 'hidden'}`} onClick={this.buttonRequestHandler}>
-              {tasksFetching
-                ? `Загрузка...`
-                : `Показать ещё ${TASKS_LIMIT}`
-              }
-              </Button>
-            )
-          }
+          <TasksList
+            tasks={tasks.taskList}
+            activeSubject={this.state.activeSubject}
+            onSelect={this.selectSubject}
+          />
+          {tasks.taskList.length === 0 && 'Ничего не найдено'}
+          {isAllTasksReceived ? null : (
+            <Button
+              className={`tests-button__request ${tasks.taskList.length ? '' : 'hidden'}`}
+              onClick={this.buttonRequestHandler}
+            >
+              {tasksFetching ? `Загрузка...` : `Показать ещё ${TASKS_LIMIT}`}
+            </Button>
+          )}
         </div>
         <div className="content__secondary">
           <TextInput
@@ -290,7 +290,7 @@ class CreateTest extends React.Component {
             reduxStore="checks"
             type="topic"
             name="Раздел"
-            elements={this.props.general.topicsNames}
+            elements={this.props.general.topics}
             chooseElement={(name, value) => {
               this.props.dispatch(addCheckOption(name, value));
             }}
@@ -299,7 +299,7 @@ class CreateTest extends React.Component {
             reduxStore="checks"
             type="chapter"
             name="Тема"
-            elements={this.props.general.chaptersNames}
+            elements={this.props.general.chapters}
             chooseElement={(name, value) => {
               this.props.dispatch(addCheckOption(name, value));
             }}

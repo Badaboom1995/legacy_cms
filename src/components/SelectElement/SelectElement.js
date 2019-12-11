@@ -21,15 +21,19 @@ class AddTaskInfo extends React.Component {
   };
   filterSearchData = filter => {
     const filteredData = this.props.elements.filter(item => {
-      return item.includes(filter);
+      return item.name.includes(filter);
     });
     this.setState(() => ({ filteredElements: filteredData }));
   };
   getCurrentElement = () => {
     if (this.props.reduxStore === 'tasks') {
-      return this.props.tasks[this.props.type] || this.props.name;
+      return this.props.tasks[this.props.type]
+        ? this.props.tasks[this.props.type].name
+        : this.props.name;
     } else {
-      return this.props.checks[this.props.type] || this.props.name;
+      return this.props.checks[this.props.type]
+        ? this.props.checks[this.props.type].name
+        : this.props.name;
     }
   };
   render() {
@@ -61,7 +65,9 @@ class AddTaskInfo extends React.Component {
                   className="search-popup__elements-item"
                   key={index}
                 >
-                  {item}
+                  {`${item.name} ${
+                    item.subject_id ? `(${item.subject_id == 1 ? 'math' : 'rus'})` : ''
+                  }`}
                 </div>
               );
             })}
