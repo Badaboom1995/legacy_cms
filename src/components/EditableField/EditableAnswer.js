@@ -23,10 +23,8 @@ class EditableAnswer extends React.Component {
         [task.kind]: {
           ...task[paramName][task.kind],
           [answerLetter]: data,
-        }
-      }
-
-      console.log(data, adoptedValue);
+        },
+      };
     } else if (/^variant/.test(task.kind)) {
       adoptedValue = {
         variants: {
