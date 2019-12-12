@@ -280,6 +280,7 @@ class TaskPreviewContainer extends React.Component {
                           )}
                           <EditableAnswer
                             task={generation}
+                            task_id={id}
                             paramName="data"
                             editableAnswer
                             index={index}

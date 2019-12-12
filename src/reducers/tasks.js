@@ -41,7 +41,6 @@ export default (state = tasksReducerDefaultState, action) => {
           if (item.id == action.id) {
             item[action.param] = action.value;
           }
-          console.log(item.not_for_teacher);
           return item;
         }),
       };
@@ -66,7 +65,7 @@ export default (state = tasksReducerDefaultState, action) => {
         taskLessons: {
           ...state.taskLessons,
           [action.payload.taskId]: { ...action.payload.lesson },
-        }
+        },
       };
     default:
       return state;

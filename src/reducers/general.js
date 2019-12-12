@@ -20,7 +20,6 @@ export default (state = generalReducerDefaultState, action) => {
     case 'ADD_ANSWER_BY_INDEX':
       let copiedAnswers = [...state.answers];
       copiedAnswers[action.index] = action.answer;
-      console.log(copiedAnswers);
       return {
         ...state,
         answers: copiedAnswers,
