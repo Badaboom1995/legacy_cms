@@ -6,12 +6,20 @@ import axios from 'axios';
 import { createLessonFromTask } from 'actions/tasks';
 import { getTaskLesson } from 'reducers/tasks';
 import { addTaskToTest } from 'actions/checks';
+import { updateTaskGeneration } from 'actions/tasks';
+import { updateGeneration } from 'actions/general';
 import EditableWithInput from 'components/EditableField/EditableWithInput';
 import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
+import IllustrationsList from 'components/IllustrationsList/IllustrationsList';
+import IllustrationsButton from 'components/IllustrationsButton/IllustrationsButton';
+import { addIllustrationsFiles, changeIllustrationFile, removeIllustrationFile } from 'actions/illustrations';
+import { getIllustrationsEntities } from 'reducers/illustrations';
 import ToggleNotForTeacher from 'components/ToggleNotForTeacher/ToggleNotForTeacher';
 import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
 import Tasks from 'helpers/Tasks';
+import FilesService from 'helpers/Files';
+import FilesUtilit from 'utilits/FilesUtilit/FilesUtilit';
 import config from 'config';
 
 const api_url = config.api.root;
@@ -22,11 +30,6 @@ class TaskPreviewContainer extends React.Component {
     showGens: this.props.generationsHidden ? false : true,
   };
 
-  isArrayOfFiles = arr => {
-    if (!arr) throw new Error('isArrayOfFiles: Argument is required');
-    return Array.isArray(arr) && arr.every(it => it instanceof File);
-  };
-
   toggleGens = () => {
     this.setState(state => ({
       showGens: state.showGens ? false : true,
@@ -35,17 +38,6 @@ class TaskPreviewContainer extends React.Component {
   getLetter = index => {
     const alphabetStartIndex = 97;
     return String.fromCharCode(alphabetStartIndex + index);
-  };
-  getImageUrl = (image = {}) => {
-    let path = '';
-
-    // const image = images.find(item => item.answer == letter) || { path: '' };
-    if (image instanceof File) {
-      path = URL.createObjectURL(image);
-    } else if (image.path) {
-      path = `${api_url}${image.path}`;
-    }
-    return path;
   };
   deleteGeneration = (id, index) => {
     if (id) {
@@ -130,6 +122,56 @@ class TaskPreviewContainer extends React.Component {
     dispatch(createLessonFromTask(taskId));
   };
 
+  addIllustration = async ({ files, generation }) => {
+    const { dispatch } = this.props;
+
+    if (files) {
+      const { id, generationIndex } = generation;
+      if (id !== undefined) {
+        const updatedGeneration = await FilesService.uploadIllustrations({ files, generationId: id });
+        dispatch(updateTaskGeneration(updatedGeneration));
+      } else if (generationIndex !== undefined) {
+        await dispatch(addIllustrationsFiles({ generationIndex, files }));
+        const { illustrations } = this.props;
+        dispatch(updateGeneration({ generationIndex, fieldName: 'illustrations', payload: illustrations[generationIndex] }))
+      }
+    }
+  }
+
+  changeIllustration = async ({ evt, name, generation }) => {
+    const { dispatch } = this.props;
+    const files = Array.from(evt.target.files);
+
+    if (files) {
+      const { id, generationIndex } = generation;
+      if (id !== undefined) {
+        const updatedGeneration = await FilesService.uploadIllustrations({ files, generationId: id });
+        dispatch(updateTaskGeneration(updatedGeneration));
+      } else if (generationIndex !== undefined) {
+        const file = files[0];
+        await dispatch(changeIllustrationFile({ generationIndex, fileName: name, file }));
+        const { illustrations } = this.props;
+        dispatch(updateGeneration({ generationIndex, fieldName: 'illustrations', payload: illustrations[generationIndex] }))
+      }
+    }
+  }
+
+  removeIllustration = async ({ index, name, generation }) => {
+    const { dispatch } = this.props;
+
+    if (index !== undefined) {
+      const { id, generationIndex } = generation;
+      if (id !== undefined) {
+        const indexes = [index];
+        await FilesService.removeIllustrations({ indexes, generationId: id });
+      } else if (generationIndex !== undefined) {
+        await dispatch(removeIllustrationFile({ generationIndex, fileName: name }));
+        const { illustrations } = this.props;
+        dispatch(updateGeneration({ generationIndex, fieldName: 'illustrations', payload: illustrations[generationIndex] }));
+      }
+    }
+  }
+
   render() {
     const {
       generationsHidden,
@@ -141,6 +183,29 @@ class TaskPreviewContainer extends React.Component {
     const { chapter, difficulty, grade, subject, name, id, not_for_teacher } = this.props.task;
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
+
+    const renderIllustrations = (generation) => {
+      const { illustrations } = generation;
+      let result = null;
+      if (illustrations && illustrations.length) {
+        result = (
+          <IllustrationsList
+            key={`illustrations-list-${generation.id}`}
+            illustrations={illustrations}
+            generationId={generation.id}
+            onChange={(opts) => this.changeIllustration({ ...opts, generation })}
+            onRemove={(opts) => this.removeIllustration({ ...opts, generation })}
+          />
+        );
+      } else {
+        result = (
+          <IllustrationsButton
+            onChange={(files) => this.addIllustration({ files, generation })}
+          />
+        )
+      }
+      return result;
+    }
 
     return (
       <div key={id} className={`${this.props.className} task-preview `}>
@@ -234,17 +299,9 @@ class TaskPreviewContainer extends React.Component {
                     {generation.text}
                   </EditableWithInput>
                   <span className="task-preview__subtitle">{generation.kind}</span>
-                  <button>
-                    <label htmlFor="edit-image">Change image</label>
-                  </button>
-                  <input
-                    type="file"
-                    id="edit-image"
-                    className="task-preview__update-image"
-                    onChange={e => {
-                      this.savePicture(e);
-                    }}
-                  />
+                  <div className="task-preview__illustrations">
+                    {renderIllustrations(generation)}
+                  </div>
                   <ul className="task-preview__generations">
                     {answers.map((answer, index) => {
                       const letter = this.getLetter(index);
@@ -252,10 +309,10 @@ class TaskPreviewContainer extends React.Component {
                       если массив сохраненных картинок в генерации - ищем по букве ответа
                       to do - Надо будет хранить файлы в store в объекте с полями-буквами,
                       которые соответсвуют букве ответа, чтобы было удобно их оттуда доставать */
-                      const image = this.isArrayOfFiles(images)
+                      const image = FilesUtilit.isArrayOfFiles(images)
                         ? images[index]
                         : images.find(item => item.answer == letter);
-                      const imageSource = this.getImageUrl(image);
+                      const imageSource = FilesUtilit.getImageURL(image);
                       const locallyRightAnswer =
                         generation.answers &&
                         generation.answers[index] &&
@@ -317,6 +374,7 @@ const mapStateToProps = (state, ownProps) => {
     general: state.general,
     checks: state.checks,
     images: state.images.images,
+    illustrations: getIllustrationsEntities(state),
     taskLesson,
   };
 };

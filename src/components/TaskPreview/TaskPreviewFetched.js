@@ -18,14 +18,11 @@ class TaskPreviewFetched extends React.Component {
         answers = this.getCommonAnswers(item);
       }
       return {
-        id: item.id,
-        data: item.data,
+        ...item,
         text: item.name,
-        kind: item.kind,
         answers: answers.answersNames,
         rightAnswers: answers.rightAnswers,
         answersType: answers.answersType,
-        images: item.images,
       };
     });
 
@@ -115,6 +112,7 @@ class TaskPreviewFetched extends React.Component {
   };
   render() {
     const { noDeleteButton, noAddButton } = this.props;
+    console.log('TREBDER!')
     return (
       <React.Fragment>
         <TaskPreviewContainer

@@ -10,6 +10,24 @@ const generalReducerDefaultState = {
   difficulty: [{ id: 'A', name: 'Базовый' }, { id: 'B', name: 'Профильный' }],
 };
 
+const updateGeneration = (state, action) => {
+  const { generationIndex, fieldName, payload } = action;
+  const { generations } = state;
+  let generation = state.generations[generationIndex] || {};
+  generation = {
+    ...generation,
+    [fieldName]: payload,
+  };
+
+  const copyArr = generations.slice();
+  copyArr.splice(generationIndex, 1, generation);
+
+  return {
+    ...state,
+    generations: copyArr,
+  };
+}
+
 export default (state = generalReducerDefaultState, action) => {
   switch (action.type) {
     case 'ADD_ANSWER':
@@ -149,6 +167,8 @@ export default (state = generalReducerDefaultState, action) => {
         ...state,
         generations: [...state.generations, action.generation],
       };
+    case 'UPDATE_GENERATION':
+      return updateGeneration(state, action);
     case 'REMOVE_GENERATION':
       return {
         ...state,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { getIllustrationsFiles } from 'reducers/illustrations';
 import TextArea from 'components/TextArea/TextArea';
 import Select from 'components/Select/Select';
 import Answers from 'components/Answers/Answers';
@@ -7,6 +8,7 @@ import AddAnswer from 'components/AddAnswer/AddAnswer';
 import ExpressionsList from 'components/ExpressionsList/ExpressionsList';
 import AddExpression from 'components/AddExpression/AddExpression';
 import AddPicture from 'components/AddPicture/AddPicture';
+import AddIllustration from 'components/AddIllustration/AddIllustration';
 import DragAndDrop from 'components/DragAndDrop/DragAndDrop';
 import TaskPreview from 'components/TaskPreview/TaskPreview';
 import Button from '@material-ui/core/Button';
@@ -60,7 +62,8 @@ class AddTaskInfo extends React.Component {
   };
   saveGeneration = () => {
     const { answers, kind, rightAnswers, text, expressions } = this.props.general;
-    let generation = { kind, text };
+    const { illustrations, currentGenerationIndex } = this.props;
+    let generation = { generationIndex: currentGenerationIndex, kind, text, illustrations };
     if (['variant', 'variants', 'variants_all'].some(name => name === kind)) {
       generation = { ...generation, answers, rightAnswers };
     } else if (kind === 'inputs' || kind === 'dropdown') {
@@ -97,13 +100,16 @@ class AddTaskInfo extends React.Component {
   };
 
   render() {
-    const { kind } = this.props;
+    const { kind, general, currentGenerationIndex } = this.props;
+    console.log(this.props)
     const mechanicInterface = kind && this.getActiveMechanic();
     return (
       <div className="content__wrap">
         <div className="content__fragment">
           <TextArea name="text" onChange={this.onChange} label="Текст задания" mathMode />
-          <div className="content__row">{/* <AddPicture /> */}</div>
+          <div className="content__row">
+            <AddIllustration generationIndex={currentGenerationIndex} />
+          </div>
           <Select
             name="kind"
             modificators="select--in-row"
@@ -132,9 +138,15 @@ class AddTaskInfo extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  general: state.general,
-  tasks: state.tasks,
-});
+const mapStateToProps = state => {
+  const currentGenerationIndex = state.general.generations.length;
+
+  return {
+    general: state.general,
+    tasks: state.tasks,
+    illustrations: getIllustrationsFiles(state, currentGenerationIndex),
+    currentGenerationIndex,
+  };
+}
 
 export default connect(mapStateToProps)(AddTaskInfo);

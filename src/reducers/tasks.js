@@ -5,6 +5,26 @@ const tasksReducerDefaultState = {
   isAllReceived: false,
 };
 
+const updateTaskGeneration = (state, action) => {
+  const { taskList } = state;
+  const { generation: { id, check_job_id } } = action;
+  const targetTaskIndex = taskList.findIndex(it => it.id === check_job_id);
+  const targetTask = taskList[targetTaskIndex];
+
+  if (targetTask) {
+    const { check_generations } = targetTask;
+    const targetGenIndex = check_generations.findIndex(it => it.id === id);
+    check_generations.splice(targetGenIndex, 1, action.generation);
+    targetTask.check_generations = check_generations;
+    taskList.splice(targetTaskIndex, 1, targetTask);
+  }
+
+  return {
+    ...state,
+    taskList: [...taskList],
+  }
+}
+
 export default (state = tasksReducerDefaultState, action) => {
   switch (action.type) {
     case 'ADD_OPTION':
@@ -59,6 +79,8 @@ export default (state = tasksReducerDefaultState, action) => {
         grade: '',
         chapter: '',
       };
+    case 'UPDATE_TASK_GENERATION':
+      return updateTaskGeneration(state, action);
     case 'TASK_LESSON_RECEIVED':
       return {
         ...state,

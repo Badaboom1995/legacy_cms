@@ -24,6 +24,10 @@ export const deleteTask = id => ({
 export const clearTasks = () => ({
   type: 'CLEAR_TASKS',
 });
+export const updateTaskGeneration = generation => ({
+  type: 'UPDATE_TASK_GENERATION',
+  generation,
+});
 export const createLessonFromTask = taskId => ({
   type: 'CREATE_LESSON_FROM_TASK',
   taskId,

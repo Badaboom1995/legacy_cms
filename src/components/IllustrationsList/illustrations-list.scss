@@ -1,0 +1,35 @@
+$base-class-name: "illustrations-list";
+
+.#{$base-class-name} {
+  margin: 0;
+  margin-bottom: 15px;
+  padding: 0;
+  list-style: none;
+}
+
+.#{$base-class-name}__item {
+  position: relative;
+}
+
+.#{$base-class-name}__image-label {
+  cursor: pointer;
+}
+
+.#{$base-class-name}__image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.#{$base-class-name}__remove-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  background-image: url('../../images/delete.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
