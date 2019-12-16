@@ -112,7 +112,6 @@ class TaskPreviewFetched extends React.Component {
   };
   render() {
     const { noDeleteButton, noAddButton } = this.props;
-    console.log('TREBDER!')
     return (
       <React.Fragment>
         <TaskPreviewContainer

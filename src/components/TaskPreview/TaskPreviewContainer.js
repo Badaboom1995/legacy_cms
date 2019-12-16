@@ -302,6 +302,14 @@ class TaskPreviewContainer extends React.Component {
                   <div className="task-preview__illustrations">
                     {renderIllustrations(generation)}
                   </div>
+                  <input
+                    type="file"
+                    id="edit-image"
+                    className="task-preview__update-image"
+                    onChange={e => {
+                      this.savePicture(e);
+                    }}
+                  />
                   <ul className="task-preview__generations">
                     {answers.map((answer, index) => {
                       const letter = this.getLetter(index);
