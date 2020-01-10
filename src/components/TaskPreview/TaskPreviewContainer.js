@@ -13,7 +13,11 @@ import EditableAnswer from 'components/EditableField/EditableAnswer';
 import EditableWithSelect from 'components/EditableField/EditableWithSelect';
 import IllustrationsList from 'components/IllustrationsList/IllustrationsList';
 import IllustrationsButton from 'components/IllustrationsButton/IllustrationsButton';
-import { addIllustrationsFiles, changeIllustrationFile, removeIllustrationFile } from 'actions/illustrations';
+import {
+  addIllustrationsFiles,
+  changeIllustrationFile,
+  removeIllustrationFile,
+} from 'actions/illustrations';
 import { getIllustrationsEntities } from 'reducers/illustrations';
 import ToggleNotForTeacher from 'components/ToggleNotForTeacher/ToggleNotForTeacher';
 import TestLessonButton from 'components/TestLessonButton/TestLessonButton';
@@ -128,15 +132,24 @@ class TaskPreviewContainer extends React.Component {
     if (files) {
       const { id, generationIndex } = generation;
       if (id !== undefined) {
-        const updatedGeneration = await FilesService.uploadIllustrations({ files, generationId: id });
+        const updatedGeneration = await FilesService.uploadIllustrations({
+          files,
+          generationId: id,
+        });
         dispatch(updateTaskGeneration(updatedGeneration));
       } else if (generationIndex !== undefined) {
         await dispatch(addIllustrationsFiles({ generationIndex, files }));
         const { illustrations } = this.props;
-        dispatch(updateGeneration({ generationIndex, fieldName: 'illustrations', payload: illustrations[generationIndex] }))
+        dispatch(
+          updateGeneration({
+            generationIndex,
+            fieldName: 'illustrations',
+            payload: illustrations[generationIndex],
+          }),
+        );
       }
     }
-  }
+  };
 
   changeIllustration = async ({ evt, name, generation }) => {
     const { dispatch } = this.props;
@@ -145,16 +158,25 @@ class TaskPreviewContainer extends React.Component {
     if (files) {
       const { id, generationIndex } = generation;
       if (id !== undefined) {
-        const updatedGeneration = await FilesService.uploadIllustrations({ files, generationId: id });
+        const updatedGeneration = await FilesService.uploadIllustrations({
+          files,
+          generationId: id,
+        });
         dispatch(updateTaskGeneration(updatedGeneration));
       } else if (generationIndex !== undefined) {
         const file = files[0];
         await dispatch(changeIllustrationFile({ generationIndex, fileName: name, file }));
         const { illustrations } = this.props;
-        dispatch(updateGeneration({ generationIndex, fieldName: 'illustrations', payload: illustrations[generationIndex] }))
+        dispatch(
+          updateGeneration({
+            generationIndex,
+            fieldName: 'illustrations',
+            payload: illustrations[generationIndex],
+          }),
+        );
       }
     }
-  }
+  };
 
   removeIllustration = async ({ index, name, generation }) => {
     const { dispatch } = this.props;
@@ -167,10 +189,16 @@ class TaskPreviewContainer extends React.Component {
       } else if (generationIndex !== undefined) {
         await dispatch(removeIllustrationFile({ generationIndex, fileName: name }));
         const { illustrations } = this.props;
-        dispatch(updateGeneration({ generationIndex, fieldName: 'illustrations', payload: illustrations[generationIndex] }));
+        dispatch(
+          updateGeneration({
+            generationIndex,
+            fieldName: 'illustrations',
+            payload: illustrations[generationIndex],
+          }),
+        );
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -184,7 +212,7 @@ class TaskPreviewContainer extends React.Component {
     const showGens = (generationsHidden && this.state.showGens) || !generationsHidden;
     const Request = new Tasks();
 
-    const renderIllustrations = (generation) => {
+    const renderIllustrations = generation => {
       const { illustrations } = generation;
       let result = null;
       if (illustrations && illustrations.length) {
@@ -193,19 +221,17 @@ class TaskPreviewContainer extends React.Component {
             key={`illustrations-list-${generation.id}`}
             illustrations={illustrations}
             generationId={generation.id}
-            onChange={(opts) => this.changeIllustration({ ...opts, generation })}
-            onRemove={(opts) => this.removeIllustration({ ...opts, generation })}
+            onChange={opts => this.changeIllustration({ ...opts, generation })}
+            onRemove={opts => this.removeIllustration({ ...opts, generation })}
           />
         );
       } else {
         result = (
-          <IllustrationsButton
-            onChange={(files) => this.addIllustration({ files, generation })}
-          />
-        )
+          <IllustrationsButton onChange={files => this.addIllustration({ files, generation })} />
+        );
       }
       return result;
-    }
+    };
 
     return (
       <div key={id} className={`${this.props.className} task-preview `}>
@@ -289,7 +315,6 @@ class TaskPreviewContainer extends React.Component {
               }
               return (
                 <div className="task-preview__main task-preview__main--generation" key={index}>
-                  {console.log(generation)}
                   <EditableWithInput
                     task={generation}
                     paramName="name"
@@ -328,7 +353,12 @@ class TaskPreviewContainer extends React.Component {
                           key={index}
                         >
                           <label htmlFor="edit-image">
-                            <img className="task-preview__answer-image" src={imageSource} alt="" />
+                            <img
+                              onClick={this.savePicture}
+                              className="task-preview__answer-image"
+                              src={imageSource}
+                              alt=""
+                            />
                           </label>
                           {this.state.image && (
                             <button onClick={() => this.uploadPicture(index, generation.id)}>
