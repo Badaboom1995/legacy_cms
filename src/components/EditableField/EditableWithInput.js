@@ -33,6 +33,7 @@ class EditWithInputContainer extends React.Component {
       const newGeneration = { ...generation, data: adoptedValue };
       const editedCheckGenerations =
         task &&
+        task.check_generations &&
         task.check_generations.map(item => {
           return item.id == newGeneration.id ? newGeneration : item;
         });
