@@ -31,9 +31,12 @@ class EditWithInputContainer extends React.Component {
       const task = this.props.tasks.taskList.find(item => item.id == this.props.task_id);
       const generation = task && task.check_generations.find(item => item.id == this.props.task.id);
       const newGeneration = { ...generation, data: adoptedValue };
-      const editedCheckGenerations = task.check_generations.map(item => {
-        return item.id == newGeneration.id ? newGeneration : item;
-      });
+      const editedCheckGenerations =
+        task &&
+        task.check_generations &&
+        task.check_generations.map(item => {
+          return item.id == newGeneration.id ? newGeneration : item;
+        });
       this.props.dispatch(updateTask(task_id, 'check_generations', editedCheckGenerations));
     }
     // fix end
